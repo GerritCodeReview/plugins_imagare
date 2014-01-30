@@ -1,0 +1,34 @@
+.imagare-image-upload-screen, .imagare-uploaded-images-panel {
+  width: 100%;
+  border-spacing: 0px 5px;
+}
+
+.imagare-uploaded-images-panel td {
+  vertical-align: middle !important;
+}
+
+.imagare-image-upload-panel {
+  width: 275px;
+  height: 100px;
+  border: 1px solid #B3B2B2;
+  border-spacing: 5px 5px;
+}
+
+.imagare-paste-label {
+  font-size: 18px;
+}
+
+.imagare-uploaded-images-label {
+  font-size: 20px;
+}
+
+.imagare-image-preview {
+  max-width: 50px;
+  max-height: 50px;
+  margin: 5px;
+}
+
+.imagare-image-popup {
+  max-width: 500px;
+  max-height: 500px;
+}

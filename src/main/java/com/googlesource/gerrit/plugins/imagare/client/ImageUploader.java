@@ -22,12 +22,17 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class ImageUploader {
 
   public static final void uploadImage(String imageData) {
-    uploadImage("All-Projects", imageData);
+    uploadImage("All-Projects", imageData, null);
   }
 
-  public static final void uploadImage(String project, String imageData) {
+  public static final void uploadImage(String imageData, String fileName) {
+    uploadImage("All-Projects", imageData, fileName);
+  }
+
+  public static final void uploadImage(String project, String imageData, String fileName) {
     ImageInput in = ImageInput.create();
     in.image_data(imageData);
+    in.file_name(fileName);
 
     new RestApi("projects").id(project).view(Plugin.get().getPluginName(), "images")
         .post(in, new AsyncCallback<ImageInfo>() {
@@ -45,6 +50,7 @@ public class ImageUploader {
 
   private static class ImageInput extends JavaScriptObject {
     final native void image_data(String d) /*-{ this.image_data = d; }-*/;
+    final native void file_name(String n) /*-{ this.file_name = n; }-*/;
 
     static ImageInput create() {
       return (ImageInput) createObject();

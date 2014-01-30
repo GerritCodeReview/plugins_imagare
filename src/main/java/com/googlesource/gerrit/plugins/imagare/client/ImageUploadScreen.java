@@ -32,6 +32,7 @@ public class ImageUploadScreen extends VerticalPanel {
   ImageUploadScreen() {
     setStyleName("imagare-image-upload-screen");
 
+    add(new UploadByFileSelection());
     add(new UploadByPastePanel());
     uploadedPanel = new UploadedImagesPanel();
     add(uploadedPanel);

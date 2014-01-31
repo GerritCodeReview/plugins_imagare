@@ -48,6 +48,8 @@ public class UploadByFileSelection extends HorizontalPanel {
           }
         }
         r.readAsDataURL(f);
+      } else {
+        $wnd.Gerrit.showError('Failed to load file.');
       }
     }
   }-*/;

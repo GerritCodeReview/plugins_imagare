@@ -8,14 +8,15 @@
 }
 
 .imagare-image-upload-panel {
-  width: 275px;
-  height: 100px;
+  width: 350px;
   border: 1px solid #B3B2B2;
   border-spacing: 5px 5px;
 }
 
-.imagare-paste-label {
+.imagare-image-upload-panel td {
+  text-align: center;
   font-size: 18px;
+  margin-bottom: 3px;
 }
 
 .imagare-uploaded-images-label {

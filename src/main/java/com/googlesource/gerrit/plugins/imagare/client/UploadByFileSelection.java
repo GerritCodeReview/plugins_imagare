@@ -41,7 +41,11 @@ public class UploadByFileSelection extends HorizontalPanel {
       if (f) {
         var r = new FileReader();
         r.onload = function(e) {
-          @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
+          if (f.type.match('image/.*')) {
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
+          } else {
+            $wnd.Gerrit.showError('no image file');
+          }
         }
         r.readAsDataURL(f);
       }

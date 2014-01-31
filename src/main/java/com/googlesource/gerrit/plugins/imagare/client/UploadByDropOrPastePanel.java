@@ -17,18 +17,19 @@ package com.googlesource.gerrit.plugins.imagare.client;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class UploadByPastePanel extends VerticalPanel {
+public class UploadByDropOrPastePanel extends VerticalPanel {
 
-  UploadByPastePanel() {
+  UploadByDropOrPastePanel() {
     init0();
 
     setStyleName("imagare-image-upload-panel");
     getElement().setAttribute("contenteditable", "true");
     getElement().setAttribute("onpaste", "imagarePasteHandler(this, event)");
+    getElement().setAttribute("ondrop", "imagareDropHandler(this, event)");
 
-    Label pasteLabel = new Label("Paste image here with " + (isMac() ? "Cmd+V" : "Ctrl+V") + ".");
-    pasteLabel.setStyleName("imagare-paste-label");
-    add(pasteLabel);
+    add(new Label("drag and drop image here"));
+    add(new Label("or"));
+    add(new Label("paste image from clipboard with " + (isMac() ? "Cmd+V" : "Ctrl+V")));
   }
 
   private static native boolean isMac() /*-{
@@ -98,6 +99,28 @@ public class UploadByPastePanel extends VerticalPanel {
       var imageData = elem.childNodes[0].getAttribute("src");
       elem.innerHTML = savedContent;
       @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;)(imageData);
+    }
+
+    $wnd.imagareDropHandler = function handleDrop(elem, event) {
+      if (window.chrome) {
+        event.preventDefault();
+      }
+      var savedContent = elem.innerHTML;
+      var f = event.dataTransfer.files[0];
+      if (f) {
+        var r = new FileReader();
+        r.onload = function(e) {
+          elem.innerHTML = savedContent;
+          if (f.type.match('image/.*')) {
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
+          } else {
+            $wnd.Gerrit.showError('no image file');
+          }
+        }
+        r.readAsDataURL(f);
+      } else {
+        $wnd.Gerrit.showError('Failed to load file.');
+      }
     }
   }-*/;
 }

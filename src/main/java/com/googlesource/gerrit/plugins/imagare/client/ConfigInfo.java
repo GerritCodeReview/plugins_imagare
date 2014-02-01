@@ -18,7 +18,17 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class ConfigInfo extends JavaScriptObject {
   final native String getDefaultProject() /*-{ return this.default_project }-*/;
+
+  final LinkDecoration getLinkDecoration() {
+    if (link_decoration() == null) {
+      return LinkDecoration.NONE;
+    }
+    return LinkDecoration.valueOf(link_decoration());
+  }
+  private final native String link_decoration() /*-{ return this.link_decoration; }-*/;
+
   final native void setDefaultProject(String p) /*-{ this.default_project = p; }-*/;
+  final native void setLinkDecoration(String d) /*-{ this.link_decoration = d; }-*/;
 
   static ConfigInfo create() {
     ConfigInfo g = (ConfigInfo) createObject();

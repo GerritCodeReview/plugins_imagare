@@ -38,6 +38,7 @@ import java.io.IOException;
 public class PutConfig implements RestModifyView<ConfigResource, Input>{
   public static class Input {
     public String defaultProject;
+    public LinkDecoration linkDecoration;
   }
 
   private final PluginConfigFactory cfgFactory;
@@ -64,6 +65,14 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
     if (input.defaultProject != null) {
       cfg.setString("plugin", pluginName, "defaultProject",
           Strings.emptyToNull(input.defaultProject));
+    }
+    if (input.linkDecoration != null) {
+      if (LinkDecoration.NONE.equals(input.linkDecoration)) {
+        cfg.unset("plugin", pluginName, "linkDecoration");
+      } else {
+        cfg.setEnum("plugin", pluginName, "linkDecoration",
+            input.linkDecoration);
+      }
     }
     cfg.save();
     cfgFactory.getFromGerritConfig(pluginName, true);

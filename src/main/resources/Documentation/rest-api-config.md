@@ -67,6 +67,10 @@ plugin.
 
 * _default\_project_: The project to which images should be uploaded by
   default.
+* _link\_decoration_: Decoration for image links in the Gerrit WebUI.
+  `NONE`: no decoration, `TOOLTIP`: the image is shown as tooltip on
+  mouse over an image link, `INLINE`: the image is inlined instead of
+  the URL.
 
 SEE ALSO
 --------

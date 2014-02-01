@@ -4,15 +4,15 @@
   border-spacing: 0px 5px;
 }
 
-.imagare-project-panel {
+.imagare-label-panel {
   margin-bottom: 10px;
 }
 
-.imagare-project-panel td {
+.imagare-label-panel td {
   vertical-align: middle !important;
 }
 
-.imagare-project-panel td div {
+.imagare-label-panel td div {
   margin-right: 5px;
 }
 

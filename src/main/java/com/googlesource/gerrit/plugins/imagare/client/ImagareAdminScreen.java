@@ -24,6 +24,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -38,6 +39,7 @@ public class ImagareAdminScreen extends VerticalPanel {
   }
 
   private TextBox projectBox;
+  private ListBox linkDecorationBox;
   private Button saveButton;
 
   ImagareAdminScreen() {
@@ -59,11 +61,26 @@ public class ImagareAdminScreen extends VerticalPanel {
 
   private void display(ConfigInfo info) {
     HorizontalPanel p = new HorizontalPanel();
-    p.setStyleName("imagare-project-panel");
+    p.setStyleName("imagare-label-panel");
     p.add(new Label("Project:"));
     projectBox = new TextBox();
     projectBox.setValue(info.getDefaultProject());
     p.add(projectBox);
+    add(p);
+
+    p = new HorizontalPanel();
+    p.setStyleName("imagare-label-panel");
+    p.add(new Label("Link Decoration:"));
+    linkDecorationBox = new ListBox();
+    int i = 0;
+    for (LinkDecoration v : LinkDecoration.values()) {
+      linkDecorationBox.addItem(v.name());
+      if (v.equals(info.getLinkDecoration())) {
+        linkDecorationBox.setSelectedIndex(i);
+      }
+      i++;
+    }
+    p.add(linkDecorationBox);
     add(p);
 
     HorizontalPanel buttons = new HorizontalPanel();
@@ -78,7 +95,8 @@ public class ImagareAdminScreen extends VerticalPanel {
     });
     buttons.add(saveButton);
     saveButton.setEnabled(false);
-    new OnEditEnabler(saveButton, projectBox);
+    OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, projectBox);
+    onEditEnabler.listenTo(linkDecorationBox);
 
     projectBox.setFocus(true);
     saveButton.setEnabled(false);
@@ -87,6 +105,7 @@ public class ImagareAdminScreen extends VerticalPanel {
   private void doSave() {
     ConfigInfo in = ConfigInfo.create();
     in.setDefaultProject(projectBox.getValue());
+    in.setLinkDecoration(linkDecorationBox.getValue(linkDecorationBox.getSelectedIndex()));
     new RestApi("config").id("server").view(Plugin.get().getPluginName(), "config")
         .put(in, new AsyncCallback<JavaScriptObject>() {
 

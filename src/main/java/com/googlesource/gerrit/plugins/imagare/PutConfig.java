@@ -21,9 +21,12 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.annotations.RequiresCapability;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
+import com.google.gerrit.extensions.restapi.UnprocessableEntityException;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.config.ConfigResource;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 
 import com.googlesource.gerrit.plugins.imagare.PutConfig.Input;
@@ -44,18 +47,21 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
   private final PluginConfigFactory cfgFactory;
   private final SitePaths sitePaths;
   private final String pluginName;
+  private final ProjectCache projectCache;
 
   @Inject
   PutConfig(PluginConfigFactory cfgFactory, SitePaths sitePaths,
-      @PluginName String pluginName) throws IOException, ConfigInvalidException {
+      @PluginName String pluginName, ProjectCache projectCache)
+      throws IOException, ConfigInvalidException {
     this.cfgFactory = cfgFactory;
     this.sitePaths = sitePaths;
     this.pluginName = pluginName;
+    this.projectCache = projectCache;
   }
 
   @Override
   public Response<String> apply(ConfigResource rsrc, Input input)
-      throws IOException, ConfigInvalidException {
+      throws IOException, ConfigInvalidException, UnprocessableEntityException {
     if (input == null) {
       input = new Input();
     }
@@ -63,6 +69,10 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
         new FileBasedConfig(sitePaths.gerrit_config, FS.DETECTED);
     cfg.load();
     if (input.defaultProject != null) {
+      if (projectCache.get(new Project.NameKey(input.defaultProject)) == null) {
+        throw new UnprocessableEntityException("project '"
+            + input.defaultProject + "' does not exist");
+      }
       cfg.setString("plugin", pluginName, "defaultProject",
           Strings.emptyToNull(input.defaultProject));
     }

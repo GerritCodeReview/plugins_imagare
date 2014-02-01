@@ -37,6 +37,26 @@ contains the configuration of the @PLUGIN@ plugin.
   }
 ```
 
+### <a id="put-config"> Put Config
+_PUT /config/server/@PLUGIN@~config_
+
+Sets the configuration of the @PLUGIN@ plugin.
+
+The new configuration must be specified as a [ConfigInfo](#config-info)
+entity in the request body. Not setting a parameter leaves the
+parameter unchanged.
+
+#### Request
+
+```
+  PUT /config/server/@PLUGIN@~config HTTP/1.0
+  Content-Type: application/json;charset=UTF-8
+
+  {
+    "default_project": "All-Images"
+  }
+```
+
 <a id="json-entities">JSON Entities
 -----------------------------------
 

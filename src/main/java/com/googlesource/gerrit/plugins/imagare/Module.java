@@ -36,6 +36,7 @@ public class Module extends AbstractModule {
         bind(ImagesCollection.class);
         child(PROJECT_KIND, "images").to(ImagesCollection.class);
         get(CONFIG_KIND, "config").to(GetConfig.class);
+        put(CONFIG_KIND, "config").to(PutConfig.class);
       }
     });
   }

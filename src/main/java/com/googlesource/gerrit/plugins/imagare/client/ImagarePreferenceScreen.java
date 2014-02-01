@@ -17,19 +17,30 @@ package com.googlesource.gerrit.plugins.imagare.client;
 import com.google.gerrit.plugin.client.Plugin;
 import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gerrit.plugin.client.screen.Screen;
+import com.google.gwt.user.client.ui.InlineHyperlink;
 
-public class ImagareAdminScreen extends ImagareConfigScreen {
+public class ImagarePreferenceScreen extends ImagareConfigScreen {
 
   static class Factory implements Screen.EntryPoint {
     @Override
     public void onLoad(Screen screen) {
-      screen.setPageTitle("Imagare Admin");
-      screen.show(new ImagareAdminScreen());
+      screen.setPageTitle("Imagare Preferences");
+      screen.show(new ImagarePreferenceScreen());
     }
   }
 
-  ImagareAdminScreen() {
-    super(new RestApi("config").id("server").view(Plugin.get().getPluginName(),
-        "config"));
+  ImagarePreferenceScreen() {
+    super(new RestApi("accounts").id("self")
+        .view(Plugin.get().getPluginName(), "preference"));
+  }
+
+  @Override
+  protected void display(ConfigInfo info) {
+    super.display(info);
+
+    InlineHyperlink uploadLink =
+        new InlineHyperlink("Upload Image", "/x/"
+            + Plugin.get().getPluginName() + "/upload");
+    add(uploadLink);
   }
 }

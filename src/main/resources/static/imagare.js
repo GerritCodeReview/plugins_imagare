@@ -14,7 +14,7 @@
 
 Gerrit.install(function(self) {
     function onHistory(t) {
-      Gerrit.get('/config/server/config', function(r) {
+      Gerrit.get('/accounts/self/preference', function(r) {
         if ('TOOLTIP' === r.link_decoration) {
           addTooltips();
         } else if ('INLINE' === r.link_decoration) {

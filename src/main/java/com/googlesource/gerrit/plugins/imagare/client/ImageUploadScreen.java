@@ -14,7 +14,10 @@
 
 package com.googlesource.gerrit.plugins.imagare.client;
 
+import com.google.gerrit.plugin.client.Plugin;
+import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gerrit.plugin.client.screen.Screen;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -40,7 +43,6 @@ public class ImageUploadScreen extends VerticalPanel {
     p.setStyleName("imagare-project-panel");
     p.add(new Label("Project:"));
     projectBox = new TextBox();
-    projectBox.setValue("All-Projects");
     p.add(projectBox);
     add(p);
 
@@ -48,5 +50,18 @@ public class ImageUploadScreen extends VerticalPanel {
     add(new UploadByDropOrPastePanel());
     uploadedPanel = new UploadedImagesPanel();
     add(uploadedPanel);
+
+    new RestApi("config").id("server").view(Plugin.get().getPluginName(), "config")
+        .get(new AsyncCallback<ConfigInfo>() {
+          @Override
+          public void onSuccess(ConfigInfo info) {
+            projectBox.setValue(info.getDefaultProject());
+          }
+
+          @Override
+          public void onFailure(Throwable caught) {
+            // never invoked
+          }
+        });
   }
 }

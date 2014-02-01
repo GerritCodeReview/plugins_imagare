@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import static com.google.gerrit.server.config.ConfigResource.CONFIG_KIND;
 import static com.google.gerrit.server.project.ProjectResource.PROJECT_KIND;
 import static com.googlesource.gerrit.plugins.imagare.ImageResource.IMAGE_KIND;
 
@@ -34,6 +35,7 @@ public class Module extends AbstractModule {
         DynamicMap.mapOf(binder(), IMAGE_KIND);
         bind(ImagesCollection.class);
         child(PROJECT_KIND, "images").to(ImagesCollection.class);
+        get(CONFIG_KIND, "config").to(GetConfig.class);
       }
     });
   }

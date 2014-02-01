@@ -19,6 +19,7 @@ import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gerrit.plugin.client.screen.Screen;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -51,7 +52,7 @@ public class ImageUploadScreen extends VerticalPanel {
     uploadedPanel = new UploadedImagesPanel();
     add(uploadedPanel);
 
-    new RestApi("config").id("server").view(Plugin.get().getPluginName(), "config")
+    new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference")
         .get(new AsyncCallback<ConfigInfo>() {
           @Override
           public void onSuccess(ConfigInfo info) {
@@ -63,5 +64,10 @@ public class ImageUploadScreen extends VerticalPanel {
             // never invoked
           }
         });
+
+    InlineHyperlink preferenceLink =
+        new InlineHyperlink("Edit Preferences", "/x/"
+            + Plugin.get().getPluginName() + "/preferences");
+    add(preferenceLink);
   }
 }

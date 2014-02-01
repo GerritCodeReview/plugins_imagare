@@ -44,7 +44,7 @@ public class GetConfig implements RestReadView<ConfigResource> {
     return info;
   }
 
-  public class ConfigInfo {
+  public static class ConfigInfo {
     String defaultProject;
     LinkDecoration linkDecoration;
   }

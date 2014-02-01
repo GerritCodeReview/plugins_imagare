@@ -22,6 +22,30 @@
       "revId": "4fb921205741a209b1712482b405a19d85b5d4e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b2e5ee1d_52af9476",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/client/ImagareAdminScreen.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2014-02-01T20:13:00Z",
+      "side": 1,
+      "message": "Ups, copy \u0026 paste...\n\nDone",
+      "parentUuid": "b2e5ee1d_929cdc5a",
+      "range": {
+        "startLine": 73,
+        "startChar": 29,
+        "endLine": 73,
+        "endChar": 51
+      },
+      "revId": "4fb921205741a209b1712482b405a19d85b5d4e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2ca6290_73b280e2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PutConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2014-02-01T18:25:57Z",
+      "side": 1,
+      "message": "What you probably want to say is:\n\n  @RequiresCapability(value \u003d \"administrateServer\", scope \u003d\n  CapabilityScope.CORE)\n\nCapability scope was introduced to differentiate between plugin-owned\ncapabilities and core capabilities. Per default the scope of the\n`@RequiresCapability` annotation is `CapabilityScope.CONTEXT`, that means:\n\n* when `@RequiresCapability` is used within a plugin the scope of the capability is assumed to be that plugin.\n\n* If `@RequiresCapability` is used within the core Gerrit Code Review server (and thus is outside of a plugin) the scope is the core server and will use\nthe `GlobalCapability` known to Gerrit Code Review server.\n\nIf a plugin needs to use a core capability name (e.g. \"administrateServer\")\nthis can be specified by setting `scope \u003d CapabilityScope.CORE`:",
+      "range": {
+        "startLine": 36,
+        "startChar": 20,
+        "endLine": 36,
+        "endChar": 56
+      },
+      "revId": "19b69c4c9ff8dcf8acec6f85f991195d35e51419",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

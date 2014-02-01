@@ -1,5 +1,5 @@
 .imagare-image-upload-screen, .imagare-uploaded-images-panel,
-.imagare-admin-screen {
+.imagare-config-screen {
   width: 100%;
   border-spacing: 0px 5px;
 }
@@ -50,4 +50,8 @@
 .imagare-image-popup {
   max-width: 500px;
   max-height: 500px;
+}
+
+.imagare-save-button {
+  margin-bottom: 10px;
 }

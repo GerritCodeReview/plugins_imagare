@@ -23,6 +23,8 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
+import com.google.gerrit.extensions.restapi.UnprocessableEntityException;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
 import com.google.gerrit.server.git.MetaDataUpdate;
@@ -55,7 +57,8 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
 
   @Override
   public Response<String> apply(AccountResource rsrc, Input input)
-      throws AuthException, RepositoryNotFoundException, IOException {
+      throws AuthException, RepositoryNotFoundException, IOException,
+      UnprocessableEntityException {
     if (self.get() != rsrc.getUser()
         && !self.get().getCapabilities().canAdministrateServer()) {
       throw new AuthException("not allowed to change preference");
@@ -73,6 +76,10 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
 
     String defaultProject = db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT);
     if (Strings.emptyToNull(input.defaultProject) != null) {
+      if (projectCache.get(new Project.NameKey(input.defaultProject)) == null) {
+        throw new UnprocessableEntityException("project '"
+            + input.defaultProject + "' does not exist");
+      }
       if (!input.defaultProject.equals(defaultProject)) {
         db.setString(PREFERENCE, username, KEY_DEFAULT_PROJECT,
             input.defaultProject);

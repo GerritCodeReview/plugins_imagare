@@ -1,4 +1,5 @@
-.imagare-image-upload-screen, .imagare-uploaded-images-panel {
+.imagare-image-upload-screen, .imagare-uploaded-images-panel,
+.imagare-admin-screen {
   width: 100%;
   border-spacing: 0px 5px;
 }

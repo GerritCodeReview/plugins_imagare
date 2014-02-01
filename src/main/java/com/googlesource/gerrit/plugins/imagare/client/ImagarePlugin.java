@@ -24,5 +24,6 @@ public class ImagarePlugin extends PluginEntryPoint {
   @Override
   public void onPluginLoad() {
     Plugin.get().screen("upload", new ImageUploadScreen.Factory());
+    Plugin.get().screen("admin", new ImagareAdminScreen.Factory());
   }
 }

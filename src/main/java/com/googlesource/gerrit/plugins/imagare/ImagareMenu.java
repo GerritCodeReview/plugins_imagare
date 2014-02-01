@@ -30,6 +30,8 @@ public class ImagareMenu implements TopMenu {
     menuEntries = new ArrayList<TopMenu.MenuEntry>();
     menuEntries.add(new MenuEntry("Tools", Collections
         .singletonList(new MenuItem("Image Upload", "#/x/" + pluginName + "/upload", ""))));
+    menuEntries.add(new MenuEntry("Plugins", Collections
+        .singletonList(new MenuItem("Imagare Admin", "#/x/" + pluginName + "/admin", ""))));
   }
 
   @Override

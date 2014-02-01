@@ -18,6 +18,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class ConfigInfo extends JavaScriptObject {
   final native String getDefaultProject() /*-{ return this.default_project }-*/;
+  final native void setDefaultProject(String p) /*-{ this.default_project = p; }-*/;
 
   static ConfigInfo create() {
     ConfigInfo g = (ConfigInfo) createObject();

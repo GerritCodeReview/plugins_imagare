@@ -22,6 +22,30 @@
       "revId": "19b69c4c9ff8dcf8acec6f85f991195d35e51419",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d2ca6290_33ac0880",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PutConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2014-02-01T20:12:32Z",
+      "side": 1,
+      "message": "Thanks for explaining, I wasn\u0027t aware of this change.\n\nDone",
+      "parentUuid": "d2ca6290_73b280e2",
+      "range": {
+        "startLine": 36,
+        "startChar": 20,
+        "endLine": 36,
+        "endChar": 56
+      },
+      "revId": "19b69c4c9ff8dcf8acec6f85f991195d35e51419",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

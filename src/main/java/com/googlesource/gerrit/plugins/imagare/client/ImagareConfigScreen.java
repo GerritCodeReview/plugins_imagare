@@ -21,6 +21,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -52,7 +53,11 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
   protected void display(ConfigInfo info) {
     HorizontalPanel p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
-    p.add(new Label("Project:"));
+    p.add(new Label("Project"));
+    Image projectInfo = new Image(ImagarePlugin.RESOURCES.info());
+    projectInfo.setTitle("The default project for the image upload.");
+    p.add(projectInfo);
+    p.add(new Label(":"));
     projectBox = new TextBox();
     projectBox.setValue(info.getDefaultProject());
     p.add(projectBox);
@@ -60,7 +65,14 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
 
     p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
-    p.add(new Label("Link Decoration:"));
+    p.add(new Label("Link Decoration"));
+    Image linkDecorationInfo = new Image(ImagarePlugin.RESOURCES.info());
+    linkDecorationInfo.setTitle("Decoration for image links in the Gerrit WebUI."
+        + " 'NONE': no decoration, 'TOOLTIP': the image is shown as tooltip on"
+        + " mouse over an image link, 'INLINE': the image is inlined instead of"
+        + " the URL.");
+    p.add(linkDecorationInfo);
+    p.add(new Label(":"));
     linkDecorationBox = new ListBox();
     int i = 0;
     for (LinkDecoration v : LinkDecoration.values()) {

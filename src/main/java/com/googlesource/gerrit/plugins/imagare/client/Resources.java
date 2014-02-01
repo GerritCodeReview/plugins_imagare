@@ -14,17 +14,11 @@
 
 package com.googlesource.gerrit.plugins.imagare.client;
 
-import com.google.gerrit.plugin.client.Plugin;
-import com.google.gerrit.plugin.client.PluginEntryPoint;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 
-public class ImagarePlugin extends PluginEntryPoint {
-  public static final Resources RESOURCES = GWT.create(Resources.class);
+public interface Resources extends ClientBundle {
 
-  @Override
-  public void onPluginLoad() {
-    Plugin.get().screen("upload", new ImageUploadScreen.Factory());
-    Plugin.get().screen("admin", new ImagareAdminScreen.Factory());
-    Plugin.get().screen("preferences", new ImagarePreferenceScreen.Factory());
-  }
+  @Source("info.png")
+  public ImageResource info();
 }

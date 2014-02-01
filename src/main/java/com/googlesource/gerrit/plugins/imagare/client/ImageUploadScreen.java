@@ -40,7 +40,7 @@ public class ImageUploadScreen extends VerticalPanel {
     setStyleName("imagare-image-upload-screen");
 
     HorizontalPanel p = new HorizontalPanel();
-    p.setStyleName("imagare-project-panel");
+    p.setStyleName("imagare-label-panel");
     p.add(new Label("Project:"));
     projectBox = new TextBox();
     p.add(projectBox);

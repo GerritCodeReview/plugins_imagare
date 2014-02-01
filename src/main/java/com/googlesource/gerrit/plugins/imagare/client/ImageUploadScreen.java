@@ -17,12 +17,19 @@ package com.googlesource.gerrit.plugins.imagare.client;
 import com.google.gerrit.plugin.client.Plugin;
 import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gerrit.plugin.client.screen.Screen;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ImageUploadScreen extends VerticalPanel {
 
@@ -52,22 +59,63 @@ public class ImageUploadScreen extends VerticalPanel {
     uploadedPanel = new UploadedImagesPanel();
     add(uploadedPanel);
 
-    new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference")
-        .get(new AsyncCallback<ConfigInfo>() {
-          @Override
-          public void onSuccess(ConfigInfo info) {
-            projectBox.setValue(info.getDefaultProject());
-          }
+    String project = getParameter("project");
+    if (project != null) {
+      projectBox.setValue(project);
+    } else {
+      new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference")
+          .get(new AsyncCallback<ConfigInfo>() {
+            @Override
+            public void onSuccess(ConfigInfo info) {
+              projectBox.setValue(info.getDefaultProject());
+            }
 
-          @Override
-          public void onFailure(Throwable caught) {
-            // never invoked
-          }
-        });
+            @Override
+            public void onFailure(Throwable caught) {
+              // never invoked
+            }
+          });
+    }
 
     InlineHyperlink preferenceLink =
         new InlineHyperlink("Edit Preferences", "/x/"
             + Plugin.get().getPluginName() + "/preferences");
     add(preferenceLink);
+  }
+
+  private static String getParameter(String name) {
+    List<String> values = getParameters().get(name);
+    if (values == null) {
+      return null;
+    } else {
+      return values.get(values.size() - 1);
+    }
+  }
+
+  private static Map<String, List<String>> getParameters() {
+    Map<String, List<String>> parameter = new HashMap<String, List<String>>();
+
+    if (!Window.Location.getHash().contains("?")) {
+      return parameter;
+    }
+
+    String queryString =
+        Window.Location.getHash().substring(
+            Window.Location.getHash().indexOf('?') + 1);
+    for (String kvPair : queryString.split("&")) {
+      String[] kv = kvPair.split("=", 2);
+      if (kv[0].length() == 0) {
+        continue;
+      }
+
+      List<String> values = parameter.get(kv[0]);
+      if (values == null) {
+        values = new ArrayList<String>();
+        parameter.put(kv[0], values);
+      }
+      values.add(kv.length > 1 ? URL.decodeQueryString(kv[1]) : "");
+    }
+
+    return parameter;
   }
 }

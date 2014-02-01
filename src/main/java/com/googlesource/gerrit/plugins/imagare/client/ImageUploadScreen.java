@@ -15,6 +15,9 @@
 package com.googlesource.gerrit.plugins.imagare.client;
 
 import com.google.gerrit.plugin.client.screen.Screen;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ImageUploadScreen extends VerticalPanel {
@@ -27,10 +30,19 @@ public class ImageUploadScreen extends VerticalPanel {
     }
   }
 
+  static TextBox projectBox;
   static UploadedImagesPanel uploadedPanel;
 
   ImageUploadScreen() {
     setStyleName("imagare-image-upload-screen");
+
+    HorizontalPanel p = new HorizontalPanel();
+    p.setStyleName("imagare-project-panel");
+    p.add(new Label("Project:"));
+    projectBox = new TextBox();
+    projectBox.setValue("All-Projects");
+    p.add(projectBox);
+    add(p);
 
     add(new UploadByFileSelection());
     add(new UploadByDropOrPastePanel());

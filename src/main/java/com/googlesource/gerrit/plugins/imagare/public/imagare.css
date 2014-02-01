@@ -3,6 +3,18 @@
   border-spacing: 0px 5px;
 }
 
+.imagare-project-panel {
+  margin-bottom: 10px;
+}
+
+.imagare-project-panel td {
+  vertical-align: middle !important;
+}
+
+.imagare-project-panel td div {
+  margin-right: 5px;
+}
+
 .imagare-uploaded-images-panel td {
   vertical-align: middle !important;
 }

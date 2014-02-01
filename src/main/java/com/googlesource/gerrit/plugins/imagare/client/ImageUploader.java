@@ -22,11 +22,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class ImageUploader {
 
   public static final void uploadImage(String imageData) {
-    uploadImage("All-Projects", imageData, null);
+    uploadImage(imageData, null);
   }
 
   public static final void uploadImage(String imageData, String fileName) {
-    uploadImage("All-Projects", imageData, fileName);
+    uploadImage(ImageUploadScreen.projectBox.getValue(), imageData, fileName);
   }
 
   public static final void uploadImage(String project, String imageData, String fileName) {

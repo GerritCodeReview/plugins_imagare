@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.imagare.client;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -123,4 +124,19 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
       }
     }
   }-*/;
+
+  public void focus() {
+    focus(getElement());
+  }
+
+  private static native void focus(Element elem) /*-{
+    var range = document.createRange();
+    var sel = window.getSelection();
+    range.selectNode(elem);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    elem.focus();
+  }-*/;
+
 }

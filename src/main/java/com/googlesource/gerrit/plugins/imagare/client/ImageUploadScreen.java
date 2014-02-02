@@ -45,6 +45,8 @@ public class ImageUploadScreen extends VerticalPanel {
   static UploadStagePanel uploadStagePanel;
   static UploadedImagesPanel uploadedPanel;
 
+  private final UploadByDropOrPastePanel uploadPanel;
+
   ImageUploadScreen() {
     setStyleName("imagare-image-upload-screen");
 
@@ -56,7 +58,8 @@ public class ImageUploadScreen extends VerticalPanel {
     add(p);
 
     add(new UploadByFileSelection());
-    add(new UploadByDropOrPastePanel());
+    uploadPanel = new UploadByDropOrPastePanel();
+    add(uploadPanel);
     uploadStagePanel = new UploadStagePanel();
     add(uploadStagePanel);
     uploadedPanel = new UploadedImagesPanel();
@@ -73,6 +76,7 @@ public class ImageUploadScreen extends VerticalPanel {
             } else {
               projectBox.setValue(info.getDefaultProject());
             }
+            uploadPanel.focus();
           }
 
           @Override

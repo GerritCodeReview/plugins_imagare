@@ -19,3 +19,7 @@ file.
     `NONE`: no decoration, `TOOLTIP`: the image is shown as tooltip on
     mouse over an image link, `INLINE`: the image is inlined instead of
     the URL.
+
+<a id="stage">
+`plugin.@PLUGIN@.stage`
+:	Whether images should be staged before upload.

@@ -42,7 +42,7 @@ public class UploadByFileSelection extends HorizontalPanel {
         var r = new FileReader();
         r.onload = function(e) {
           if (f.type.match('image/.*')) {
-            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
           } else {
             $wnd.Gerrit.showError('no image file');
           }

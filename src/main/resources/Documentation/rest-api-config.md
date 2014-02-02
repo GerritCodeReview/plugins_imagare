@@ -71,6 +71,7 @@ plugin.
   `NONE`: no decoration, `TOOLTIP`: the image is shown as tooltip on
   mouse over an image link, `INLINE`: the image is inlined instead of
   the URL.
+* _stage_: Whether images should be staged before upload.
 
 SEE ALSO
 --------

@@ -20,6 +20,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -32,6 +33,7 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
 
   private TextBox projectBox;
   private ListBox linkDecorationBox;
+  private CheckBox stageBox;
   private Button saveButton;
 
   protected ImagareConfigScreen(RestApi restApi) {
@@ -85,6 +87,17 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     p.add(linkDecorationBox);
     add(p);
 
+    p = new HorizontalPanel();
+    p.setStyleName("imagare-label-panel");
+    stageBox = new CheckBox("Stage images before upload");
+    stageBox.setValue(info.stage());
+    p.add(stageBox);
+    Image stageInfo = new Image(ImagarePlugin.RESOURCES.info());
+    stageInfo.setTitle("Images are not uploaded immediately but put into a "
+        + "staging area. The upload must be triggered explicitely.");
+    p.add(stageInfo);
+    add(p);
+
     HorizontalPanel buttons = new HorizontalPanel();
     add(buttons);
 
@@ -100,6 +113,7 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     saveButton.setEnabled(false);
     OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, projectBox);
     onEditEnabler.listenTo(linkDecorationBox);
+    onEditEnabler.listenTo(stageBox);
 
     projectBox.setFocus(true);
     saveButton.setEnabled(false);
@@ -109,6 +123,7 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     ConfigInfo in = ConfigInfo.create();
     in.setDefaultProject(projectBox.getValue());
     in.setLinkDecoration(linkDecorationBox.getValue(linkDecorationBox.getSelectedIndex()));
+    in.setStage(stageBox.getValue());
     restApi.put(in, new AsyncCallback<JavaScriptObject>() {
         @Override
         public void onSuccess(JavaScriptObject result) {

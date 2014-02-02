@@ -1,5 +1,5 @@
 .imagare-image-upload-screen, .imagare-uploaded-images-panel,
-.imagare-config-screen {
+imagare-upload-stage-panel, .imagare-config-screen {
   width: 100%;
   border-spacing: 0px 5px;
 }
@@ -37,14 +37,23 @@
   color: #999;
 }
 
-.imagare-uploaded-images-label {
+.imagare-uploaded-images-label,
+.imagare-staged-images-label {
   font-size: 20px;
 }
 
 .imagare-image-preview {
-  max-width: 50px;
-  max-height: 50px;
+  max-width: 75px;
+  max-height: 75px;
   margin: 5px;
+  border: 1px solid #B3B2B2;
+}
+
+.imagare-stage-image-preview {
+  max-width: 75px;
+  max-height: 75px;
+  margin-top: 10px;
+  border: 1px solid #B3B2B2;
 }
 
 .imagare-image-popup {
@@ -52,6 +61,26 @@
   max-height: 500px;
 }
 
+.imagare-stage-image-preview-panel {
+  display: inline;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.imagare-staged-images-panel {
+  width: 600px;
+}
+
+.imagare-stage-label {
+  max-width: 150px;
+}
+
 .imagare-save-button {
+  margin-bottom: 10px;
+}
+
+.imagare-upload-button, .imagare-clean-button {
+  margin-right: 10px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }

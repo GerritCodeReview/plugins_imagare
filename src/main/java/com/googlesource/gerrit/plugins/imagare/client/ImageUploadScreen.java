@@ -42,6 +42,7 @@ public class ImageUploadScreen extends VerticalPanel {
   }
 
   static TextBox projectBox;
+  static UploadStagePanel uploadStagePanel;
   static UploadedImagesPanel uploadedPanel;
 
   ImageUploadScreen() {
@@ -56,26 +57,29 @@ public class ImageUploadScreen extends VerticalPanel {
 
     add(new UploadByFileSelection());
     add(new UploadByDropOrPastePanel());
+    uploadStagePanel = new UploadStagePanel();
+    add(uploadStagePanel);
     uploadedPanel = new UploadedImagesPanel();
     add(uploadedPanel);
 
-    String project = getParameter("project");
-    if (project != null) {
-      projectBox.setValue(project);
-    } else {
-      new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference")
-          .get(new AsyncCallback<ConfigInfo>() {
-            @Override
-            public void onSuccess(ConfigInfo info) {
+    new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference")
+        .get(new AsyncCallback<ConfigInfo>() {
+          @Override
+          public void onSuccess(ConfigInfo info) {
+            ImageUploader.setStage(info.stage());
+            String project = getParameter("project");
+            if (project != null) {
+              projectBox.setValue(project);
+            } else {
               projectBox.setValue(info.getDefaultProject());
             }
+          }
 
-            @Override
-            public void onFailure(Throwable caught) {
-              // never invoked
-            }
-          });
-    }
+          @Override
+          public void onFailure(Throwable caught) {
+            // never invoked
+          }
+        });
 
     InlineHyperlink preferenceLink =
         new InlineHyperlink("Edit Preferences", "/x/"

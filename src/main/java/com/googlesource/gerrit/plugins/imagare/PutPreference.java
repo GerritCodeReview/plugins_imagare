@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.imagare;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.PREFERENCE;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_DEFAULT_PROJECT;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_LINK_DECORATION;
+import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_STAGE;
 
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -104,6 +105,19 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
     } else {
       if (db.getNames(PREFERENCE, username).contains(KEY_LINK_DECORATION)) {
         db.unset(PREFERENCE, username, KEY_LINK_DECORATION);
+        modified = true;
+      }
+    }
+
+    boolean stage = db.getBoolean(PREFERENCE, username, KEY_STAGE, false);
+    if (input.stage != null) {
+      if (input.stage != stage) {
+        db.setBoolean(PREFERENCE, username, KEY_STAGE, input.stage);
+        modified = true;
+      }
+    } else {
+      if (!stage) {
+        db.unset(PREFERENCE, username, KEY_DEFAULT_PROJECT);
         modified = true;
       }
     }

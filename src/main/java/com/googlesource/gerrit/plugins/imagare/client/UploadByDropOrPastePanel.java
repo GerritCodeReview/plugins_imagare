@@ -56,7 +56,7 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
         if (blob !== null) {
           var reader = new FileReader();
           reader.onload = function(e) {
-            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;)(e.target.result);
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;)(e.target.result);
           };
           reader.readAsDataURL(blob);
         }
@@ -81,7 +81,7 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
 
     function waitOnPaste(max, elem, savedContent) {
       if (elem.childNodes && elem.childNodes.length > 0) {
-        uploadImage(elem, savedContent);
+        stageImage(elem, savedContent);
       } else if (max > 0) {
         that = {
           m: max - 1,
@@ -95,10 +95,10 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
       }
     }
 
-    function uploadImage(elem, savedContent) {
+    function stageImage(elem, savedContent) {
       var imageData = elem.childNodes[0].getAttribute("src");
       elem.innerHTML = savedContent;
-      @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;)(imageData);
+      @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;)(imageData);
     }
 
     $wnd.imagareDropHandler = function handleDrop(elem, event) {
@@ -112,7 +112,7 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
         r.onload = function(e) {
           elem.innerHTML = savedContent;
           if (f.type.match('image/.*')) {
-            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::uploadImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
           } else {
             $wnd.Gerrit.showError('no image file');
           }

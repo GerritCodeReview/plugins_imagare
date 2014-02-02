@@ -42,6 +42,7 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
   public static class Input {
     public String defaultProject;
     public LinkDecoration linkDecoration;
+    public Boolean stage;
   }
 
   private final PluginConfigFactory cfgFactory;
@@ -68,6 +69,7 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
     FileBasedConfig cfg =
         new FileBasedConfig(sitePaths.gerrit_config, FS.DETECTED);
     cfg.load();
+
     if (input.defaultProject != null) {
       if (projectCache.get(new Project.NameKey(input.defaultProject)) == null) {
         throw new UnprocessableEntityException("project '"
@@ -76,6 +78,7 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
       cfg.setString("plugin", pluginName, "defaultProject",
           Strings.emptyToNull(input.defaultProject));
     }
+
     if (input.linkDecoration != null) {
       if (LinkDecoration.NONE.equals(input.linkDecoration)) {
         cfg.unset("plugin", pluginName, "linkDecoration");
@@ -84,6 +87,15 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
             input.linkDecoration);
       }
     }
+
+    if (input.stage != null) {
+      if (input.stage) {
+        cfg.setBoolean("plugin", pluginName, "stage", input.stage);
+      } else {
+        cfg.unset("plugin", pluginName, "stage");
+      }
+    }
+
     cfg.save();
     cfgFactory.getFromGerritConfig(pluginName, true);
     return Response.<String> ok("OK");

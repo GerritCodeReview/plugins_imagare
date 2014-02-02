@@ -33,6 +33,7 @@ public class GetPreference implements RestReadView<AccountResource> {
   public static final String PREFERENCE = "preference";
   public static final String KEY_DEFAULT_PROJECT = "defaultProject";
   public static final String KEY_LINK_DECORATION = "linkDecoration";
+  public static final String KEY_STAGE = "stage";
 
   private final Provider<IdentifiedUser> self;
   private final ProjectCache projectCache;
@@ -62,16 +63,26 @@ public class GetPreference implements RestReadView<AccountResource> {
     Config db =
         projectCache.getAllProjects().getConfig(pluginName + ".config").get();
     ConfigInfo info = new ConfigInfo();
+
     info.defaultProject =
         Objects.firstNonNull(
             db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT),
             globalCfg.defaultProject);
+
     info.linkDecoration =
         db.getEnum(PREFERENCE, username, KEY_LINK_DECORATION,
             globalCfg.linkDecoration);
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
     }
+
+    info.stage =
+        db.getBoolean(PREFERENCE, username, KEY_STAGE,
+            (globalCfg.stage != null ? globalCfg.stage : false));
+    if (!info.stage) {
+      info.stage = null;
+    }
+
     return info;
   }
 }

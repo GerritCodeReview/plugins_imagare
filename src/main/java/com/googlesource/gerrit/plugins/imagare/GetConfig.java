@@ -41,11 +41,16 @@ public class GetConfig implements RestReadView<ConfigResource> {
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
     }
+    info.stage = cfg.getBoolean("stage", false);
+    if (!info.stage) {
+      info.stage = null;
+    }
     return info;
   }
 
   public static class ConfigInfo {
     String defaultProject;
     LinkDecoration linkDecoration;
+    Boolean stage;
   }
 }

@@ -20,6 +20,27 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class ImageUploader {
+  private static boolean stage;
+
+  public static void setStage(boolean s) {
+    stage = s;
+  }
+
+  public static final void stageImage(String imageData) {
+    stageImage(imageData, null);
+  }
+
+  public static final void stageImage(String imageData, String fileName) {
+    stageImage(ImageUploadScreen.projectBox.getValue(), imageData, fileName);
+  }
+
+  public static final void stageImage(String project, String imageData, String fileName) {
+    if (stage) {
+      ImageUploadScreen.uploadStagePanel.add(project, imageData, fileName);
+    } else {
+      uploadImage(project, imageData, fileName);
+    }
+  }
 
   public static final void uploadImage(String imageData) {
     uploadImage(imageData, null);

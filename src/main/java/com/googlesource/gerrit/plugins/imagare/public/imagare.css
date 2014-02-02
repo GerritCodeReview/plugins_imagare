@@ -84,3 +84,11 @@ imagare-upload-stage-panel, .imagare-config-screen {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.imagare-delete-icon {
+  z-index: 100;
+  width: 16px;
+  height: 16px;
+  background-color: #FFF !important;
+  border: 1px solid #B3B2B2;
+}

@@ -21,4 +21,7 @@ public interface Resources extends ClientBundle {
 
   @Source("info.png")
   public ImageResource info();
+
+  @Source("delete.png")
+  public ImageResource delete();
 }

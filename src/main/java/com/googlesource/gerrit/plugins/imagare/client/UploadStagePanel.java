@@ -20,6 +20,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -107,6 +108,10 @@ public class UploadStagePanel extends VerticalPanel {
     final String dataUrl;
     final String fileName;
 
+    private final Image img;
+    private final Image deleteIcon;
+    private Timer deleteIconHideTimer;
+
     ImagePreview(String project, final String dataUrl, String fileName) {
       this.project = project;
       this.dataUrl = dataUrl;
@@ -114,26 +119,63 @@ public class UploadStagePanel extends VerticalPanel {
 
       setStyleName("imagare-stage-image-preview-panel");
 
-      Image img = new Image(dataUrl);
+      img = new Image(dataUrl);
       img.setStyleName("imagare-stage-image-preview");
       add(img);
+
+      deleteIcon = new Image(ImagarePlugin.RESOURCES.delete());
+      deleteIcon.setStyleName("imagare-delete-icon");
+      deleteIcon.setTitle("Delete Image");
+      deleteIcon.setVisible(false);
+      add(deleteIcon);
 
       img.addMouseOverHandler(new MouseOverHandler() {
         @Override
         public void onMouseOver(MouseOverEvent event) {
           if (!popup.isVisible()) {
-            Image img = new Image(dataUrl);
-            img.setStyleName("imagare-image-popup");
-            popup.add(img);
+            Image previewImg = new Image(dataUrl);
+            previewImg.setStyleName("imagare-image-popup");
+            popup.add(previewImg);
 
             popup.center();
             popup.setVisible(true);
           }
+
+          cancelHideDeleteIcon();
+          deleteIcon.getElement().setAttribute("style",
+              deleteIcon.getElement().getAttribute("style")
+                  + "position: absolute; top: " + img.getAbsoluteTop() + "px;");
+          deleteIcon.setVisible(true);
         }
       });
       img.addMouseOutHandler(new MouseOutHandler() {
         @Override
         public void onMouseOut(MouseOutEvent event) {
+          popup.setVisible(false);
+          popup.clear();
+          hideDeleteIcon();
+        }
+      });
+
+      deleteIcon.addMouseOverHandler(new MouseOverHandler() {
+        @Override
+        public void onMouseOver(MouseOverEvent event) {
+          cancelHideDeleteIcon();
+        }
+      });
+
+      deleteIcon.addMouseOutHandler(new MouseOutHandler() {
+        @Override
+        public void onMouseOut(MouseOutEvent event) {
+          hideDeleteIcon();
+        }
+      });
+
+      deleteIcon.addClickHandler(new ClickHandler() {
+        @Override
+        public void onClick(ClickEvent event) {
+          stagedImagesPanel.remove(ImagePreview.this);
+          UploadStagePanel.this.setVisible(stagedImagesPanel.getWidgetCount() != 0);
           popup.setVisible(false);
           popup.clear();
         }
@@ -147,6 +189,23 @@ public class UploadStagePanel extends VerticalPanel {
       Label projectLabel = new Label("Project:" + project);
       projectLabel.setStyleName("imagare-stage-label");
       add(projectLabel);
+    }
+
+    private void hideDeleteIcon() {
+      deleteIconHideTimer = new Timer() {
+        @Override
+        public void run() {
+          deleteIcon.setVisible(false);
+        }
+      };
+      deleteIconHideTimer.schedule(20);
+    }
+
+    private void cancelHideDeleteIcon() {
+      if (deleteIconHideTimer != null) {
+        deleteIconHideTimer.cancel();
+        deleteIconHideTimer = null;
+      }
     }
   }
 }

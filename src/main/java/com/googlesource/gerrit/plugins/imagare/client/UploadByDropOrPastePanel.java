@@ -27,6 +27,7 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
     getElement().setAttribute("contenteditable", "true");
     getElement().setAttribute("onpaste", "imagarePasteHandler(this, event)");
     getElement().setAttribute("ondrop", "imagareDropHandler(this, event)");
+    getElement().setAttribute("onkeypress", "imagarePreventKeyPress(event)");
 
     add(new Label("drag and drop image here"));
     add(new Label("or"));
@@ -38,6 +39,14 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
   }-*/;
 
   private static native void init0() /*-{
+    $wnd.imagarePreventKeyPress = function preventKeys(event) {
+      event = event || window.event;
+      var ctrlDown = event.ctrlKey || event.metaKey;
+      if (!ctrlDown) {
+        event.preventDefault();
+      }
+    }
+
     $wnd.imagarePasteHandler = function handlePaste(elem, e) {
       var savedContent = elem.innerHTML;
 

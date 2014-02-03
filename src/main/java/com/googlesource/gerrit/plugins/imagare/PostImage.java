@@ -14,17 +14,20 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.common.ChangeHooks;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.MethodNotAllowedException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
+import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.FileTypeRegistry;
 import com.google.gerrit.server.GerritPersonIdent;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.config.CanonicalWebUrl;
+import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.server.project.ProjectResource;
@@ -64,17 +67,22 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final Pattern imageDataPattern;
   private final Provider<IdentifiedUser> self;
   private final GitRepositoryManager repoManager;
+  private final GitReferenceUpdated referenceUpdated;
+  private final ChangeHooks hooks;
   private final PersonIdent myIdent;
   private final String canonicalWebUrl;
 
   @Inject
   public PostImage(FileTypeRegistry registry, Provider<IdentifiedUser> self,
-      GitRepositoryManager repoManager, @GerritPersonIdent PersonIdent myIdent,
+      GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
+      ChangeHooks hooks, @GerritPersonIdent PersonIdent myIdent,
       @CanonicalWebUrl String canonicalWebUrl) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
     this.repoManager = repoManager;
+    this.referenceUpdated = referenceUpdated;
+    this.hooks = hooks;
     this.myIdent = myIdent;
     this.canonicalWebUrl = canonicalWebUrl;
   }
@@ -177,7 +185,11 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           ru.setExpectedOldObjectId(ObjectId.zeroId());
           ru.setNewObjectId(commitId);
           ru.disableRefLog();
-          if (ru.update(rw) != RefUpdate.Result.NEW) {
+          if (ru.update(rw) == RefUpdate.Result.NEW) {
+            referenceUpdated.fire(pc.getProject().getNameKey(), ru);
+            hooks.doRefUpdatedHook(new Branch.NameKey(pc.getProject()
+                .getNameKey(), ref), ru, self.get().getAccount());
+          } else {
             throw new IOException(String.format(
                 "Failed to create ref %s in %s: %s", ref,
                 pc.getProject().getName(), ru.getResult()));

@@ -14,12 +14,16 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.common.ChangeHooks;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
+import com.google.gerrit.server.IdentifiedUser;
+import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import com.googlesource.gerrit.plugins.imagare.DeleteImage.Input;
 
@@ -37,11 +41,19 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   public static class Input {
   }
 
+  private final Provider<IdentifiedUser> self;
   private final GitRepositoryManager repoManager;
+  private final GitReferenceUpdated referenceUpdated;
+  private final ChangeHooks hooks;
 
   @Inject
-  public DeleteImage(GitRepositoryManager repoManager) {
+  public DeleteImage(Provider<IdentifiedUser> self,
+      GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
+      ChangeHooks hooks) {
+    this.self = self;
     this.repoManager = repoManager;
+    this.referenceUpdated = referenceUpdated;
+    this.hooks = hooks;
   }
 
   @Override
@@ -70,6 +82,8 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
         case NO_CHANGE:
         case FAST_FORWARD:
         case FORCED:
+          referenceUpdated.fire(rsrc.getProject(), u);
+          hooks.doRefUpdatedHook(rsrc.getBranchKey(), u, self.get().getAccount());
           break;
 
         case REJECTED_CURRENT_BRANCH:

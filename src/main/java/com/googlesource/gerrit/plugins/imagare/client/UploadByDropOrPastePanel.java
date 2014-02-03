@@ -47,8 +47,12 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
       }
     }
 
+    var imagareSavedContent;
+
     $wnd.imagarePasteHandler = function handlePaste(elem, e) {
-      var savedContent = elem.innerHTML;
+      if (!imagareSavedContent) {
+        imagareSavedContent = elem.innerHTML;
+      }
 
       var clipboardData = e.clipboardData || e.originalEvent.clipboardData;
       var items = clipboardData.items;
@@ -83,34 +87,33 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
           elem.innerHTML = "";
         }
 
-        waitOnPaste(10, elem, savedContent);
+        waitOnPaste(10, elem);
       } else {
         // other browser
 
         elem.innerHTML = "";
-        waitOnPaste(10, elem, savedContent);
+        waitOnPaste(10, elem);
       }
     }
 
-    function waitOnPaste(max, elem, savedContent) {
+    function waitOnPaste(max, elem) {
       if (elem.childNodes && elem.childNodes.length > 0) {
-        stageImage(elem, savedContent);
+        stageImage(elem);
       } else if (max > 0) {
         that = {
           m: max - 1,
           e: elem,
-          s: savedContent
         }
         that.callself = function () {
-          waitOnPaste(that.m, that.e, that.s)
+          waitOnPaste(that.m, that.e)
         }
         setTimeout(that.callself, 20);
       }
     }
 
-    function stageImage(elem, savedContent) {
+    function stageImage(elem) {
       var imageData = elem.childNodes[0].getAttribute("src");
-      elem.innerHTML = savedContent;
+      elem.innerHTML = imagareSavedContent;
       @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;)(imageData);
     }
 
@@ -118,12 +121,14 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
       if (window.chrome) {
         event.preventDefault();
       }
-      var savedContent = elem.innerHTML;
+      if (!imagareSavedContent) {
+        imagareSavedContent = elem.innerHTML;
+      }
       var f = event.dataTransfer.files[0];
       if (f) {
         var r = new FileReader();
         r.onload = function(e) {
-          elem.innerHTML = savedContent;
+          elem.innerHTML = imagareSavedContent;
           if (f.type.match('image/.*')) {
             @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
           } else {

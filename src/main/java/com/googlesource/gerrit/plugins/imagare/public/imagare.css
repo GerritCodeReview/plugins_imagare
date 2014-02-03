@@ -56,16 +56,22 @@ imagare-upload-stage-panel, .imagare-config-screen {
 }
 
 .imagare-image-preview {
-  max-width: 75px;
-  max-height: 75px;
+  max-width: 150px;
+  max-height: 100px;
   margin: 5px;
   border: 1px solid #B3B2B2;
 }
 
-.imagare-stage-image-preview {
-  max-width: 75px;
-  max-height: 75px;
+.imagare-stage-image-title {
   margin-top: 10px;
+  max-width: 150px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.imagare-stage-image-preview {
+  max-width: 150px;
+  max-height: 100px;
   border: 1px solid #B3B2B2;
 }
 
@@ -76,15 +82,20 @@ imagare-upload-stage-panel, .imagare-config-screen {
 
 .imagare-stage-image-preview-panel {
   display: inline;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.imagare-stage-image-preview-panel td {
+  text-align: center;
 }
 
 .imagare-staged-images-panel {
-  width: 600px;
+  width: 1000px;
 }
 
 .imagare-stage-label {
+  font-size: 12px;
   max-width: 150px;
 }
 

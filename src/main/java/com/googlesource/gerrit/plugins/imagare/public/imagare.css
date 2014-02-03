@@ -104,6 +104,7 @@ imagare-upload-stage-panel, .imagare-config-screen {
 }
 
 .imagare-image-popup {
+  border: 1px solid #B3B2B2;
   max-width: 500px;
   max-height: 500px;
 }

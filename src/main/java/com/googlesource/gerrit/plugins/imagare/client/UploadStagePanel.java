@@ -147,9 +147,13 @@ public class UploadStagePanel extends VerticalPanel {
           if (!popup.isVisible()) {
             Image previewImg = new Image(dataUrl);
             previewImg.setStyleName("imagare-image-popup");
+            previewImg.getElement().setAttribute("style",
+                previewImg.getElement().getAttribute("style")
+                    + "position: absolute; top: " + (img.getAbsoluteTop() + img.getHeight() + 20) + "px; "
+                    + "left: " + img.getAbsoluteLeft() + "px;");
             popup.add(previewImg);
 
-            popup.center();
+            popup.show();
             popup.setVisible(true);
           }
 

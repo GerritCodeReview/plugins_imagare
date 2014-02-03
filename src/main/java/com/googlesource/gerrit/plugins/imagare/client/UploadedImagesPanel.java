@@ -57,7 +57,7 @@ public class UploadedImagesPanel extends FlowPanel {
       fileNameLabel.setStyleName("imagare-uploaded-image-title");
       add(fileNameLabel);
 
-      Image img = new Image(url);
+      final Image img = new Image(url);
       img.setStyleName("imagare-uploaded-image-preview");
       add(img);
 
@@ -67,9 +67,13 @@ public class UploadedImagesPanel extends FlowPanel {
           if (!popup.isVisible()) {
             Image previewImg = new Image(url);
             previewImg.setStyleName("imagare-image-popup");
+            previewImg.getElement().setAttribute("style",
+                previewImg.getElement().getAttribute("style")
+                    + "position: absolute; top: " + (img.getAbsoluteTop() + img.getHeight() + 20) + "px; "
+                    + "left: " + img.getAbsoluteLeft() + "px;");
             popup.add(previewImg);
 
-            popup.center();
+            popup.show();
             popup.setVisible(true);
           }
         }

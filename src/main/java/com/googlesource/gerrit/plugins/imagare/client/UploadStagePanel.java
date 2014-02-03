@@ -119,6 +119,10 @@ public class UploadStagePanel extends VerticalPanel {
 
       setStyleName("imagare-stage-image-preview-panel");
 
+      Label fileNameLabel = new Label(fileName != null ? fileName : "img.png");
+      fileNameLabel.setStyleName("imagare-stage-image-title");
+      add(fileNameLabel);
+
       img = new Image(dataUrl);
       img.setStyleName("imagare-stage-image-preview");
       add(img);
@@ -144,7 +148,8 @@ public class UploadStagePanel extends VerticalPanel {
           cancelHideDeleteIcon();
           deleteIcon.getElement().setAttribute("style",
               deleteIcon.getElement().getAttribute("style")
-                  + "position: absolute; top: " + img.getAbsoluteTop() + "px;");
+                  + "position: absolute; top: " + img.getAbsoluteTop() + "px; "
+                  + "left: " + img.getAbsoluteLeft() + "px;");
           deleteIcon.setVisible(true);
         }
       });
@@ -181,12 +186,7 @@ public class UploadStagePanel extends VerticalPanel {
         }
       });
 
-      if (fileName != null) {
-        Label fileNameLabel = new Label(fileName);
-        fileNameLabel.setStyleName("imagare-stage-label");
-        add(fileNameLabel);
-      }
-      Label projectLabel = new Label("Project:" + project);
+      Label projectLabel = new Label("Project: " + project);
       projectLabel.setStyleName("imagare-stage-label");
       add(projectLabel);
     }

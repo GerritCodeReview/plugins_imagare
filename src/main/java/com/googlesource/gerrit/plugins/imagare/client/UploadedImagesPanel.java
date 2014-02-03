@@ -14,10 +14,14 @@
 
 package com.googlesource.gerrit.plugins.imagare.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -48,6 +52,10 @@ public class UploadedImagesPanel extends FlowPanel {
   }
 
   private class ImagePreview extends VerticalPanel {
+    private final Image img;
+    private final Image fullScreenIcon;
+    private Timer fullScreenIconHideTimer;
+
     ImagePreview(final String url) {
       setStyleName("imagare-uploaded-image-preview-panel");
 
@@ -57,9 +65,15 @@ public class UploadedImagesPanel extends FlowPanel {
       fileNameLabel.setStyleName("imagare-uploaded-image-title");
       add(fileNameLabel);
 
-      final Image img = new Image(url);
+      img = new Image(url);
       img.setStyleName("imagare-uploaded-image-preview");
       add(img);
+
+      fullScreenIcon = new Image(ImagarePlugin.RESOURCES.fullScreen());
+      fullScreenIcon.setStyleName("imagare-fullscreen-icon");
+      fullScreenIcon.setTitle("Full Screen");
+      fullScreenIcon.setVisible(false);
+      add(fullScreenIcon);
 
       img.addMouseOverHandler(new MouseOverHandler() {
         @Override
@@ -76,11 +90,42 @@ public class UploadedImagesPanel extends FlowPanel {
             popup.show();
             popup.setVisible(true);
           }
+
+          cancelHideFullScreenIcon();
+          fullScreenIcon.getElement().setAttribute("style",
+              fullScreenIcon.getElement().getAttribute("style")
+                  + "position: absolute; top: " + img.getAbsoluteTop() + "px; "
+                  + "left: " + img.getAbsoluteLeft() + "px;");
+          fullScreenIcon.setVisible(true);
         }
       });
       img.addMouseOutHandler(new MouseOutHandler() {
         @Override
         public void onMouseOut(MouseOutEvent event) {
+          popup.setVisible(false);
+          popup.clear();
+          hideFullScreenIcon();
+        }
+      });
+
+      fullScreenIcon.addMouseOverHandler(new MouseOverHandler() {
+        @Override
+        public void onMouseOver(MouseOverEvent event) {
+          cancelHideFullScreenIcon();
+        }
+      });
+
+      fullScreenIcon.addMouseOutHandler(new MouseOutHandler() {
+        @Override
+        public void onMouseOut(MouseOutEvent event) {
+          hideFullScreenIcon();
+        }
+      });
+
+      fullScreenIcon.addClickHandler(new ClickHandler() {
+        @Override
+        public void onClick(ClickEvent event) {
+          Window.open(url, "_blank", "");
           popup.setVisible(false);
           popup.clear();
         }
@@ -89,6 +134,23 @@ public class UploadedImagesPanel extends FlowPanel {
       CopyableLabel copyLabel = new CopyableLabel(url);
       copyLabel.setStyleName("imagare-uploaded-copy-label");
       add(copyLabel);
+    }
+
+    private void hideFullScreenIcon() {
+      fullScreenIconHideTimer = new Timer() {
+        @Override
+        public void run() {
+          fullScreenIcon.setVisible(false);
+        }
+      };
+      fullScreenIconHideTimer.schedule(20);
+    }
+
+    private void cancelHideFullScreenIcon() {
+      if (fullScreenIconHideTimer != null) {
+        fullScreenIconHideTimer.cancel();
+        fullScreenIconHideTimer = null;
+      }
     }
   }
 }

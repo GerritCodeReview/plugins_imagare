@@ -140,7 +140,8 @@ imagare-upload-stage-panel, .imagare-config-screen {
   margin-bottom: 10px;
 }
 
-.imagare-delete-icon {
+.imagare-delete-icon,
+.imagare-fullscreen-icon {
   z-index: 100;
   width: 16px;
   height: 16px;

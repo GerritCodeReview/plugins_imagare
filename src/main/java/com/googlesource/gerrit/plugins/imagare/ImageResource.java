@@ -16,10 +16,29 @@ package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.extensions.restapi.RestResource;
 import com.google.gerrit.extensions.restapi.RestView;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.project.RefControl;
 import com.google.inject.TypeLiteral;
 
 public class ImageResource implements RestResource {
   public static final TypeLiteral<RestView<ImageResource>> IMAGE_KIND =
       new TypeLiteral<RestView<ImageResource>>() {};
 
+  private final RefControl refControl;
+
+  ImageResource(RefControl refControl) {
+    this.refControl = refControl;
+  }
+
+  public RefControl getControl() {
+    return refControl;
+  }
+
+  public Project.NameKey getProject() {
+    return refControl.getProjectControl().getProject().getNameKey();
+  }
+
+  public String getRef() {
+    return refControl.getRefName();
+  }
 }

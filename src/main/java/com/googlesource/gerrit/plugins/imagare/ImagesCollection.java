@@ -21,7 +21,9 @@ import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestView;
+import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.server.project.ProjectResource;
+import com.google.gerrit.server.project.RefControl;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -46,7 +48,14 @@ public class ImagesCollection implements
   @Override
   public ImageResource parse(ProjectResource parent, IdString id)
       throws ResourceNotFoundException {
-    throw new ResourceNotFoundException(id);
+    RefControl refControl =
+        parent.getControl().controlForRef(
+            new Branch.NameKey(parent.getNameKey(), id.get()));
+    if (refControl.canRead()) {
+      return new ImageResource(refControl);
+    } else {
+      throw new ResourceNotFoundException(id);
+    }
   }
 
   @Override

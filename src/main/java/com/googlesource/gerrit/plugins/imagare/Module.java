@@ -36,6 +36,7 @@ public class Module extends AbstractModule {
         DynamicMap.mapOf(binder(), IMAGE_KIND);
         bind(ImagesCollection.class);
         child(PROJECT_KIND, "images").to(ImagesCollection.class);
+        delete(IMAGE_KIND).to(DeleteImage.class);
         get(CONFIG_KIND, "config").to(GetConfig.class);
         put(CONFIG_KIND, "config").to(PutConfig.class);
         get(ACCOUNT_KIND, "preference").to(GetPreference.class);

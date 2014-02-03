@@ -29,6 +29,7 @@ public class UploadByFileSelection extends HorizontalPanel {
     FormPanel form = new FormPanel();
     FileUpload upload = new FileUpload();
     upload.setName("Select Image");
+    upload.getElement().setAttribute("multiple", "multiple");
     upload.getElement().setAttribute("onChange", "imagareSubmit(event)");
     form.add(upload);
 
@@ -37,19 +38,22 @@ public class UploadByFileSelection extends HorizontalPanel {
 
   private static native void init0() /*-{
     $wnd.imagareSubmit = function submit(event) {
-      var f = event.target.files[0];
-      if (f) {
-        var r = new FileReader();
-        r.onload = function(e) {
-          if (f.type.match('image/.*')) {
-            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
-          } else {
-            $wnd.Gerrit.showError('no image file');
+      for(var i = 0; i < event.target.files.length; i++) {
+        var f = event.target.files[i];
+        if (f) {
+          if (!f.type.match('image/.*')) {
+            $wnd.Gerrit.showError('no image file: ' + f.name);
           }
+
+          var r = new FileReader();
+          r.file = f;
+          r.onload = function(e) {
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, this.file.name);
+          }
+          r.readAsDataURL(f);
+        } else {
+          $wnd.Gerrit.showError('Failed to load file: ' + f.name);
         }
-        r.readAsDataURL(f);
-      } else {
-        $wnd.Gerrit.showError('Failed to load file.');
       }
     }
   }-*/;

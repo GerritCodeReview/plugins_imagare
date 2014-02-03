@@ -63,12 +63,15 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
           }
         }
 
-        if (blob !== null) {
+        if (blob) {
           var reader = new FileReader();
           reader.onload = function(e) {
             @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;)(e.target.result);
           };
           reader.readAsDataURL(blob);
+        } else {
+          e.preventDefault();
+          $wnd.Gerrit.showError('no image data');
         }
       } else if (e && e.clipboardData && e.clipboardData.getData) {
         // Webkit

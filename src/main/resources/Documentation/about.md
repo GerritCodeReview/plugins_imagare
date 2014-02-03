@@ -20,6 +20,8 @@ assign permissions on this namespace:
 * [Create Reference](../../../Documentation/access-control.html#category_create)
   to enable users to upload images.
 
-In addition the image mime types must be
+In addition Gerrit must be
+[configured to serve project documentation from Markdown](../../../Documentation/config-gerrit.html#site.enableSrcToMarkdown)
+to make images available for browsing. Also the image mime types must be
 [configured as safe](../../../Documentation/config-gerrit.html#mimetype.name.safe)
 because otherwise Gerrit refuses to render the images.

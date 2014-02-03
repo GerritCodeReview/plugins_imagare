@@ -19,9 +19,15 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface Resources extends ClientBundle {
 
+  @Source("delete.png")
+  public ImageResource delete();
+
+  @Source("image.png")
+  public ImageResource image();
+
   @Source("info.png")
   public ImageResource info();
 
-  @Source("delete.png")
-  public ImageResource delete();
+  @Source("preferences.png")
+  public ImageResource preferences();
 }

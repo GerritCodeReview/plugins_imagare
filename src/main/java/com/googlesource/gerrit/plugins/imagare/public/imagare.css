@@ -20,6 +20,19 @@ imagare-upload-stage-panel, .imagare-config-screen {
   vertical-align: middle !important;
 }
 
+.imagare-menu-panel {
+  width: 350px;
+  background-color: #F6F6F6;
+  margin-bottom: 15px;
+}
+
+.imagare-menu-panel img {
+  float: right;
+  margin-top: 1px;
+  margin-left: 3px;
+  margin-right: 1px;
+}
+
 .imagare-image-upload-panel {
   width: 350px;
   border: 1px solid #B3B2B2;

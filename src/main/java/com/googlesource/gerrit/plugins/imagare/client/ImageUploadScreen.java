@@ -20,8 +20,9 @@ import com.google.gerrit.plugin.client.screen.Screen;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.InlineHyperlink;
+import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -51,6 +52,15 @@ public class ImageUploadScreen extends VerticalPanel {
     setStyleName("imagare-image-upload-screen");
 
     HorizontalPanel p = new HorizontalPanel();
+    p.setStyleName("imagare-menu-panel");
+    Anchor prefsAnchor = new Anchor(new ImageResourceRenderer().render(
+        ImagarePlugin.RESOURCES.preferences()),
+        "#/x/" + Plugin.get().getPluginName() + "/preferences");
+    prefsAnchor.setTitle("Edit Preferences");
+    p.add(prefsAnchor);
+    add(p);
+
+    p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
     p.add(new Label("Project:"));
     projectBox = new TextBox();
@@ -84,11 +94,6 @@ public class ImageUploadScreen extends VerticalPanel {
             // never invoked
           }
         });
-
-    InlineHyperlink preferenceLink =
-        new InlineHyperlink("Edit Preferences", "/x/"
-            + Plugin.get().getPluginName() + "/preferences");
-    add(preferenceLink);
   }
 
   private static String getParameter(String name) {

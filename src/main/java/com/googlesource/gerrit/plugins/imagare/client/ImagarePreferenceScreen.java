@@ -17,7 +17,9 @@ package com.googlesource.gerrit.plugins.imagare.client;
 import com.google.gerrit.plugin.client.Plugin;
 import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gerrit.plugin.client.screen.Screen;
-import com.google.gwt.user.client.ui.InlineHyperlink;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ImageResourceRenderer;
 
 public class ImagarePreferenceScreen extends ImagareConfigScreen {
 
@@ -36,11 +38,15 @@ public class ImagarePreferenceScreen extends ImagareConfigScreen {
 
   @Override
   protected void display(ConfigInfo info) {
-    super.display(info);
+    HorizontalPanel p = new HorizontalPanel();
+    p.setStyleName("imagare-menu-panel");
+    Anchor prefsAnchor = new Anchor(new ImageResourceRenderer().render(
+        ImagarePlugin.RESOURCES.image()),
+        "#/x/" + Plugin.get().getPluginName() + "/upload");
+    prefsAnchor.setTitle("Upload Image");
+    p.add(prefsAnchor);
+    add(p);
 
-    InlineHyperlink uploadLink =
-        new InlineHyperlink("Upload Image", "/x/"
-            + Plugin.get().getPluginName() + "/upload");
-    add(uploadLink);
+    super.display(info);
   }
 }

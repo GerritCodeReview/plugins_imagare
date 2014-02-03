@@ -9,7 +9,7 @@ file.
     defaultProject = All-Images
 ```
 
-<a id="block">
+<a id="default-project">
 `plugin.@PLUGIN@.defaultProject`
 :	The project to which images are uploaded per default.
 

@@ -112,6 +112,7 @@ imagare-upload-stage-panel, .imagare-config-screen {
 .imagare-stage-image-preview-panel,
 .imagare-uploaded-image-preview-panel {
   display: inline;
+  display: inline-block;
   margin-left: 10px;
   margin-right: 10px;
 }

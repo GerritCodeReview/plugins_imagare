@@ -69,6 +69,15 @@ imagare-upload-stage-panel, .imagare-config-screen {
   font-weight: bold;
 }
 
+.imagare-stage-edit-panel td {
+  vertical-align: middle !important;
+}
+
+.imagare-stage-input {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
 .imagare-stage-image-preview {
   max-width: 150px;
   max-height: 100px;

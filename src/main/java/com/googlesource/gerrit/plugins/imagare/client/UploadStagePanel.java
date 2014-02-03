@@ -14,8 +14,17 @@
 
 package com.googlesource.gerrit.plugins.imagare.client;
 
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_ESCAPE;
+
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -27,6 +36,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UploadStagePanel extends VerticalPanel {
@@ -106,7 +116,7 @@ public class UploadStagePanel extends VerticalPanel {
   private class ImagePreview extends VerticalPanel {
     final String project;
     final String dataUrl;
-    final String fileName;
+    String fileName;
 
     private final Image img;
     private final Image deleteIcon;
@@ -119,9 +129,7 @@ public class UploadStagePanel extends VerticalPanel {
 
       setStyleName("imagare-stage-image-preview-panel");
 
-      Label fileNameLabel = new Label(fileName != null ? fileName : "img.png");
-      fileNameLabel.setStyleName("imagare-stage-image-title");
-      add(fileNameLabel);
+      addFileName();
 
       img = new Image(dataUrl);
       img.setStyleName("imagare-stage-image-preview");
@@ -205,6 +213,85 @@ public class UploadStagePanel extends VerticalPanel {
       if (deleteIconHideTimer != null) {
         deleteIconHideTimer.cancel();
         deleteIconHideTimer = null;
+      }
+    }
+
+    private void addFileName() {
+      final Label fileNameLabel = new Label(fileName != null ? fileName : "img.png");
+      fileNameLabel.setStyleName("imagare-stage-image-title");
+      add(fileNameLabel);
+
+      fileNameLabel.addDoubleClickHandler(new DoubleClickHandler() {
+        @Override
+        public void onDoubleClick(DoubleClickEvent event) {
+          fileNameLabel.setVisible(false);
+          FileNameEditPanel fileNameEditPanel = new FileNameEditPanel(ImagePreview.this, fileNameLabel);
+          insert(fileNameEditPanel, getWidgetIndex(fileNameLabel));
+          fileNameEditPanel.focusAndSelectAll();
+        }
+      });
+    }
+
+    private class FileNameEditPanel extends HorizontalPanel {
+      private final ImagePreview imagePreview;
+      private final Label fileNameLabel;
+      private final TextBox fileNameBox;
+      private final String name;
+      private final String extension;
+
+      FileNameEditPanel(ImagePreview imagePreview, Label fileNameLabel) {
+        this.imagePreview = imagePreview;
+        this.fileNameLabel = fileNameLabel;
+        int pos = imagePreview.fileName.lastIndexOf('.');
+        if (pos != -1) {
+          this.name = imagePreview.fileName.substring(0, pos);
+          this.extension = imagePreview.fileName.substring(pos);
+        } else {
+          this.name = imagePreview.fileName;
+          this.extension = "";
+        }
+
+        setStyleName("imagare-stage-edit-panel");
+        fileNameBox = new TextBox();
+        fileNameBox.setStyleName("imagare-stage-input");
+        fileNameBox.setValue(name);
+        add(fileNameBox);
+        add(new Label(extension));
+
+        fileNameBox.addBlurHandler(new BlurHandler() {
+          @Override
+          public void onBlur(BlurEvent event) {
+            saveChanges();
+          }
+        });
+
+        fileNameBox.addKeyDownHandler(new KeyDownHandler() {
+          @Override
+          public void onKeyDown(KeyDownEvent event) {
+            if (event.getNativeKeyCode() == KEY_ESCAPE) {
+              discardChanges();
+            } else if (event.getNativeKeyCode() == KEY_ENTER) {
+              saveChanges();
+            }
+          }
+        });
+      }
+
+      private void saveChanges() {
+        imagePreview.fileName = fileNameBox.getValue() + extension;
+        fileNameLabel.setText(fileNameBox.getValue() + extension);
+        fileNameLabel.setVisible(true);
+        removeFromParent();
+      }
+
+      private void discardChanges() {
+        fileNameLabel.setVisible(true);
+        removeFromParent();
+      }
+
+      void focusAndSelectAll() {
+        fileNameBox.setFocus(true);
+        fileNameBox.selectAll();
       }
     }
   }

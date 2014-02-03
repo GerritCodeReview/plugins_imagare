@@ -22,6 +22,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -62,7 +63,11 @@ public class ImageUploadScreen extends VerticalPanel {
 
     p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
-    p.add(new Label("Project:"));
+    p.add(new Label("Project"));
+    Image projectInfo = new Image(ImagarePlugin.RESOURCES.info());
+    projectInfo.setTitle("The project to which the images are uploaded.");
+    p.add(projectInfo);
+    p.add(new Label(":"));
     projectBox = new TextBox();
     p.add(projectBox);
     add(p);

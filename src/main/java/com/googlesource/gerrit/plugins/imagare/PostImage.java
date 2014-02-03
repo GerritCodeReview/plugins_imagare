@@ -142,7 +142,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
       ObjectId commitId = repo.resolve(ref);
       if (commitId != null) {
         // this image exists already
-        return getUrl(pc.getProject().getNameKey(), commitId.getName(), fileName);
+        return getUrl(pc.getProject().getNameKey(), ref, fileName);
       }
 
       RevWalk rw = new RevWalk(repo);
@@ -183,7 +183,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
                 pc.getProject().getName(), ru.getResult()));
           }
 
-          return getUrl(pc.getProject().getNameKey(), commitId.getName(), fileName);
+          return getUrl(pc.getProject().getNameKey(), ref, fileName);
         } finally {
           oi.release();
         }

@@ -18,15 +18,14 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwtexpui.clippy.client.CopyableLabel;
 
-public class UploadedImagesPanel extends VerticalPanel {
+public class UploadedImagesPanel extends FlowPanel {
 
   private Label uploadedImagesLabel;
   private PopupPanel popup;
@@ -45,35 +44,46 @@ public class UploadedImagesPanel extends VerticalPanel {
 
   void add(final String url) {
     uploadedImagesLabel.setVisible(true);
+    insert(new ImagePreview(url), 1);
+  }
 
-    Panel p = new HorizontalPanel();
-    insert(p, 1);
+  private class ImagePreview extends VerticalPanel {
+    ImagePreview(final String url) {
+      setStyleName("imagare-uploaded-image-preview-panel");
 
-    Image img = new Image(url);
-    img.setStyleName("imagare-image-preview");
-    p.add(img);
+      String fileName = url.substring(url.indexOf('/', url.indexOf("/rev/") + 5) + 1);
+      Label fileNameLabel = new Label(fileName);
+      fileNameLabel.setStyleName("imagare-uploaded-image-title");
+      add(fileNameLabel);
 
-    img.addMouseOverHandler(new MouseOverHandler() {
-      @Override
-      public void onMouseOver(MouseOverEvent event) {
-        if (!popup.isVisible()) {
-          Image img = new Image(url);
-          img.setStyleName("imagare-image-popup");
-          popup.add(img);
+      Image img = new Image(url);
+      img.setStyleName("imagare-uploaded-image-preview");
+      add(img);
 
-          popup.center();
-          popup.setVisible(true);
+      img.addMouseOverHandler(new MouseOverHandler() {
+        @Override
+        public void onMouseOver(MouseOverEvent event) {
+          if (!popup.isVisible()) {
+            Image previewImg = new Image(url);
+            previewImg.setStyleName("imagare-image-popup");
+            popup.add(previewImg);
+
+            popup.center();
+            popup.setVisible(true);
+          }
         }
-      }
-    });
-    img.addMouseOutHandler(new MouseOutHandler() {
-      @Override
-      public void onMouseOut(MouseOutEvent event) {
-        popup.setVisible(false);
-        popup.clear();
-      }
-    });
+      });
+      img.addMouseOutHandler(new MouseOutHandler() {
+        @Override
+        public void onMouseOut(MouseOutEvent event) {
+          popup.setVisible(false);
+          popup.clear();
+        }
+      });
 
-    p.add(new CopyableLabel(url));
+      CopyableLabel copyLabel = new CopyableLabel(url);
+      copyLabel.setStyleName("imagare-uploaded-copy-label");
+      add(copyLabel);
+    }
   }
 }

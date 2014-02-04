@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "325e5ed0_86adaab2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/DeleteImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2014-02-04T11:44:13Z",
+      "side": 1,
+      "message": "Because I want to allow the deletion of images if if the user has the \u0027Delete Own Images\u0027 capability OR if he can force push to \u0027refs/images/*\u0027.\n\nPutting\n\n  @RequiresCapability(DeleteOwnImagesCapability.DELETE_OWN_IMAGES))\n\nmeans that the request would be rejected if the user doesn\u0027t have this capability but can force push to \u0027refs/images/*\u0027.",
+      "parentUuid": "52691273_c74f1e86",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 73,
+        "endChar": 90
+      },
+      "revId": "173e0a2dd6966011d609125e53753a9685a5cbbf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52691273_2724fabd",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/DeleteImage.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2014-02-04T11:08:59Z",
       "side": 1,
       "message": "Already checked on the line 71?",
+      "range": {
+        "startLine": 79,
+        "startChar": 6,
+        "endLine": 79,
+        "endChar": 43
+      },
+      "revId": "173e0a2dd6966011d609125e53753a9685a5cbbf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52691273_273b9adc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/DeleteImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2014-02-04T11:44:13Z",
+      "side": 1,
+      "message": "Yes, but the following check must not be done if the user can force push to \u0027refs/images/*\u0027. Having force push on \u0027refs/images/*\u0027 means that the user is allowed to delete ANY image.\n\nChecking that it is an own image is only needed if the user can\u0027t force push but only has the \"Delete Own Images\u0027 capability because then he is only allowed to delete OWN images.",
+      "parentUuid": "52691273_2724fabd",
       "range": {
         "startLine": 79,
         "startChar": 6,

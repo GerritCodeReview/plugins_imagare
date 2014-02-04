@@ -19,6 +19,7 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.MethodNotAllowedException;
+import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.reviewdb.client.Branch;
@@ -27,10 +28,12 @@ import com.google.gerrit.server.FileTypeRegistry;
 import com.google.gerrit.server.GerritPersonIdent;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.config.CanonicalWebUrl;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.server.project.ProjectResource;
+import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.project.RefControl;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -41,6 +44,7 @@ import eu.medsea.mimeutil.MimeType;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.jgit.lib.CommitBuilder;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
@@ -71,12 +75,13 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final ChangeHooks hooks;
   private final PersonIdent myIdent;
   private final String canonicalWebUrl;
+  private final Config cfg;
 
   @Inject
   public PostImage(FileTypeRegistry registry, Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
       ChangeHooks hooks, @GerritPersonIdent PersonIdent myIdent,
-      @CanonicalWebUrl String canonicalWebUrl) {
+      @CanonicalWebUrl String canonicalWebUrl, @GerritServerConfig Config cfg) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
@@ -85,12 +90,13 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     this.hooks = hooks;
     this.myIdent = myIdent;
     this.canonicalWebUrl = canonicalWebUrl;
+    this.cfg = cfg;
   }
 
   @Override
   public Response<ImageInfo> apply(ProjectResource rsrc, Input input)
       throws MethodNotAllowedException, BadRequestException, AuthException,
-      IOException {
+      IOException, ResourceConflictException {
     if (input == null) {
       input = new Input();
     }
@@ -105,7 +111,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
   private ImageInfo storeImage(ProjectControl pc, String imageData,
       String fileName) throws MethodNotAllowedException, BadRequestException,
-      AuthException, IOException {
+      AuthException, IOException, ResourceConflictException {
     Matcher m = imageDataPattern.matcher(imageData);
     if (m.matches()) {
       String receivedMimeType = m.group(1);
@@ -141,7 +147,12 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   }
 
   private String storeImage(ProjectControl pc, MimeType mimeType,
-      byte[] content, String fileName) throws AuthException, IOException {
+      byte[] content, String fileName) throws AuthException, IOException,
+      ResourceConflictException {
+    if (content.length > getEffectiveMaxObjectSizeLimit(pc.getProjectState())) {
+      throw new ResourceConflictException("image too large");
+    }
+
     String ref = getRef(content, fileName);
     RefControl rc = pc.controlForRef(ref);
 
@@ -234,6 +245,17 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     url.append("/");
     url.append(IdString.fromDecoded(fileName).encoded());
     return url.toString();
+  }
+
+  private long getEffectiveMaxObjectSizeLimit(ProjectState p) {
+    long global = cfg.getLong("receive", "maxObjectSizeLimit", 0);
+    long local = p.getMaxObjectSizeLimit();
+    if (global > 0 && local > 0) {
+      return Math.min(global, local);
+    } else {
+      // zero means "no limit", in this case the max is more limiting
+      return Math.max(global, local);
+    }
   }
 
   public static class ImageInfo {

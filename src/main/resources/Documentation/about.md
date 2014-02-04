@@ -25,3 +25,10 @@ In addition Gerrit must be
 to make images available for browsing. Also the image mime types must be
 [configured as safe](../../../Documentation/config-gerrit.html#mimetype.name.safe)
 because otherwise Gerrit refuses to render the images.
+
+To allow deletions of own uploaded images the global capability
+`Delete Own Images` can be granted.
+
+To allow the deletion of any uploaded image the
+[Force Push](../../../Documentation/access-control.html#category_push)
+access right can be assigned on the images namespace.

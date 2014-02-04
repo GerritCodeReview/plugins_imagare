@@ -17,8 +17,10 @@ package com.googlesource.gerrit.plugins.imagare;
 import static com.google.gerrit.server.config.ConfigResource.CONFIG_KIND;
 import static com.google.gerrit.server.project.ProjectResource.PROJECT_KIND;
 import static com.google.gerrit.server.account.AccountResource.ACCOUNT_KIND;
+import static com.googlesource.gerrit.plugins.imagare.DeleteOwnImagesCapability.DELETE_OWN_IMAGES;
 import static com.googlesource.gerrit.plugins.imagare.ImageResource.IMAGE_KIND;
 
+import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
@@ -30,6 +32,9 @@ public class Module extends AbstractModule {
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), TopMenu.class).to(ImagareMenu.class);
+    bind(com.google.gerrit.extensions.config.CapabilityDefinition.class)
+        .annotatedWith(Exports.named(DELETE_OWN_IMAGES))
+        .to(DeleteOwnImagesCapability.class);
     install(new RestApiModule() {
       @Override
       protected void configure() {

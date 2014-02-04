@@ -46,7 +46,9 @@ Deletes an image.
 
 Caller must have the
 [Force Push](../../../Documentation/access-control.html#category_push)
-access right on the `refs/images/*` namespace of the project.
+access right on the `refs/images/*` namespace of the project or be
+granted the `Delete Own Images` global capability which allows deleting
+own images.
 
 #### Request
 

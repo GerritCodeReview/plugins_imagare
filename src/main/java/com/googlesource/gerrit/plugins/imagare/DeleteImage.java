@@ -15,8 +15,10 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.common.ChangeHooks;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.server.IdentifiedUser;
@@ -28,8 +30,12 @@ import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.imagare.DeleteImage.Input;
 
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,15 +47,17 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   public static class Input {
   }
 
+  private final String pluginName;
   private final Provider<IdentifiedUser> self;
   private final GitRepositoryManager repoManager;
   private final GitReferenceUpdated referenceUpdated;
   private final ChangeHooks hooks;
 
   @Inject
-  public DeleteImage(Provider<IdentifiedUser> self,
+  public DeleteImage(@PluginName String pluginName, Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
       ChangeHooks hooks) {
+    this.pluginName = pluginName;
     this.self = self;
     this.repoManager = repoManager;
     this.referenceUpdated = referenceUpdated;
@@ -59,13 +67,19 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   @Override
   public Response<?> apply(ImageResource rsrc, Input input)
       throws AuthException, ResourceConflictException,
-      RepositoryNotFoundException, IOException {
-    if (!rsrc.getControl().canDelete()) {
+      RepositoryNotFoundException, IOException, ResourceNotFoundException {
+    if (!rsrc.getControl().canDelete()
+        && !self.get().getCapabilities()
+            .canPerform(pluginName + "-" + DeleteOwnImagesCapability.DELETE_OWN_IMAGES)) {
       throw new AuthException("not allowed to delete image");
     }
 
     Repository r = repoManager.openRepository(rsrc.getProject());
     try {
+      if (!rsrc.getControl().canDelete()) {
+        validateOwnImage(r, rsrc.getRef());
+      }
+
       RefUpdate.Result result;
       RefUpdate u;
       try {
@@ -98,5 +112,27 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
       r.close();
     }
     return Response.none();
+  }
+
+  private void validateOwnImage(Repository repo, String ref)
+      throws IOException, ResourceNotFoundException, AuthException {
+    Ref r = repo.getRef(ref);
+    if (r == null) {
+      throw new ResourceNotFoundException(ref);
+    }
+    RevWalk rw = new RevWalk(repo);
+    try {
+      RevCommit commit = rw.parseCommit(r.getObjectId());
+      if (!self.get().getNameEmail()
+          .equals(getNameEmail(commit.getCommitterIdent()))) {
+        throw new AuthException("not allowed to delete image");
+      }
+    } finally {
+      rw.release();
+    }
+  }
+
+  private String getNameEmail(PersonIdent ident) {
+    return ident.getName() + " <" + ident.getEmailAddress() + ">";
   }
 }

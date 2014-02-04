@@ -124,20 +124,23 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
       if (!imagareSavedContent) {
         imagareSavedContent = elem.innerHTML;
       }
-      var f = event.dataTransfer.files[0];
-      if (f) {
-        var r = new FileReader();
-        r.onload = function(e) {
-          elem.innerHTML = imagareSavedContent;
-          if (f.type.match('image/.*')) {
-            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, f.name);
-          } else {
-            $wnd.Gerrit.showError('no image file');
+      for(var i = 0; i < event.dataTransfer.files.length; i++) {
+        var f = event.dataTransfer.files[i];
+        if (f) {
+          if (!f.type.match('image/.*')) {
+            $wnd.Gerrit.showError('no image file: ' + f.name);
           }
+
+          var r = new FileReader();
+          r.file = f;
+          r.onload = function(e) {
+            elem.innerHTML = imagareSavedContent;
+            @com.googlesource.gerrit.plugins.imagare.client.ImageUploader::stageImage(Ljava/lang/String;Ljava/lang/String;)(e.target.result, this.file.name);
+          }
+          r.readAsDataURL(f);
+        } else {
+          $wnd.Gerrit.showError('Failed to load file: ' + f.name);
         }
-        r.readAsDataURL(f);
-      } else {
-        $wnd.Gerrit.showError('Failed to load file.');
       }
     }
   }-*/;

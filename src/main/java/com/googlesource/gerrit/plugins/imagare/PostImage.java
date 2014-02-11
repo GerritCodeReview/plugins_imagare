@@ -149,7 +149,9 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private String storeImage(ProjectControl pc, MimeType mimeType,
       byte[] content, String fileName) throws AuthException, IOException,
       ResourceConflictException {
-    if (content.length > getEffectiveMaxObjectSizeLimit(pc.getProjectState())) {
+    long maxSize = getEffectiveMaxObjectSizeLimit(pc.getProjectState());
+    // maxSize == 0 means that there is no limit
+    if (maxSize > 0 && content.length > maxSize) {
       throw new ResourceConflictException("image too large");
     }
 

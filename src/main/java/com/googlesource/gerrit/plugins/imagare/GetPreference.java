@@ -71,7 +71,7 @@ public class GetPreference implements RestReadView<AccountResource> {
 
     info.linkDecoration =
         db.getEnum(PREFERENCE, username, KEY_LINK_DECORATION,
-            globalCfg.linkDecoration);
+            Objects.firstNonNull(globalCfg.linkDecoration, LinkDecoration.NONE));
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
     }

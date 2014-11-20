@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.common.ChangeHooks;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
 import com.google.gerrit.extensions.restapi.IdString;
@@ -76,12 +77,14 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final PersonIdent myIdent;
   private final String canonicalWebUrl;
   private final Config cfg;
+  private final String pluginName;
 
   @Inject
   public PostImage(FileTypeRegistry registry, Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
       ChangeHooks hooks, @GerritPersonIdent PersonIdent myIdent,
-      @CanonicalWebUrl String canonicalWebUrl, @GerritServerConfig Config cfg) {
+      @CanonicalWebUrl String canonicalWebUrl, @GerritServerConfig Config cfg,
+      @PluginName String pluginName) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
@@ -91,6 +94,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     this.myIdent = myIdent;
     this.canonicalWebUrl = canonicalWebUrl;
     this.cfg = cfg;
+    this.pluginName = pluginName;
   }
 
   @Override
@@ -238,9 +242,11 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     StringBuilder url = new StringBuilder();
     url.append(canonicalWebUrl);
     if (!canonicalWebUrl.endsWith("/")) {
-      url.append("src/");
+      url.append("/");
     }
-    url.append("src/");
+    url.append("plugins/");
+    url.append(IdString.fromDecoded(pluginName).encoded());
+    url.append("/project/");
     url.append(IdString.fromDecoded(project.get()).encoded());
     url.append("/rev/");
     url.append(IdString.fromDecoded(rev).encoded());

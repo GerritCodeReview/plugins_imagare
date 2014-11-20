@@ -45,7 +45,7 @@ Gerrit.install(function(self) {
           l[i].onmouseover = function (evt) {
             var img = document.createElement('img');
             img.setAttribute('src', this.href);
-            img.setAttribute('style', 'border: 1px solid #B3B2B2; position: absolute; bottom: ' + (this.offsetHeight + 3) + 'px');
+            img.setAttribute('style', 'border: 1px solid #B3B2B2; position: absolute; top: ' + (this.offsetTop + this.offsetHeight) + 'px');
             this.parentNode.insertBefore(img, this);
             this.onmouseout = function (evt) {
               this.parentNode.removeChild(this.previousSibling);

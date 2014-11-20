@@ -24,6 +24,9 @@ public class HttpModule extends HttpPluginModule {
 
   @Override
   protected void configureServlets() {
+    serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$")
+        .with(ImageServlet.class);
+
     DynamicSet.bind(binder(), WebUiPlugin.class)
         .toInstance(new GwtPlugin("imagare"));
     DynamicSet.bind(binder(), WebUiPlugin.class)

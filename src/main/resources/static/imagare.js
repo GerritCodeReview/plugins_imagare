@@ -56,7 +56,7 @@ Gerrit.install(function(self) {
     }
 
     function isImage(href) {
-      return href.match(window.location.hostname + '.*src/.*/rev/.*/.*\.(jpg|jpeg|png|gif|bmp|ico|svg|tif|tiff)')
+      return href.match(window.location.hostname + '.*project/.*/rev/.*/.*\.(jpg|jpeg|png|gif|bmp|ico|svg|tif|tiff)')
     }
 
     Gerrit.on('history', onHistory);

@@ -24,6 +24,7 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.FileTypeRegistry;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.project.GetHead;
@@ -64,6 +65,7 @@ public class ImageServlet extends HttpServlet {
 
   public  static final String PATH_PREFIX = "/project/";
 
+  private final Provider<ReviewDb> db;
   private final ProjectControl.Factory projectControlFactory;
   private final ProjectCache projectCache;
   private final Provider<GetHead> getHead;
@@ -72,11 +74,13 @@ public class ImageServlet extends HttpServlet {
 
   @Inject
   ImageServlet(
+      Provider<ReviewDb> db,
       ProjectControl.Factory projectControlFactory,
       ProjectCache projectCache,
       Provider<GetHead> getHead,
       GitRepositoryManager repoManager,
       FileTypeRegistry fileTypeRegistry) {
+    this.db = db;
     this.projectControlFactory = projectControlFactory;
     this.projectCache = projectCache;
     this.getHead = getHead;
@@ -136,7 +140,7 @@ public class ImageServlet extends HttpServlet {
           RevWalk rw = new RevWalk(repo);
           try {
             RevCommit commit = rw.parseCommit(repo.resolve(rev));
-            if (!projectControl.canReadCommit(rw, commit)) {
+            if (!projectControl.canReadCommit(db.get(), rw, commit)) {
               notFound(res);
               return;
             }

@@ -25,6 +25,7 @@ import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.FileTypeRegistry;
 import com.google.gerrit.server.GerritPersonIdent;
 import com.google.gerrit.server.IdentifiedUser;
@@ -77,6 +78,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final PersonIdent myIdent;
   private final String canonicalWebUrl;
   private final Config cfg;
+  private final Provider<ReviewDb> db;
   private final String pluginName;
 
   @Inject
@@ -84,7 +86,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
       GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
       ChangeHooks hooks, @GerritPersonIdent PersonIdent myIdent,
       @CanonicalWebUrl String canonicalWebUrl, @GerritServerConfig Config cfg,
-      @PluginName String pluginName) {
+      Provider<ReviewDb> db, @PluginName String pluginName) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
@@ -94,6 +96,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     this.myIdent = myIdent;
     this.canonicalWebUrl = canonicalWebUrl;
     this.cfg = cfg;
+    this.db = db;
     this.pluginName = pluginName;
   }
 
@@ -193,7 +196,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           commitId = oi.insert(cb);
           oi.flush();
 
-          if (!rc.canCreate(rw, rw.parseCommit(commitId), false)) {
+          if (!rc.canCreate(db.get(), rw, rw.parseCommit(commitId))) {
             throw new AuthException(String.format(
                 "Project %s doesn't allow image upload.", pc.getProject().getName()));
           }

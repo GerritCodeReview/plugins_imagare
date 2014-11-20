@@ -189,7 +189,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           commitId = oi.insert(cb);
           oi.flush();
 
-          if (!rc.canCreate(rw, rw.parseCommit(commitId))) {
+          if (!rc.canCreate(rw, rw.parseCommit(commitId), false)) {
             throw new AuthException(String.format(
                 "Project %s doesn't allow image upload.", pc.getProject().getName()));
           }

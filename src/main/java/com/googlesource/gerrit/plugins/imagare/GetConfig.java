@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.config.ConfigResource;
@@ -36,7 +36,7 @@ public class GetConfig implements RestReadView<ConfigResource> {
   public ConfigInfo apply(ConfigResource resource) {
     ConfigInfo info = new ConfigInfo();
     info.defaultProject =
-        Objects.firstNonNull(cfg.getString("defaultProject"), "All-Projects");
+        MoreObjects.firstNonNull(cfg.getString("defaultProject"), "All-Projects");
     info.linkDecoration = cfg.getEnum("linkDecoration", LinkDecoration.NONE);
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;

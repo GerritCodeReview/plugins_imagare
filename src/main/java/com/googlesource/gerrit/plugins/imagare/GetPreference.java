@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.RestReadView;
@@ -65,13 +65,13 @@ public class GetPreference implements RestReadView<AccountResource> {
     ConfigInfo info = new ConfigInfo();
 
     info.defaultProject =
-        Objects.firstNonNull(
+        MoreObjects.firstNonNull(
             db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT),
             globalCfg.defaultProject);
 
     info.linkDecoration =
         db.getEnum(PREFERENCE, username, KEY_LINK_DECORATION,
-            Objects.firstNonNull(globalCfg.linkDecoration, LinkDecoration.NONE));
+            MoreObjects.firstNonNull(globalCfg.linkDecoration, LinkDecoration.NONE));
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
     }

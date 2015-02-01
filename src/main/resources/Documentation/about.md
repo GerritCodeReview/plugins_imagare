@@ -17,7 +17,8 @@ assign permissions on this namespace:
 * [Read](../../../Documentation/access-control.html#category_read) to
   enable users to see the uploaded images.
 
-* [Create Reference](../../../Documentation/access-control.html#category_create)
+* Both [Create Reference](../../../Documentation/access-control.html#category_create)
+  and [Push](../../../Documentation/access-control.html#category_push)
   to enable users to upload images.
 
 In addition Gerrit must be

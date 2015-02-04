@@ -21,11 +21,9 @@ assign permissions on this namespace:
   and [Push](../../../Documentation/access-control.html#category_push)
   to enable users to upload images.
 
-In addition Gerrit must be
-[configured to serve project documentation from Markdown](../../../Documentation/config-gerrit.html#site.enableSrcToMarkdown)
-to make images available for browsing. Also the image mime types must be
-[configured as safe](../../../Documentation/config-gerrit.html#mimetype.name.safe)
-because otherwise Gerrit refuses to render the images.
+In addition Gerrit must be configured to
+[treat the image MIME types as safe](../../../Documentation/config-gerrit.html#mimetype.name.safe)
+because otherwise they would not get rendered.
 
 To allow deletions of own uploaded images the global capability
 `Delete Own Images` can be granted.

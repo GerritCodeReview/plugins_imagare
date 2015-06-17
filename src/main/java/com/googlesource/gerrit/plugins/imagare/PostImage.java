@@ -218,15 +218,17 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   }
 
   private String getRef(byte[] content, String fileName) {
-    String id = new ObjectInserter.Formatter().idFor(Constants.OBJ_BLOB,
-        ArrayUtils.addAll(content, fileName.getBytes())).getName();
-    StringBuilder ref = new StringBuilder();
-    ref.append(Constants.R_REFS);
-    ref.append("images/");
-    ref.append(id.substring(0, 2));
-    ref.append("/");
-    ref.append(id.substring(2));
-    return ref.toString();
+    try (ObjectInserter oi = new ObjectInserter.Formatter()) {
+      String id = oi.idFor(Constants.OBJ_BLOB,
+          ArrayUtils.addAll(content, fileName.getBytes())).getName();
+      StringBuilder ref = new StringBuilder();
+      ref.append(Constants.R_REFS);
+      ref.append("images/");
+      ref.append(id.substring(0, 2));
+      ref.append("/");
+      ref.append(id.substring(2));
+      return ref.toString();
+    }
   }
 
   private String getUrl(Project.NameKey project, String rev, String fileName) {

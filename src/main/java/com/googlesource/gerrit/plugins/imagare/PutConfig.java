@@ -67,7 +67,7 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
       input = new Input();
     }
     FileBasedConfig cfg =
-        new FileBasedConfig(sitePaths.gerrit_config, FS.DETECTED);
+        new FileBasedConfig(sitePaths.gerrit_config.toFile(), FS.DETECTED);
     cfg.load();
 
     if (input.defaultProject != null) {

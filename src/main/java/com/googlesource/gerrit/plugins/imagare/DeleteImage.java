@@ -74,8 +74,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
       throw new AuthException("not allowed to delete image");
     }
 
-    Repository r = repoManager.openRepository(rsrc.getProject());
-    try {
+    try (Repository r = repoManager.openRepository(rsrc.getProject())) {
       if (!rsrc.getControl().canDelete()) {
         validateOwnImage(r, rsrc.getRef());
       }
@@ -108,8 +107,6 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
           log.error("Cannot delete " + rsrc.getRef() + ": " + result.name());
           throw new ResourceConflictException("cannot delete branch: " + result.name());
       }
-    } finally {
-      r.close();
     }
     return Response.none();
   }
@@ -120,15 +117,12 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
     if (r == null) {
       throw new ResourceNotFoundException(ref);
     }
-    RevWalk rw = new RevWalk(repo);
-    try {
+    try (RevWalk rw = new RevWalk(repo)) {
       RevCommit commit = rw.parseCommit(r.getObjectId());
       if (!self.get().getNameEmail()
           .equals(getNameEmail(commit.getCommitterIdent()))) {
         throw new AuthException("not allowed to delete image");
       }
-    } finally {
-      rw.release();
     }
   }
 

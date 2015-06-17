@@ -165,68 +165,56 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     String ref = getRef(content, fileName);
     RefControl rc = pc.controlForRef(ref);
 
-    Repository repo = repoManager.openRepository(pc.getProject().getNameKey());
-    try {
+    try (Repository repo = repoManager.openRepository(pc.getProject().getNameKey())) {
       ObjectId commitId = repo.resolve(ref);
       if (commitId != null) {
         // this image exists already
         return getUrl(pc.getProject().getNameKey(), ref, fileName);
       }
 
-      RevWalk rw = new RevWalk(repo);
-      try {
-        ObjectInserter oi = repo.newObjectInserter();
-        try {
-          ObjectId blobId = oi.insert(Constants.OBJ_BLOB, content);
-          oi.flush();
+      try (RevWalk rw = new RevWalk(repo);
+          ObjectInserter oi = repo.newObjectInserter()) {
+        ObjectId blobId = oi.insert(Constants.OBJ_BLOB, content);
+        oi.flush();
 
-          TreeFormatter tf = new TreeFormatter();
-          tf.append(fileName, FileMode.REGULAR_FILE, blobId);
-          ObjectId treeId = tf.insertTo(oi);
-          oi.flush();
+        TreeFormatter tf = new TreeFormatter();
+        tf.append(fileName, FileMode.REGULAR_FILE, blobId);
+        ObjectId treeId = tf.insertTo(oi);
+        oi.flush();
 
-          PersonIdent authorIdent =
-              self.get().newCommitterIdent(myIdent.getWhen(), myIdent.getTimeZone());
-          CommitBuilder cb = new CommitBuilder();
-          cb.setTreeId(treeId);
-          cb.setAuthor(authorIdent);
-          cb.setCommitter(authorIdent);
-          cb.setMessage("Image Upload");
+        PersonIdent authorIdent =
+            self.get().newCommitterIdent(myIdent.getWhen(), myIdent.getTimeZone());
+        CommitBuilder cb = new CommitBuilder();
+        cb.setTreeId(treeId);
+        cb.setAuthor(authorIdent);
+        cb.setCommitter(authorIdent);
+        cb.setMessage("Image Upload");
 
-          commitId = oi.insert(cb);
-          oi.flush();
+        commitId = oi.insert(cb);
+        oi.flush();
 
-          if (!rc.canCreate(db.get(), rw, rw.parseCommit(commitId))) {
-            throw new AuthException(String.format(
-                "Project %s doesn't allow image upload.", pc.getProject().getName()));
-          }
-
-          RefUpdate ru = repo.updateRef(ref);
-          ru.setExpectedOldObjectId(ObjectId.zeroId());
-          ru.setNewObjectId(commitId);
-          ru.disableRefLog();
-          if (ru.update(rw) == RefUpdate.Result.NEW) {
-            referenceUpdated.fire(pc.getProject().getNameKey(), ru);
-            hooks.doRefUpdatedHook(new Branch.NameKey(pc.getProject()
-                .getNameKey(), ref), ru, self.get().getAccount());
-          } else {
-            throw new IOException(String.format(
-                "Failed to create ref %s in %s: %s", ref,
-                pc.getProject().getName(), ru.getResult()));
-          }
-
-          return getUrl(pc.getProject().getNameKey(), ref, fileName);
-        } finally {
-          oi.release();
+        if (!rc.canCreate(db.get(), rw, rw.parseCommit(commitId))) {
+          throw new AuthException(String.format(
+              "Project %s doesn't allow image upload.", pc.getProject().getName()));
         }
 
-      } finally {
-        rw.release();
-      }
-    } finally {
-      repo.close();
-    }
+        RefUpdate ru = repo.updateRef(ref);
+        ru.setExpectedOldObjectId(ObjectId.zeroId());
+        ru.setNewObjectId(commitId);
+        ru.disableRefLog();
+        if (ru.update(rw) == RefUpdate.Result.NEW) {
+          referenceUpdated.fire(pc.getProject().getNameKey(), ru);
+          hooks.doRefUpdatedHook(new Branch.NameKey(pc.getProject()
+              .getNameKey(), ref), ru, self.get().getAccount());
+        } else {
+          throw new IOException(String.format(
+              "Failed to create ref %s in %s: %s", ref,
+              pc.getProject().getName(), ru.getResult()));
+        }
 
+        return getUrl(pc.getProject().getNameKey(), ref, fileName);
+      }
+    }
   }
 
   private String getRef(byte[] content, String fileName) {

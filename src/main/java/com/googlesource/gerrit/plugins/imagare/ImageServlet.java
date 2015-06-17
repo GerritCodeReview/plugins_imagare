@@ -127,8 +127,7 @@ public class ImageServlet extends HttpServlet {
           }
         }
       }
-      Repository repo = repoManager.openRepository(key.project);
-      try {
+      try (Repository repo = repoManager.openRepository(key.project)) {
         ObjectId revId =
             repo.resolve(rev != null ? rev : Constants.HEAD);
         if (revId == null) {
@@ -137,15 +136,12 @@ public class ImageServlet extends HttpServlet {
         }
 
         if (ObjectId.isId(rev)) {
-          RevWalk rw = new RevWalk(repo);
-          try {
+          try (RevWalk rw = new RevWalk(repo)) {
             RevCommit commit = rw.parseCommit(repo.resolve(rev));
             if (!projectControl.canReadCommit(db.get(), rw, commit)) {
               notFound(res);
               return;
             }
-          } finally {
-            rw.release();
           }
         }
 
@@ -164,12 +160,10 @@ public class ImageServlet extends HttpServlet {
           return;
         }
 
-        RevWalk rw = new RevWalk(repo);
-        try {
+        try (RevWalk rw = new RevWalk(repo)) {
           RevCommit commit = rw.parseCommit(revId);
           RevTree tree = commit.getTree();
-          TreeWalk tw = new TreeWalk(repo);
-          try {
+          try (TreeWalk tw = new TreeWalk(repo)) {
             tw.addTree(tree);
             tw.setRecursive(true);
             tw.setFilter(PathFilter.create(key.file));
@@ -194,17 +188,11 @@ public class ImageServlet extends HttpServlet {
             CacheHeaders.setCacheablePrivate(res, 7, TimeUnit.DAYS, false);
             send(req, res, content, mimeType.toString(), commit.getCommitTime());
             return;
-          } finally {
-            tw.release();
           }
         } catch (IOException e) {
           notFound(res);
           return;
-        } finally {
-          rw.release();
         }
-      } finally {
-        repo.close();
       }
     } catch (RepositoryNotFoundException | NoSuchProjectException
         | ResourceNotFoundException | AuthException | RevisionSyntaxException e) {

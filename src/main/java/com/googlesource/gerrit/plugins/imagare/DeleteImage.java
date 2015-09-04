@@ -128,7 +128,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
         throw new AuthException("not allowed to delete image");
       }
     } finally {
-      rw.release();
+      rw.close();
     }
   }
 

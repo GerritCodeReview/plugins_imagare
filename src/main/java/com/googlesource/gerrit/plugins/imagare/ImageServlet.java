@@ -141,7 +141,7 @@ public class ImageServlet extends HttpServlet {
               return;
             }
           } finally {
-            rw.release();
+            rw.close();
           }
         }
 
@@ -191,13 +191,13 @@ public class ImageServlet extends HttpServlet {
             send(req, res, content, mimeType.toString(), commit.getCommitTime());
             return;
           } finally {
-            tw.release();
+            tw.close();
           }
         } catch (IOException e) {
           notFound(res);
           return;
         } finally {
-          rw.release();
+          rw.close();
         }
       } finally {
         repo.close();

@@ -214,11 +214,11 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
           return getUrl(pc.getProject().getNameKey(), ref, fileName);
         } finally {
-          oi.release();
+          oi.close();
         }
 
       } finally {
-        rw.release();
+        rw.close();
       }
     } finally {
       repo.close();

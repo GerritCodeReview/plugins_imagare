@@ -26,7 +26,7 @@ limitations under the License.
 
   <properties>
     <Gerrit-ApiType>plugin</Gerrit-ApiType>
-    <Gerrit-ApiVersion>2.10-SNAPSHOT</Gerrit-ApiVersion>
+    <Gerrit-ApiVersion>2.10.6</Gerrit-ApiVersion>
   </properties>
 
   <build>
@@ -126,10 +126,6 @@ limitations under the License.
   </dependencies>
 
   <repositories>
-    <repository>
-      <id>gerrit-api-repository</id>
-      <url>https://gerrit-api.storage.googleapis.com/snapshot/</url>
-    </repository>
     <repository>
       <id>gerrit-maven-repository</id>
       <url>https://gerrit-maven.storage.googleapis.com</url>

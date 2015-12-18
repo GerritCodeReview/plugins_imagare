@@ -144,7 +144,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         if (!receivedMimeType.equals(mimeType.toString())) {
           throw new BadRequestException("incorrect mime type");
         }
-        return new ImageInfo(storeImage(pc, mimeType, content, fileName));
+        return new ImageInfo(storeImage(pc, content, fileName));
       } else {
         throw new MethodNotAllowedException("unsupported encoding");
       }
@@ -153,9 +153,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     }
   }
 
-  private String storeImage(ProjectControl pc, MimeType mimeType,
-      byte[] content, String fileName) throws AuthException, IOException,
-      ResourceConflictException {
+  private String storeImage(ProjectControl pc, byte[] content, String fileName)
+      throws AuthException, IOException, ResourceConflictException {
     long maxSize = getEffectiveMaxObjectSizeLimit(pc.getProjectState());
     // maxSize == 0 means that there is no limit
     if (maxSize > 0 && content.length > maxSize) {

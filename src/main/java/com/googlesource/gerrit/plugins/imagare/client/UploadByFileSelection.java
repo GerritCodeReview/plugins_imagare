@@ -20,10 +20,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class UploadByFileSelection extends HorizontalPanel {
   UploadByFileSelection() {
-    this("All-Projects");
-  }
-
-  UploadByFileSelection(String project) {
     init0();
 
     FormPanel form = new FormPanel();

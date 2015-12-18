@@ -52,8 +52,7 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
 
   @Inject
   PutConfig(PluginConfigFactory cfgFactory, SitePaths sitePaths,
-      @PluginName String pluginName, ProjectCache projectCache)
-      throws IOException, ConfigInvalidException {
+      @PluginName String pluginName, ProjectCache projectCache) {
     this.cfgFactory = cfgFactory;
     this.sitePaths = sitePaths;
     this.pluginName = pluginName;

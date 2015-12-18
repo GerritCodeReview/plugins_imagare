@@ -27,7 +27,7 @@ public class ImagareMenu implements TopMenu {
 
   @Inject
   public ImagareMenu(@PluginName String pluginName) {
-    menuEntries = new ArrayList<TopMenu.MenuEntry>();
+    menuEntries = new ArrayList<>();
     menuEntries.add(new MenuEntry("Tools", Collections
         .singletonList(new MenuItem("Image Upload", "#/x/" + pluginName + "/upload", ""))));
   }

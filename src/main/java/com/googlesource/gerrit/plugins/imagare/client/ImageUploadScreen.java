@@ -111,7 +111,7 @@ public class ImageUploadScreen extends VerticalPanel {
   }
 
   private static Map<String, List<String>> getParameters() {
-    Map<String, List<String>> parameter = new HashMap<String, List<String>>();
+    Map<String, List<String>> parameter = new HashMap<>();
 
     if (!Window.Location.getHash().contains("?")) {
       return parameter;
@@ -128,7 +128,7 @@ public class ImageUploadScreen extends VerticalPanel {
 
       List<String> values = parameter.get(kv[0]);
       if (values == null) {
-        values = new ArrayList<String>();
+        values = new ArrayList<>();
         parameter.put(kv[0], values);
       }
       values.add(kv.length > 1 ? URL.decodeQueryString(kv[1]) : "");

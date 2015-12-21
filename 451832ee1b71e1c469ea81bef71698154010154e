@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a0e2f27_b78ac8ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-21T10:45:05Z",
+      "side": 1,
+      "message": "encoded",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 35
+      },
+      "revId": "451832ee1b71e1c469ea81bef71698154010154e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8a0e2f27_9787c4f7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-21T10:45:05Z",
+      "side": 1,
+      "message": "This method doesn\u0027t seem to be actually doing any encoding. It\u0027s just stripping off the /plugins/plugin-name prefix.",
+      "revId": "451832ee1b71e1c469ea81bef71698154010154e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

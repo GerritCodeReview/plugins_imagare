@@ -21,15 +21,22 @@ import com.google.gerrit.plugin.client.screen.Screen;
 public class ImagareAdminScreen extends ImagareConfigScreen {
 
   static class Factory implements Screen.EntryPoint {
+    private final boolean enableImageServer;
+
+    Factory(boolean enableImageServer) {
+      this.enableImageServer = enableImageServer;
+    }
+
     @Override
     public void onLoad(Screen screen) {
       screen.setPageTitle("Imagare Admin");
-      screen.show(new ImagareAdminScreen());
+      screen.show(new ImagareAdminScreen(enableImageServer));
     }
   }
 
-  ImagareAdminScreen() {
-    super(new RestApi("config").id("server").view(Plugin.get().getPluginName(),
-        "config"));
+  ImagareAdminScreen(boolean enableImageServer) {
+    super(enableImageServer,
+        new RestApi("config").id("server").view(
+            Plugin.get().getPluginName(), "config"));
   }
 }

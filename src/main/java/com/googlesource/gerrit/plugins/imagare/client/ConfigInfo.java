@@ -28,6 +28,7 @@ public class ConfigInfo extends JavaScriptObject {
   private final native String link_decoration() /*-{ return this.link_decoration; }-*/;
 
   final native boolean stage() /*-{ return this.stage ? true : false; }-*/;
+  final native boolean enableImageServer() /*-{ return this.enable_image_server ? true : false; }-*/;
 
   final native void setDefaultProject(String p) /*-{ this.default_project = p; }-*/;
   final native void setLinkDecoration(String d) /*-{ this.link_decoration = d; }-*/;

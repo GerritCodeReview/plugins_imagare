@@ -14,18 +14,34 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.webui.GwtPlugin;
 import com.google.gerrit.extensions.webui.JavaScriptPlugin;
 import com.google.gerrit.extensions.webui.WebUiPlugin;
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
+import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.inject.Inject;
 
 public class HttpModule extends HttpPluginModule {
 
+  private final PluginConfigFactory cfgFactory;
+  private final String pluginName;
+
+  @Inject
+  HttpModule(PluginConfigFactory cfgFactory,
+      @PluginName String pluginName) {
+    this.cfgFactory = cfgFactory;
+    this.pluginName = pluginName;
+  }
+
   @Override
   protected void configureServlets() {
-    serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$")
-        .with(ImageServlet.class);
+    if (cfgFactory.getFromGerritConfig(pluginName, true)
+        .getBoolean("enableImageServer", true)) {
+      serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$")
+          .with(ImageServlet.class);
+    }
 
     DynamicSet.bind(binder(), WebUiPlugin.class)
         .toInstance(new GwtPlugin("imagare"));

@@ -43,6 +43,8 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
     public String defaultProject;
     public LinkDecoration linkDecoration;
     public Boolean stage;
+    public String pattern;
+    public String uploadUrl;
   }
 
   private final PluginConfigFactory cfgFactory;
@@ -93,6 +95,14 @@ public class PutConfig implements RestModifyView<ConfigResource, Input>{
       } else {
         cfg.unset("plugin", pluginName, "stage");
       }
+    }
+
+    if (input.pattern != null) {
+      cfg.setString("plugin", pluginName, "pattern", input.pattern);
+    }
+
+    if (input.uploadUrl != null) {
+      cfg.setString("plugin", pluginName, "uploadUrl", input.uploadUrl);
     }
 
     cfg.save();

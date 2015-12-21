@@ -16,6 +16,8 @@ package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.webui.TopMenu;
+import com.google.gerrit.server.config.PluginConfig;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -26,10 +28,20 @@ public class ImagareMenu implements TopMenu {
   private final List<MenuEntry> menuEntries;
 
   @Inject
-  public ImagareMenu(@PluginName String pluginName) {
+  public ImagareMenu(PluginConfigFactory cfgFactory,
+      @PluginName String pluginName) {
     menuEntries = new ArrayList<>();
-    menuEntries.add(new MenuEntry("Tools", Collections
-        .singletonList(new MenuItem("Image Upload", "#/x/" + pluginName + "/upload", ""))));
+    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName, true);
+    if (cfg.getBoolean("enableImageServer", true)) {
+      menuEntries.add(new MenuEntry("Tools", Collections
+          .singletonList(new MenuItem("Image Upload", "#/x/" + pluginName + "/upload", ""))));
+    } else {
+      String uploadUrl = cfg.getString("uploadUrl");
+      if (uploadUrl != null) {
+        menuEntries.add(new MenuEntry("Tools", Collections
+            .singletonList(new MenuItem("Image Upload", uploadUrl))));
+      }
+    }
   }
 
   @Override

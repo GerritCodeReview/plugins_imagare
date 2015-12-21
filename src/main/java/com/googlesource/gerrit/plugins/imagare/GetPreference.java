@@ -83,6 +83,10 @@ public class GetPreference implements RestReadView<AccountResource> {
       info.stage = null;
     }
 
+    info.enableImageServer = globalCfg.enableImageServer;
+    info.pattern = globalCfg.pattern;
+    info.uploadUrl = globalCfg.uploadUrl;
+
     return info;
   }
 }

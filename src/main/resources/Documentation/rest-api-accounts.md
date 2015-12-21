@@ -35,7 +35,8 @@ plugin.
   )]}'
   {
     "default_project": "All-Images",
-    "link_decoration": "INLINE"
+    "link_decoration": "INLINE",
+    "enable\_image_server": true
   }
 ```
 

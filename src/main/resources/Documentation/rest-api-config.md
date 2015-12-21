@@ -33,7 +33,8 @@ contains the configuration of the @PLUGIN@ plugin.
 
   )]}'
   {
-    "default_project": "All-Images"
+    "default_project": "All-Images",
+    "enable\_image_server": true
   }
 ```
 
@@ -72,6 +73,10 @@ plugin.
   mouse over an image link, `INLINE`: the image is inlined instead of
   the URL.
 * _stage_: Whether images should be staged before upload.
+* _enable\_image\_server_: Whether Gerrit is used as image server.
+* _pattern_: JavaScript Regular expression to match URLs of images
+  that should be embedded.
+* _upload\_url_: URL to upload images.
 
 SEE ALSO
 --------

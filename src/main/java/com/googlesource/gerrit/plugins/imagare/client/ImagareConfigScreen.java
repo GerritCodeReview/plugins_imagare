@@ -52,18 +52,20 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
       });
   }
 
-  protected void display(ConfigInfo info) {
+  protected void display(final ConfigInfo info) {
     HorizontalPanel p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
-    p.add(new Label("Project"));
-    Image projectInfo = new Image(ImagarePlugin.RESOURCES.info());
-    projectInfo.setTitle("The default project for the image upload.");
-    p.add(projectInfo);
-    p.add(new Label(":"));
-    projectBox = new TextBox();
-    projectBox.setValue(info.getDefaultProject());
-    p.add(projectBox);
-    add(p);
+    if (info.enableImageServer()) {
+      p.add(new Label("Project"));
+      Image projectInfo = new Image(ImagarePlugin.RESOURCES.info());
+      projectInfo.setTitle("The default project for the image upload.");
+      p.add(projectInfo);
+      p.add(new Label(":"));
+      projectBox = new TextBox();
+      projectBox.setValue(info.getDefaultProject());
+      p.add(projectBox);
+      add(p);
+    }
 
     p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
@@ -87,16 +89,18 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     p.add(linkDecorationBox);
     add(p);
 
-    p = new HorizontalPanel();
-    p.setStyleName("imagare-label-panel");
-    stageBox = new CheckBox("Stage images before upload");
-    stageBox.setValue(info.stage());
-    p.add(stageBox);
-    Image stageInfo = new Image(ImagarePlugin.RESOURCES.info());
-    stageInfo.setTitle("Images are not uploaded immediately but put into a "
-        + "staging area. The upload must be triggered explicitely.");
-    p.add(stageInfo);
-    add(p);
+    if (info.enableImageServer()) {
+      p = new HorizontalPanel();
+      p.setStyleName("imagare-label-panel");
+      stageBox = new CheckBox("Stage images before upload");
+      stageBox.setValue(info.stage());
+      p.add(stageBox);
+      Image stageInfo = new Image(ImagarePlugin.RESOURCES.info());
+      stageInfo.setTitle("Images are not uploaded immediately but put into a "
+          + "staging area. The upload must be triggered explicitely.");
+      p.add(stageInfo);
+      add(p);
+    }
 
     HorizontalPanel buttons = new HorizontalPanel();
     add(buttons);
@@ -106,24 +110,28 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     saveButton.addClickHandler(new ClickHandler() {
       @Override
       public void onClick(final ClickEvent event) {
-        doSave();
+        doSave(info.enableImageServer());
       }
     });
     buttons.add(saveButton);
     saveButton.setEnabled(false);
-    OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, projectBox);
-    onEditEnabler.listenTo(linkDecorationBox);
-    onEditEnabler.listenTo(stageBox);
+    OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, linkDecorationBox);
+    if (info.enableImageServer()) {
+      onEditEnabler.listenTo(projectBox);
+      onEditEnabler.listenTo(stageBox);
+    }
 
     projectBox.setFocus(true);
     saveButton.setEnabled(false);
   }
 
-  private void doSave() {
+  private void doSave(boolean enableImageServer) {
     ConfigInfo in = ConfigInfo.create();
-    in.setDefaultProject(projectBox.getValue());
     in.setLinkDecoration(linkDecorationBox.getValue(linkDecorationBox.getSelectedIndex()));
-    in.setStage(stageBox.getValue());
+    if (enableImageServer) {
+      in.setDefaultProject(projectBox.getValue());
+      in.setStage(stageBox.getValue());
+    }
     restApi.put(in, new AsyncCallback<JavaScriptObject>() {
         @Override
         public void onSuccess(JavaScriptObject result) {

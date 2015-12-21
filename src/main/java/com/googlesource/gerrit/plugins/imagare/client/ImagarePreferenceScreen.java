@@ -38,14 +38,16 @@ public class ImagarePreferenceScreen extends ImagareConfigScreen {
 
   @Override
   protected void display(ConfigInfo info) {
-    HorizontalPanel p = new HorizontalPanel();
-    p.setStyleName("imagare-menu-panel");
-    Anchor prefsAnchor = new Anchor(new ImageResourceRenderer().render(
-        ImagarePlugin.RESOURCES.image()),
-        "#/x/" + Plugin.get().getPluginName() + "/upload");
-    prefsAnchor.setTitle("Upload Image");
-    p.add(prefsAnchor);
-    add(p);
+    if (info.enableImageServer()) {
+      HorizontalPanel p = new HorizontalPanel();
+      p.setStyleName("imagare-menu-panel");
+      Anchor uploadAnchor = new Anchor(new ImageResourceRenderer().render(
+          ImagarePlugin.RESOURCES.image()),
+          "#/x/" + Plugin.get().getPluginName() + "/upload");
+      uploadAnchor.setTitle("Upload Image");
+      p.add(uploadAnchor);
+      add(p);
+    }
 
     super.display(info);
   }

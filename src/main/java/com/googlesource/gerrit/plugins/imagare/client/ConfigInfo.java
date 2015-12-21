@@ -28,10 +28,15 @@ public class ConfigInfo extends JavaScriptObject {
   private final native String link_decoration() /*-{ return this.link_decoration; }-*/;
 
   final native boolean stage() /*-{ return this.stage ? true : false; }-*/;
+  final native boolean enableImageServer() /*-{ return this.enable_image_server ? true : false; }-*/;
+  final native String pattern() /*-{ return this.pattern; }-*/;
+  final native String uploadUrl() /*-{ return this.upload_url; }-*/;
 
   final native void setDefaultProject(String p) /*-{ this.default_project = p; }-*/;
   final native void setLinkDecoration(String d) /*-{ this.link_decoration = d; }-*/;
   final native void setStage(boolean s) /*-{ this.stage = s; }-*/;
+  final native void setPattern(boolean p) /*-{ this.pattern = p; }-*/;
+  final native void setUploadUrl(boolean p) /*-{ this.upload_url = p; }-*/;
 
   static ConfigInfo create() {
     ConfigInfo g = (ConfigInfo) createObject();

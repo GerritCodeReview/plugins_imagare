@@ -16,14 +16,30 @@ package com.googlesource.gerrit.plugins.imagare.client;
 
 import com.google.gerrit.plugin.client.Plugin;
 import com.google.gerrit.plugin.client.PluginEntryPoint;
+import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class ImagarePlugin extends PluginEntryPoint {
   public static final Resources RESOURCES = GWT.create(Resources.class);
 
   @Override
   public void onPluginLoad() {
-    Plugin.get().screen("upload", new ImageUploadScreen.Factory());
+    new RestApi("config").id("server").view(Plugin.get().getPluginName(),
+        "config").get(new AsyncCallback<ConfigInfo>() {
+          @Override
+          public void onSuccess(ConfigInfo info) {
+            if (info.enableImageServer()) {
+              Plugin.get().screen("upload", new ImageUploadScreen.Factory());
+            }
+          }
+
+          @Override
+          public void onFailure(Throwable caught) {
+            // never invoked
+          }
+        });
+
     Plugin.get().screen("settings", new ImagareAdminScreen.Factory());
     Plugin.get().settingsScreen("preferences",
         Plugin.get().getName() + " Preferences",

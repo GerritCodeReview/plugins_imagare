@@ -37,7 +37,7 @@ public class GetConfig implements RestReadView<ConfigResource> {
     ConfigInfo info = new ConfigInfo();
     info.defaultProject =
         MoreObjects.firstNonNull(cfg.getString("defaultProject"), "All-Projects");
-    info.linkDecoration = cfg.getEnum("linkDecoration", LinkDecoration.NONE);
+    info.linkDecoration = cfg.getEnum("linkDecoration", LinkDecoration.INLINE);
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
     }

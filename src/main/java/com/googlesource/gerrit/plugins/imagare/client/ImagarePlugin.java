@@ -25,6 +25,8 @@ public class ImagarePlugin extends PluginEntryPoint {
   public void onPluginLoad() {
     Plugin.get().screen("upload", new ImageUploadScreen.Factory());
     Plugin.get().screen("settings", new ImagareAdminScreen.Factory());
-    Plugin.get().screen("preferences", new ImagarePreferenceScreen.Factory());
+    Plugin.get().settingsScreen("preferences",
+        Plugin.get().getName() + " Preferences",
+        new ImagarePreferenceScreen.Factory());
   }
 }

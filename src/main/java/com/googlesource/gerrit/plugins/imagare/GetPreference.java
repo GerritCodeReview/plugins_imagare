@@ -83,6 +83,8 @@ public class GetPreference implements RestReadView<AccountResource> {
       info.stage = null;
     }
 
+    info.pattern = globalCfg.pattern;
+
     return info;
   }
 }

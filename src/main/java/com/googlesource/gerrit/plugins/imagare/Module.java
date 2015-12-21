@@ -21,27 +21,49 @@ import static com.googlesource.gerrit.plugins.imagare.DeleteOwnImagesCapability.
 import static com.googlesource.gerrit.plugins.imagare.ImageResource.IMAGE_KIND;
 
 import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
 import com.google.gerrit.extensions.webui.TopMenu;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 
 public class Module extends AbstractModule {
 
+  private final PluginConfigFactory cfgFactory;
+  private final String pluginName;
+
+  @Inject
+  Module(PluginConfigFactory cfgFactory,
+      @PluginName String pluginName) {
+    this.cfgFactory = cfgFactory;
+    this.pluginName = pluginName;
+  }
+
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), TopMenu.class).to(ImagareMenu.class);
-    bind(com.google.gerrit.extensions.config.CapabilityDefinition.class)
+    if (cfgFactory.getFromGerritConfig(pluginName, true)
+        .getBoolean("enableImageServer", true)) {
+      bind(com.google.gerrit.extensions.config.CapabilityDefinition.class)
         .annotatedWith(Exports.named(DELETE_OWN_IMAGES))
         .to(DeleteOwnImagesCapability.class);
+      install(new RestApiModule() {
+        @Override
+        protected void configure() {
+          DynamicMap.mapOf(binder(), IMAGE_KIND);
+          bind(ImagesCollection.class);
+          child(PROJECT_KIND, "images").to(ImagesCollection.class);
+          delete(IMAGE_KIND).to(DeleteImage.class);
+        }
+      });
+    }
+
+    DynamicSet.bind(binder(), TopMenu.class).to(ImagareMenu.class);
     install(new RestApiModule() {
       @Override
       protected void configure() {
-        DynamicMap.mapOf(binder(), IMAGE_KIND);
-        bind(ImagesCollection.class);
-        child(PROJECT_KIND, "images").to(ImagesCollection.class);
-        delete(IMAGE_KIND).to(DeleteImage.class);
         get(CONFIG_KIND, "config").to(GetConfig.class);
         put(CONFIG_KIND, "config").to(PutConfig.class);
         get(ACCOUNT_KIND, "preference").to(GetPreference.class);

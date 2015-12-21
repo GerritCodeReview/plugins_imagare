@@ -5,9 +5,12 @@ can upload images. After the upload the user gets an URL under which
 the uploaded image is available. This is useful for sharing screenshots
 and linking them from review comments.
 
+You can either [use the images server that comes with the plugin](#setup)
+or [configure an external image server](#external).
+
 <a id="setup"></a>
-Setup
------
+Setup of Image Server
+---------------------
 The uploaded images are stored in the `refs/images/*` namespace of the
 `All-Projects` project.
 
@@ -31,3 +34,24 @@ To allow deletions of own uploaded images the global capability
 To allow the deletion of any uploaded image the
 [Force Push](../../../Documentation/access-control.html#category_push)
 access right can be assigned on the images namespace.
+
+<a id="external"></a>
+Configure external Image Server
+-------------------------------
+
+To configure an external image server the image server that comes with
+the plugin must be disabled. This is done by setting the
+[enableImageServer](config.html#enable-image-server) to `false`.
+
+A regular expression to match URLs of images that should be embedded
+must be configured as [pattern](config.html#pattern).
+
+Optionally also a [URL for uploading images](config.html#upload-url)
+can be defined.
+
+```
+  [plugin "imagare"]
+    enableImageServer = false
+    pattern = http:\\/\\/i\\.imgur\\.com\\/.*\\.png
+    uploadUrl = http://imgur.com
+```

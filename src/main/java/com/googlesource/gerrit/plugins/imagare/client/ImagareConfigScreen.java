@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public abstract class ImagareConfigScreen extends VerticalPanel {
+  protected final boolean enableImageServer;
   private final RestApi restApi;
 
   private TextBox projectBox;
@@ -36,7 +37,8 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
   private CheckBox stageBox;
   private Button saveButton;
 
-  protected ImagareConfigScreen(RestApi restApi) {
+  protected ImagareConfigScreen(boolean enableImageServer, RestApi restApi) {
+    this.enableImageServer = enableImageServer;
     this.restApi = restApi;
     setStyleName("imagare-config-screen");
     restApi.get(new AsyncCallback<ConfigInfo>() {
@@ -54,18 +56,6 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
 
   protected void display(ConfigInfo info) {
     HorizontalPanel p = new HorizontalPanel();
-    p.setStyleName("imagare-label-panel");
-    p.add(new Label("Project"));
-    Image projectInfo = new Image(ImagarePlugin.RESOURCES.info());
-    projectInfo.setTitle("The default project for the image upload.");
-    p.add(projectInfo);
-    p.add(new Label(":"));
-    projectBox = new TextBox();
-    projectBox.setValue(info.getDefaultProject());
-    p.add(projectBox);
-    add(p);
-
-    p = new HorizontalPanel();
     p.setStyleName("imagare-label-panel");
     p.add(new Label("Link Decoration"));
     Image linkDecorationInfo = new Image(ImagarePlugin.RESOURCES.info());
@@ -87,16 +77,30 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     p.add(linkDecorationBox);
     add(p);
 
-    p = new HorizontalPanel();
-    p.setStyleName("imagare-label-panel");
-    stageBox = new CheckBox("Stage images before upload");
-    stageBox.setValue(info.stage());
-    p.add(stageBox);
-    Image stageInfo = new Image(ImagarePlugin.RESOURCES.info());
-    stageInfo.setTitle("Images are not uploaded immediately but put into a "
-        + "staging area. The upload must be triggered explicitely.");
-    p.add(stageInfo);
-    add(p);
+    if (enableImageServer) {
+      p = new HorizontalPanel();
+      p.setStyleName("imagare-label-panel");
+      p.add(new Label("Project"));
+      Image projectInfo = new Image(ImagarePlugin.RESOURCES.info());
+      projectInfo.setTitle("The default project for the image upload.");
+      p.add(projectInfo);
+      p.add(new Label(":"));
+      projectBox = new TextBox();
+      projectBox.setValue(info.getDefaultProject());
+      p.add(projectBox);
+      add(p);
+
+      p = new HorizontalPanel();
+      p.setStyleName("imagare-label-panel");
+      stageBox = new CheckBox("Stage images before upload");
+      stageBox.setValue(info.stage());
+      p.add(stageBox);
+      Image stageInfo = new Image(ImagarePlugin.RESOURCES.info());
+      stageInfo.setTitle("Images are not uploaded immediately but put into a "
+          + "staging area. The upload must be triggered explicitely.");
+      p.add(stageInfo);
+      add(p);
+    }
 
     HorizontalPanel buttons = new HorizontalPanel();
     add(buttons);
@@ -111,9 +115,11 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     });
     buttons.add(saveButton);
     saveButton.setEnabled(false);
-    OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, projectBox);
-    onEditEnabler.listenTo(linkDecorationBox);
-    onEditEnabler.listenTo(stageBox);
+    OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, linkDecorationBox);
+    if (enableImageServer) {
+      onEditEnabler.listenTo(projectBox);
+      onEditEnabler.listenTo(stageBox);
+    }
 
     projectBox.setFocus(true);
     saveButton.setEnabled(false);
@@ -121,9 +127,11 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
 
   private void doSave() {
     ConfigInfo in = ConfigInfo.create();
-    in.setDefaultProject(projectBox.getValue());
     in.setLinkDecoration(linkDecorationBox.getValue(linkDecorationBox.getSelectedIndex()));
-    in.setStage(stageBox.getValue());
+    if (enableImageServer) {
+      in.setDefaultProject(projectBox.getValue());
+      in.setStage(stageBox.getValue());
+    }
     restApi.put(in, new AsyncCallback<JavaScriptObject>() {
         @Override
         public void onSuccess(JavaScriptObject result) {

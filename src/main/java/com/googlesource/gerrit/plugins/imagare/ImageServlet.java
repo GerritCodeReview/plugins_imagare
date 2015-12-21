@@ -20,13 +20,14 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import com.google.common.base.CharMatcher;
 import com.google.common.hash.Hashing;
 import com.google.common.net.HttpHeaders;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.mime.FileTypeRegistry;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.mime.FileTypeRegistry;
 import com.google.gerrit.server.project.GetHead;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectCache;
@@ -37,6 +38,8 @@ import com.google.gwtexpui.server.CacheHeaders;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import eu.medsea.mimeutil.MimeType;
 
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
@@ -49,8 +52,6 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
-
-import eu.medsea.mimeutil.MimeType;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +66,7 @@ public class ImageServlet extends HttpServlet {
 
   public  static final String PATH_PREFIX = "/project/";
 
+  private final String pluginName;
   private final Provider<ReviewDb> db;
   private final ProjectControl.Factory projectControlFactory;
   private final ProjectCache projectCache;
@@ -74,12 +76,14 @@ public class ImageServlet extends HttpServlet {
 
   @Inject
   ImageServlet(
+      @PluginName String pluginName,
       Provider<ReviewDb> db,
       ProjectControl.Factory projectControlFactory,
       ProjectCache projectCache,
       Provider<GetHead> getHead,
       GitRepositoryManager repoManager,
       FileTypeRegistry fileTypeRegistry) {
+    this.pluginName = pluginName;
     this.db = db;
     this.projectControlFactory = projectControlFactory;
     this.projectCache = projectCache;
@@ -97,7 +101,7 @@ public class ImageServlet extends HttpServlet {
       return;
     }
 
-    ResourceKey key = ResourceKey.fromPath(req.getPathInfo());
+    ResourceKey key = ResourceKey.fromPath(getEncodedPath(req));
     ProjectState state = projectCache.get(key.project);
     if (state == null || key.file == null) {
       notFound(res);
@@ -199,6 +203,15 @@ public class ImageServlet extends HttpServlet {
       notFound(res);
       return;
     }
+  }
+
+  private String getEncodedPath(HttpServletRequest req) {
+    String path = req.getRequestURI();
+    String prefix = "/plugins/" + pluginName;
+    if (path.startsWith(prefix)) {
+      path = path.substring(prefix.length());
+    }
+    return path;
   }
 
   private static String computeETag(Project.NameKey project, ObjectId revId,

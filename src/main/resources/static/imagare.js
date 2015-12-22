@@ -13,24 +13,20 @@
 // limitations under the License.
 
 Gerrit.install(function(self) {
-    function onHistory(t) {
-      if (!startsWith(t, "/c/")) {
-        return;
-      }
-
+    function onComment(e) {
       var prefs = getPrefsFromCookie();
       if (prefs !== null) {
-        convertImageLinks(prefs);
+        convertImageLinks(getLinks(e), prefs);
       } else {
         Gerrit.get('/accounts/self/preference', function(prefs) {
           storePrefsInCookie(prefs);
-          convertImageLinks(prefs);
+          convertImageLinks(getLinks(e), prefs);
         });
       }
     }
 
-    function startsWith(s, p) {
-      return s.slice(0, p.length) == p;
+    function getLinks(e) {
+      return e.getElementsByTagName("a");
     }
 
     function storePrefsInCookie(prefs) {
@@ -64,20 +60,19 @@ Gerrit.install(function(self) {
       return self.getPluginName() + "~prefs";
     }
 
-    function convertImageLinks(prefs) {
+    function convertImageLinks(l, prefs) {
       if (!prefs.pattern) {
         return;
       }
 
       if ('TOOLTIP' === prefs.link_decoration) {
-        addTooltips(prefs.pattern);
+        addTooltips(l, prefs.pattern);
       } else if ('INLINE' === prefs.link_decoration) {
-        inlineImages(prefs.pattern);
+        inlineImages(l, prefs.pattern);
       }
     }
 
-    function inlineImages(pattern) {
-      var l = document.links;
+    function inlineImages(l, pattern) {
       for(var i = 0; i < l.length; i++) {
         if (l[i].href.match(pattern)) {
           var a = document.createElement('a');
@@ -92,7 +87,6 @@ Gerrit.install(function(self) {
     }
 
     function addTooltips(pattern) {
-      var l = document.links;
       for(var i = 0; i < l.length; i++) {
         if (l[i].href.match(pattern)) {
           l[i].onmouseover = function (evt) {
@@ -108,5 +102,5 @@ Gerrit.install(function(self) {
       }
     }
 
-    Gerrit.on('history', onHistory);
+    Gerrit.on('comment', onComment);
   });

@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.imagare.client;
 import com.google.gerrit.plugin.client.Plugin;
 import com.google.gerrit.plugin.client.rpc.RestApi;
 import com.google.gerrit.plugin.client.screen.Screen;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
@@ -57,5 +58,11 @@ public class ImagarePreferenceScreen extends ImagareConfigScreen {
     }
 
     super.display(info);
+  }
+
+  @Override
+  protected void onSave() {
+    super.onSave();
+    Cookies.removeCookie(Plugin.get().getPluginName() + "~prefs");
   }
 }

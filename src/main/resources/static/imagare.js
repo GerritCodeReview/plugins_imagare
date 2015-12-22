@@ -18,21 +18,62 @@ Gerrit.install(function(self) {
         return;
       }
 
-      Gerrit.get('/accounts/self/preference', function(r) {
-        if (!r.pattern) {
-          return;
-        }
-
-        if ('TOOLTIP' === r.link_decoration) {
-          addTooltips(r.pattern);
-        } else if ('INLINE' === r.link_decoration) {
-          inlineImages(r.pattern);
-        }
-      });
+      var prefs = getPrefsFromCookie();
+      if (prefs !== null) {
+        convertImageLinks(prefs);
+      } else {
+        Gerrit.get('/accounts/self/preference', function(prefs) {
+          storePrefsInCookie(prefs);
+          convertImageLinks(prefs);
+        });
+      }
     }
 
     function startsWith(s, p) {
       return s.slice(0, p.length) == p;
+    }
+
+    function storePrefsInCookie(prefs) {
+      var date = new Date();
+      date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000)); // 1 day
+      document.cookie = getCookieName()
+          + "="
+          + JSON.stringify(prefs)
+          + "; expires=" + date.toGMTString()
+          + "; path=/";
+    }
+
+    function getPrefsFromCookie() {
+      var cookie = document.cookie;
+      if (cookie.length > 0) {
+        var cookieName = getCookieName();
+        var start = cookie.indexOf(cookieName + "=");
+        if (start != -1) {
+            start = start + cookieName.length + 1;
+            var end = document.cookie.indexOf(";", start);
+            if (end == -1) {
+                end = document.cookie.length;
+            }
+            return JSON.parse(unescape(document.cookie.substring(start, end)));
+        }
+      }
+      return null;
+    }
+
+    function getCookieName() {
+      return self.getPluginName() + "~prefs";
+    }
+
+    function convertImageLinks(prefs) {
+      if (!prefs.pattern) {
+        return;
+      }
+
+      if ('TOOLTIP' === prefs.link_decoration) {
+        addTooltips(prefs.pattern);
+      } else if ('INLINE' === prefs.link_decoration) {
+        inlineImages(prefs.pattern);
+      }
     }
 
     function inlineImages(pattern) {

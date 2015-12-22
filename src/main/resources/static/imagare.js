@@ -18,7 +18,7 @@ Gerrit.install(function(self) {
       if (prefs !== null) {
         convertImageLinks(getLinks(e), prefs);
       } else {
-        Gerrit.get('/accounts/self/preference', function(prefs) {
+        Gerrit.get('/accounts/self/' + self.getPluginName() + '~preference', function(prefs) {
           storePrefsInCookie(prefs);
           convertImageLinks(getLinks(e), prefs);
         });

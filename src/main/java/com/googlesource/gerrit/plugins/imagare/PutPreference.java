@@ -117,7 +117,7 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
       }
     } else {
       if (!stage) {
-        db.unset(PREFERENCE, username, KEY_DEFAULT_PROJECT);
+        db.unset(PREFERENCE, username, KEY_STAGE);
         modified = true;
       }
     }

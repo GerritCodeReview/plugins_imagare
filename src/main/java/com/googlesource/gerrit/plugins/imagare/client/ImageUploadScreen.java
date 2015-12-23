@@ -55,7 +55,7 @@ public class ImageUploadScreen extends VerticalPanel {
     HorizontalPanel p = new HorizontalPanel();
     p.setStyleName("imagare-menu-panel");
     Anchor prefsAnchor = new Anchor(new ImageResourceRenderer().render(
-        ImagarePlugin.RESOURCES.preferences()),
+        ImagarePlugin.RESOURCES.gear()),
         "#/settings/x/" + Plugin.get().getPluginName() + "/preferences");
     prefsAnchor.setTitle("Edit Preferences");
     p.add(prefsAnchor);

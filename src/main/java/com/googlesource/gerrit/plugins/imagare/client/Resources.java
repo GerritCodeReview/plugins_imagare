@@ -14,10 +14,9 @@
 
 package com.googlesource.gerrit.plugins.imagare.client;
 
-import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
-public interface Resources extends ClientBundle {
+public interface Resources extends com.google.gerrit.client.Resources {
 
   @Source("delete.png")
   public ImageResource delete();
@@ -27,10 +26,4 @@ public interface Resources extends ClientBundle {
 
   @Source("image.png")
   public ImageResource image();
-
-  @Source("info.png")
-  public ImageResource info();
-
-  @Source("preferences.png")
-  public ImageResource preferences();
 }

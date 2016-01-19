@@ -19,16 +19,16 @@ Clone bucklets library:
   git clone https://gerrit.googlesource.com/bucklets
 
 ```
-and link it to reviewers plugin directory:
+and link it to imagare plugin directory:
 
 ```
-  cd reviewers && ln -s ../bucklets .
+  cd imagare && ln -s ../bucklets .
 ```
 
 Add link to the .buckversion file:
 
 ```
-  cd reviewers && ln -s bucklets/buckversion .buckversion
+  cd imagare && ln -s bucklets/buckversion .buckversion
 ```
 
 To build the plugin, issue the following command:

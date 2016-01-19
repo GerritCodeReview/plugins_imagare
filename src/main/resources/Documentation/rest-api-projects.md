@@ -22,6 +22,8 @@ Caller must have the
 [Create Reference](../../../Documentation/access-control.html#category_create)
 access right on the `refs/images/*` namespace of the project.
 
+Only available if [image server is enabled](config.html#enable-image-server).
+
 #### Request
 
 ```
@@ -49,6 +51,8 @@ Caller must have the
 access right on the `refs/images/*` namespace of the project or be
 granted the `Delete Own Images` global capability which allows deleting
 own images.
+
+Only available if [image server is enabled](config.html#enable-image-server).
 
 #### Request
 

@@ -24,28 +24,37 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 public class ImagarePreferenceScreen extends ImagareConfigScreen {
 
   static class Factory implements Screen.EntryPoint {
+    private final boolean enableImageServer;
+
+    Factory(boolean enableImageServer) {
+      this.enableImageServer = enableImageServer;
+    }
+
     @Override
     public void onLoad(Screen screen) {
       screen.setPageTitle("Imagare Preferences");
-      screen.show(new ImagarePreferenceScreen());
+      screen.show(new ImagarePreferenceScreen(enableImageServer));
     }
   }
 
-  ImagarePreferenceScreen() {
-    super(new RestApi("accounts").id("self")
-        .view(Plugin.get().getPluginName(), "preference"));
+  ImagarePreferenceScreen(boolean enableImageServer) {
+    super(enableImageServer,
+        new RestApi("accounts").id("self").view(
+            Plugin.get().getPluginName(), "preference"));
   }
 
   @Override
   protected void display(ConfigInfo info) {
-    HorizontalPanel p = new HorizontalPanel();
-    p.setStyleName("imagare-menu-panel");
-    Anchor prefsAnchor = new Anchor(new ImageResourceRenderer().render(
-        ImagarePlugin.RESOURCES.image()),
-        "#/x/" + Plugin.get().getPluginName() + "/upload");
-    prefsAnchor.setTitle("Upload Image");
-    p.add(prefsAnchor);
-    add(p);
+    if (enableImageServer) {
+      HorizontalPanel p = new HorizontalPanel();
+      p.setStyleName("imagare-menu-panel");
+      Anchor uploadAnchor = new Anchor(new ImageResourceRenderer().render(
+          ImagarePlugin.RESOURCES.image()),
+          "#/x/" + Plugin.get().getPluginName() + "/upload");
+      uploadAnchor.setTitle("Upload Image");
+      p.add(uploadAnchor);
+      add(p);
+    }
 
     super.display(info);
   }

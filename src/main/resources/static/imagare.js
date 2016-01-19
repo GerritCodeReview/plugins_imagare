@@ -14,6 +14,10 @@
 
 Gerrit.install(function(self) {
     function onHistory(t) {
+      if (!startsWith(t, "/c/")) {
+        return;
+      }
+
       Gerrit.get('/accounts/self/preference', function(r) {
         if (!r.pattern) {
           return;
@@ -25,6 +29,10 @@ Gerrit.install(function(self) {
           inlineImages(r.pattern);
         }
       });
+    }
+
+    function startsWith(s, p) {
+      return s.slice(0, p.length) == p;
     }
 
     function inlineImages(pattern) {

@@ -136,6 +136,7 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
         @Override
         public void onSuccess(JavaScriptObject result) {
           saveButton.setEnabled(false);
+          onSave();
         }
 
         @Override
@@ -143,5 +144,8 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
           // never invoked
         }
       });
+  }
+
+  protected void onSave() {
   }
 }

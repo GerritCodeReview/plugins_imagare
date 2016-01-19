@@ -29,7 +29,7 @@ public class ImagareAdminScreen extends ImagareConfigScreen {
 
     @Override
     public void onLoad(Screen screen) {
-      screen.setPageTitle("Imagare Admin");
+      screen.setPageTitle(Plugin.get().getName() + "Admin");
       screen.show(new ImagareAdminScreen(enableImageServer));
     }
   }

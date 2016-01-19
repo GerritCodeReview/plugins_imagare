@@ -33,7 +33,7 @@ public class ImagarePreferenceScreen extends ImagareConfigScreen {
 
     @Override
     public void onLoad(Screen screen) {
-      screen.setPageTitle("Imagare Preferences");
+      screen.setPageTitle(Plugin.get().getName() + " Preferences");
       screen.show(new ImagarePreferenceScreen(enableImageServer));
     }
   }

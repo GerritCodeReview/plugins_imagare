@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.client.MenuItem;
 import com.google.gerrit.extensions.webui.TopMenu;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;

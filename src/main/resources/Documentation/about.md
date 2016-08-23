@@ -41,12 +41,12 @@ Configure external Image Server
 
 To configure an external image server the image server that comes with
 the plugin must be disabled. This is done by setting the
-[enableImageServer](config.html#enable-image-server) to `false`.
+[enableImageServer](config.md#enable-image-server) to `false`.
 
 A regular expression to match URLs of images that should be embedded
-must be configured as [pattern](config.html#pattern).
+must be configured as [pattern](config.md#pattern).
 
-Optionally also a [URL for uploading images](config.html#upload-url)
+Optionally also a [URL for uploading images](config.md#upload-url)
 can be defined.
 
 ```

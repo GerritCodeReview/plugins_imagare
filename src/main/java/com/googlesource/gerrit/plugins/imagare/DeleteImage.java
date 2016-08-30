@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
-import com.google.gerrit.common.ChangeHooks;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
@@ -51,17 +50,16 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   private final Provider<IdentifiedUser> self;
   private final GitRepositoryManager repoManager;
   private final GitReferenceUpdated referenceUpdated;
-  private final ChangeHooks hooks;
 
   @Inject
-  public DeleteImage(@PluginName String pluginName, Provider<IdentifiedUser> self,
-      GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
-      ChangeHooks hooks) {
+  public DeleteImage(@PluginName String pluginName,
+      Provider<IdentifiedUser> self,
+      GitRepositoryManager repoManager,
+      GitReferenceUpdated referenceUpdated) {
     this.pluginName = pluginName;
     this.self = self;
     this.repoManager = repoManager;
     this.referenceUpdated = referenceUpdated;
-    this.hooks = hooks;
   }
 
   @Override
@@ -95,8 +93,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
         case NO_CHANGE:
         case FAST_FORWARD:
         case FORCED:
-          referenceUpdated.fire(rsrc.getProject(), u);
-          hooks.doRefUpdatedHook(rsrc.getBranchKey(), u, self.get().getAccount());
+          referenceUpdated.fire(rsrc.getProject(), u, self.get().getAccount());
           break;
 
         case REJECTED_CURRENT_BRANCH:
@@ -113,7 +110,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
 
   private void validateOwnImage(Repository repo, String ref)
       throws IOException, ResourceNotFoundException, AuthException {
-    Ref r = repo.getRef(ref);
+    Ref r = repo.exactRef(ref);
     if (r == null) {
       throw new ResourceNotFoundException(ref);
     }

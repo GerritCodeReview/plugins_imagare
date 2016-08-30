@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
-import com.google.gerrit.common.ChangeHooks;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
@@ -23,7 +22,6 @@ import com.google.gerrit.extensions.restapi.MethodNotAllowedException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
-import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.mime.FileTypeRegistry;
@@ -74,7 +72,6 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final Provider<IdentifiedUser> self;
   private final GitRepositoryManager repoManager;
   private final GitReferenceUpdated referenceUpdated;
-  private final ChangeHooks hooks;
   private final PersonIdent myIdent;
   private final String canonicalWebUrl;
   private final Config cfg;
@@ -82,17 +79,20 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final String pluginName;
 
   @Inject
-  public PostImage(FileTypeRegistry registry, Provider<IdentifiedUser> self,
-      GitRepositoryManager repoManager, GitReferenceUpdated referenceUpdated,
-      ChangeHooks hooks, @GerritPersonIdent PersonIdent myIdent,
-      @CanonicalWebUrl String canonicalWebUrl, @GerritServerConfig Config cfg,
-      Provider<ReviewDb> db, @PluginName String pluginName) {
+  public PostImage(FileTypeRegistry registry,
+      Provider<IdentifiedUser> self,
+      GitRepositoryManager repoManager,
+      GitReferenceUpdated referenceUpdated,
+      @GerritPersonIdent PersonIdent myIdent,
+      @CanonicalWebUrl String canonicalWebUrl,
+      @GerritServerConfig Config cfg,
+      Provider<ReviewDb> db,
+      @PluginName String pluginName) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
     this.repoManager = repoManager;
     this.referenceUpdated = referenceUpdated;
-    this.hooks = hooks;
     this.myIdent = myIdent;
     this.canonicalWebUrl = canonicalWebUrl;
     this.cfg = cfg;
@@ -192,7 +192,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         commitId = oi.insert(cb);
         oi.flush();
 
-        if (!rc.canCreate(db.get(), rw, rw.parseCommit(commitId))) {
+        if (!rc.canCreate(db.get(), repo, rw.parseCommit(commitId))) {
           throw new AuthException(String.format(
               "Project %s doesn't allow image upload.", pc.getProject().getName()));
         }
@@ -202,9 +202,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         ru.setNewObjectId(commitId);
         ru.disableRefLog();
         if (ru.update(rw) == RefUpdate.Result.NEW) {
-          referenceUpdated.fire(pc.getProject().getNameKey(), ru);
-          hooks.doRefUpdatedHook(new Branch.NameKey(pc.getProject()
-              .getNameKey(), ref), ru, self.get().getAccount());
+          referenceUpdated.fire(pc.getProject().getNameKey(), ru,
+              self.get().getAccount());
         } else {
           throw new IOException(String.format(
               "Failed to create ref %s in %s: %s", ref,

@@ -142,7 +142,7 @@ public class ImageServlet extends HttpServlet {
         if (ObjectId.isId(rev)) {
           try (RevWalk rw = new RevWalk(repo)) {
             RevCommit commit = rw.parseCommit(repo.resolve(rev));
-            if (!projectControl.canReadCommit(db.get(), rw, commit)) {
+            if (!projectControl.canReadCommit(db.get(), repo, commit)) {
               notFound(res);
               return;
             }

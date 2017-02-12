@@ -1,10 +1,7 @@
 Build
 =====
 
-This plugin can be built with Bazel or Maven.
-
-Bazel
-----
+This plugin can be built with Bazel.
 
 Clone (or link) this plugin to the `plugins` directory of Gerrit's source tree.
 
@@ -29,21 +26,6 @@ Gerrit core in `tools/bzl/plugins.bzl`, and execute:
 ```
   ./tools/eclipse/project.py
 ```
-
-Maven
------
-
-Note that the Maven build is provided for compatibility reasons, but
-it is considered to be deprecated and will be removed in a future
-version of this plugin.
-
-To build with Maven, run
-
-```
-  mvn clean package
-```
-
-When building with Maven, the Gerrit Plugin API must be available.
 
 How to build the Gerrit Plugin API is described in the [Gerrit
 documentation](../../../Documentation/dev-bazel.html#_extension_and_plugin_api_jar_files).

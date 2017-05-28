@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import static com.google.gerrit.server.permissions.GlobalPermission.ADMINISTRATE_SERVER;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.PREFERENCE;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_DEFAULT_PROJECT;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_LINK_DECORATION;
@@ -30,6 +31,7 @@ import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
 import com.google.gerrit.server.git.MetaDataUpdate;
 import com.google.gerrit.server.git.ProjectLevelConfig;
+import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -46,23 +48,25 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
   private final ProjectCache projectCache;
   private final MetaDataUpdate.User metaDataUpdateFactory;
   private final String pluginName;
+  private final PermissionBackend permissionBackend;
 
   @Inject
   PutPreference(Provider<IdentifiedUser> self, ProjectCache projectCache,
-      MetaDataUpdate.User metaDataUpdateFactory, @PluginName String pluginName) {
+      MetaDataUpdate.User metaDataUpdateFactory, @PluginName String pluginName,
+      PermissionBackend permissionBackend) {
     this.self = self;
     this.projectCache = projectCache;
     this.metaDataUpdateFactory = metaDataUpdateFactory;
     this.pluginName = pluginName;
+    this.permissionBackend = permissionBackend;
   }
 
   @Override
   public Response<String> apply(AccountResource rsrc, Input input)
       throws AuthException, RepositoryNotFoundException, IOException,
       UnprocessableEntityException {
-    if (self.get() != rsrc.getUser()
-        && !self.get().getCapabilities().canAdministrateServer()) {
-      throw new AuthException("not allowed to change preference");
+    if (self.get() != rsrc.getUser()) {
+      permissionBackend.user(self).check(ADMINISTRATE_SERVER);
     }
     if (input == null) {
       input = new Input();

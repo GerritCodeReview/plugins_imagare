@@ -26,8 +26,13 @@ import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.mime.FileTypeRegistry;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.permissions.ProjectPermission;
+import com.google.gerrit.server.permissions.RefPermission;
 import com.google.gerrit.server.project.GetHead;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectCache;
@@ -73,6 +78,8 @@ public class ImageServlet extends HttpServlet {
   private final Provider<GetHead> getHead;
   private final GitRepositoryManager repoManager;
   private final FileTypeRegistry fileTypeRegistry;
+  private final PermissionBackend permissionBackend;
+  private final Provider<CurrentUser> user;
 
   @Inject
   ImageServlet(
@@ -82,7 +89,9 @@ public class ImageServlet extends HttpServlet {
       ProjectCache projectCache,
       Provider<GetHead> getHead,
       GitRepositoryManager repoManager,
-      FileTypeRegistry fileTypeRegistry) {
+      FileTypeRegistry fileTypeRegistry,
+      PermissionBackend permissionBackend,
+      Provider<CurrentUser> user) {
     this.pluginName = pluginName;
     this.db = db;
     this.projectControlFactory = projectControlFactory;
@@ -90,6 +99,8 @@ public class ImageServlet extends HttpServlet {
     this.getHead = getHead;
     this.repoManager = repoManager;
     this.fileTypeRegistry = fileTypeRegistry;
+    this.permissionBackend = permissionBackend;
+    this.user = user;
   }
 
   @Override
@@ -125,7 +136,8 @@ public class ImageServlet extends HttpServlet {
           if (!rev.startsWith(Constants.R_REFS)) {
             rev = Constants.R_HEADS + rev;
           }
-          if (!projectControl.controlForRef(rev).isVisible()) {
+          PermissionBackend.ForProject perm = permissionBackend.user(user).project(rev);
+          if (!perm.ref(ref.getName())) {
             notFound(res);
             return;
           }

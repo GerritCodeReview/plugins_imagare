@@ -40,7 +40,6 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import eu.medsea.mimeutil.MimeType;
-
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Constants;
@@ -55,7 +54,6 @@ import org.eclipse.jgit.treewalk.filter.PathFilter;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -108,7 +106,7 @@ public class ImageServlet extends HttpServlet {
       return;
     }
 
-    MimeType mimeType = fileTypeRegistry.getMimeType(key.file, null);
+    MimeType mimeType = fileTypeRegistry.getMimeType(key.file, (byte[])null);
     if (!("image".equals(mimeType.getMediaType())
           && fileTypeRegistry.isSafeInline(mimeType))) {
       notFound(res);
@@ -116,7 +114,7 @@ public class ImageServlet extends HttpServlet {
     }
 
     try {
-      ProjectControl projectControl = projectControlFactory.validateFor(key.project);
+      ProjectControl projectControl = projectControlFactory.controlFor(key.project);
       String rev = key.revision;
       if (rev == null || Constants.HEAD.equals(rev)) {
         rev = getHead.get().apply(new ProjectResource(projectControl));

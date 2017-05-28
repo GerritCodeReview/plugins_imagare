@@ -22,8 +22,9 @@ import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestView;
 import com.google.gerrit.reviewdb.client.Branch;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.RefPermission;
 import com.google.gerrit.server.project.ProjectResource;
-import com.google.gerrit.server.project.RefControl;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -32,12 +33,15 @@ public class ImagesCollection implements
     AcceptsPost<ProjectResource> {
   private final DynamicMap<RestView<ImageResource>> views;
   private final Provider<PostImage> createImage;
+  private final PermissionBackend permissionBackend;
 
   @Inject
   public ImagesCollection(DynamicMap<RestView<ImageResource>> views,
-      Provider<PostImage> createImage) {
+      Provider<PostImage> createImage,
+      PermissionBackend permissionBackend) {
     this.views = views;
     this.createImage = createImage;
+    this.permissionBackend = permissionBackend;
   }
 
   @Override
@@ -48,14 +52,14 @@ public class ImagesCollection implements
   @Override
   public ImageResource parse(ProjectResource parent, IdString id)
       throws ResourceNotFoundException {
-    RefControl refControl =
-        parent.getControl().controlForRef(
-            new Branch.NameKey(parent.getNameKey(), id.get()));
-    if (refControl.canRead()) {
-      return new ImageResource(refControl);
-    } else {
-      throw new ResourceNotFoundException(id);
+    Branch.NameKey branchName = new Branch.NameKey(parent.getNameKey(), id.get());
+    if (permissionBackend
+        .user(parent.getControl().getUser())
+        .ref(branchName)
+        .testOrFalse(RefPermission.READ)) {
+      return new ImageResource(parent.getControl().controlForRef(branchName));
     }
+    throw new ResourceNotFoundException(id);
   }
 
   @Override

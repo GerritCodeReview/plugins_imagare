@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.api.access.PluginPermission;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
@@ -23,11 +24,13 @@ import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.permissions.RefPermission;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import com.googlesource.gerrit.plugins.imagare.DeleteImage.Input;
-
+import java.io.IOException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
@@ -37,8 +40,6 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 public class DeleteImage implements RestModifyView<ImageResource, Input> {
   private static final Logger log = LoggerFactory.getLogger(DeleteImage.class);
@@ -50,30 +51,36 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   private final Provider<IdentifiedUser> self;
   private final GitRepositoryManager repoManager;
   private final GitReferenceUpdated referenceUpdated;
+  private final PermissionBackend permissionBackend;
 
   @Inject
   public DeleteImage(@PluginName String pluginName,
       Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager,
-      GitReferenceUpdated referenceUpdated) {
+      GitReferenceUpdated referenceUpdated,
+      PermissionBackend permissionBackend) {
     this.pluginName = pluginName;
     this.self = self;
     this.repoManager = repoManager;
     this.referenceUpdated = referenceUpdated;
+    this.permissionBackend = permissionBackend;
   }
 
   @Override
   public Response<?> apply(ImageResource rsrc, Input input)
       throws AuthException, ResourceConflictException,
-      RepositoryNotFoundException, IOException, ResourceNotFoundException {
-    if (!rsrc.getControl().canDelete()
-        && !self.get().getCapabilities()
-            .canPerform(pluginName + "-" + DeleteOwnImagesCapability.DELETE_OWN_IMAGES)) {
-      throw new AuthException("not allowed to delete image");
+      RepositoryNotFoundException, IOException, ResourceNotFoundException,
+      PermissionBackendException {
+
+    if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(
+        RefPermission.DELETE)) {
+      permissionBackend.user(self).test(new PluginPermission(pluginName,
+          DeleteOwnImagesCapability.DELETE_OWN_IMAGES));
     }
 
     try (Repository r = repoManager.openRepository(rsrc.getProject())) {
-      if (!rsrc.getControl().canDelete()) {
+      if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(
+          RefPermission.DELETE)) {        
         validateOwnImage(r, rsrc.getRef());
       }
 

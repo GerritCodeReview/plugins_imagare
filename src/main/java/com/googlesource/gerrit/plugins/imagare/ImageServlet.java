@@ -28,6 +28,9 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.mime.FileTypeRegistry;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.permissions.ProjectPermission;
 import com.google.gerrit.server.project.GetHead;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectCache;
@@ -73,6 +76,7 @@ public class ImageServlet extends HttpServlet {
   private final Provider<GetHead> getHead;
   private final GitRepositoryManager repoManager;
   private final FileTypeRegistry fileTypeRegistry;
+  private final PermissionBackend permissionBackend;
 
   @Inject
   ImageServlet(
@@ -82,7 +86,8 @@ public class ImageServlet extends HttpServlet {
       ProjectCache projectCache,
       Provider<GetHead> getHead,
       GitRepositoryManager repoManager,
-      FileTypeRegistry fileTypeRegistry) {
+      FileTypeRegistry fileTypeRegistry,
+      PermissionBackend permissionBackend) {
     this.pluginName = pluginName;
     this.db = db;
     this.projectControlFactory = projectControlFactory;
@@ -90,6 +95,7 @@ public class ImageServlet extends HttpServlet {
     this.getHead = getHead;
     this.repoManager = repoManager;
     this.fileTypeRegistry = fileTypeRegistry;
+    this.permissionBackend = permissionBackend;
   }
 
   @Override

@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25fc139d_2fe73365",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/DeleteImage.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-05-28T12:58:23Z",
+      "side": 1,
+      "message": "Not sure if i did this correct by leaving it here.",
+      "range": {
+        "startLine": 77,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 38
+      },
+      "revId": "d8cac13d1ec77e8c0c4451f2e91862e892b1d0ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9385821e_70d3932f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-05-28T12:58:23Z",
+      "side": 1,
+      "message": "Im not sure what to do for this bit.",
+      "range": {
+        "startLine": 125,
+        "startChar": 6,
+        "endLine": 125,
+        "endChar": 85
+      },
+      "revId": "d8cac13d1ec77e8c0c4451f2e91862e892b1d0ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eadad356_90520cb3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-05-28T12:58:23Z",
+      "side": 1,
+      "message": "Im not sure what to do for this bit.",
+      "range": {
+        "startLine": 134,
+        "startChar": 10,
+        "endLine": 134,
+        "endChar": 63
+      },
+      "revId": "d8cac13d1ec77e8c0c4451f2e91862e892b1d0ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

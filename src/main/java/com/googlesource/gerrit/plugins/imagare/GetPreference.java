@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import static com.google.gerrit.server.permissions.GlobalPermission.ADMINISTRATE_SERVER;
+
 import com.google.common.base.MoreObjects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
@@ -21,6 +23,8 @@ import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
 import com.google.gerrit.server.config.ConfigResource;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -39,21 +43,23 @@ public class GetPreference implements RestReadView<AccountResource> {
   private final ProjectCache projectCache;
   private final String pluginName;
   private final Provider<GetConfig> getConfig;
+  private final PermissionBackend permissionBackend;
 
   @Inject
   GetPreference(Provider<IdentifiedUser> self, ProjectCache projectCache,
-      @PluginName String pluginName, Provider<GetConfig> getConfig) {
+      @PluginName String pluginName, Provider<GetConfig> getConfig,
+      PermissionBackend permissionBackend) {
     this.self = self;
     this.projectCache = projectCache;
     this.pluginName = pluginName;
     this.getConfig = getConfig;
+    this.permissionBackend = permissionBackend;
   }
 
   @Override
-  public ConfigInfo apply(AccountResource rsrc) throws AuthException {
-    if (self.get() != rsrc.getUser()
-        && !self.get().getCapabilities().canAdministrateServer()) {
-      throw new AuthException("not allowed to get preference");
+  public ConfigInfo apply(AccountResource rsrc) throws AuthException, PermissionBackendException {
+    if (self.get() != rsrc.getUser()) {
+      permissionBackend.user(self).check(ADMINISTRATE_SERVER);
     }
 
     String username = self.get().getUserName();

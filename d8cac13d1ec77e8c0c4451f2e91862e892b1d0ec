@@ -25,6 +25,53 @@
     },
     {
       "key": {
+        "uuid": "0252e7fe_680e2b61",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/DeleteImage.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-05-29T01:46:14Z",
+      "side": 1,
+      "message": "See [1] for how to convert this.\n\n[1] https://gerrit-review.googlesource.com/#/c/105095/",
+      "parentUuid": "25fc139d_2fe73365",
+      "range": {
+        "startLine": 77,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 38
+      },
+      "revId": "d8cac13d1ec77e8c0c4451f2e91862e892b1d0ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74099ecc_93101da3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/GetPreference.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-05-29T01:46:14Z",
+      "side": 1,
+      "message": "throws PermissionBackendException",
+      "range": {
+        "startLine": 61,
+        "startChar": 35,
+        "endLine": 61,
+        "endChar": 40
+      },
+      "revId": "d8cac13d1ec77e8c0c4451f2e91862e892b1d0ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9385821e_70d3932f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
         "patchSetId": 4

@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "664cdfdc_ba996fc1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/DeleteImage.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-06-17T15:01:51Z",
+      "side": 1,
+      "message": "Opps!",
+      "range": {
+        "startLine": 83,
+        "startChar": 34,
+        "endLine": 83,
+        "endChar": 42
+      },
+      "revId": "42baa20db6b37d3daee1de54577997d086926012",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0bf439f9_bead76e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-06-17T15:01:51Z",
+      "side": 1,
+      "message": "Why was the location of these imports was changed, something is wrong in my IDE settings.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 31
+      },
+      "revId": "42baa20db6b37d3daee1de54577997d086926012",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

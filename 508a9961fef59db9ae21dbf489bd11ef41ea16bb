@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "83d99dce_71fb8bed",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-06-17T17:56:56Z",
+      "side": 0,
+      "message": "Restore?",
+      "revId": "508a9961fef59db9ae21dbf489bd11ef41ea16bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3079b769_bd67a733",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-06-17T17:56:56Z",
+      "side": 0,
+      "message": "This was still changed.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 46
+      },
+      "revId": "508a9961fef59db9ae21dbf489bd11ef41ea16bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

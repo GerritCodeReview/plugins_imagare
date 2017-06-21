@@ -28,9 +28,7 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import com.googlesource.gerrit.plugins.imagare.GetConfig.ConfigInfo;
-
 import org.eclipse.jgit.lib.Config;
 
 public class GetPreference implements RestReadView<AccountResource> {
@@ -46,8 +44,11 @@ public class GetPreference implements RestReadView<AccountResource> {
   private final PermissionBackend permissionBackend;
 
   @Inject
-  GetPreference(Provider<IdentifiedUser> self, ProjectCache projectCache,
-      @PluginName String pluginName, Provider<GetConfig> getConfig,
+  GetPreference(
+      Provider<IdentifiedUser> self,
+      ProjectCache projectCache,
+      @PluginName String pluginName,
+      Provider<GetConfig> getConfig,
       PermissionBackend permissionBackend) {
     this.self = self;
     this.projectCache = projectCache;
@@ -66,25 +67,26 @@ public class GetPreference implements RestReadView<AccountResource> {
 
     ConfigInfo globalCfg = getConfig.get().apply(new ConfigResource());
 
-    Config db =
-        projectCache.getAllProjects().getConfig(pluginName + ".config").get();
+    Config db = projectCache.getAllProjects().getConfig(pluginName + ".config").get();
     ConfigInfo info = new ConfigInfo();
 
     info.defaultProject =
         MoreObjects.firstNonNull(
-            db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT),
-            globalCfg.defaultProject);
+            db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT), globalCfg.defaultProject);
 
     info.linkDecoration =
-        db.getEnum(PREFERENCE, username, KEY_LINK_DECORATION,
+        db.getEnum(
+            PREFERENCE,
+            username,
+            KEY_LINK_DECORATION,
             MoreObjects.firstNonNull(globalCfg.linkDecoration, LinkDecoration.NONE));
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
     }
 
     info.stage =
-        db.getBoolean(PREFERENCE, username, KEY_STAGE,
-            (globalCfg.stage != null ? globalCfg.stage : false));
+        db.getBoolean(
+            PREFERENCE, username, KEY_STAGE, (globalCfg.stage != null ? globalCfg.stage : false));
     if (!info.stage) {
       info.stage = null;
     }

@@ -14,9 +14,9 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import static com.google.gerrit.server.account.AccountResource.ACCOUNT_KIND;
 import static com.google.gerrit.server.config.ConfigResource.CONFIG_KIND;
 import static com.google.gerrit.server.project.ProjectResource.PROJECT_KIND;
-import static com.google.gerrit.server.account.AccountResource.ACCOUNT_KIND;
 import static com.googlesource.gerrit.plugins.imagare.DeleteOwnImagesCapability.DELETE_OWN_IMAGES;
 import static com.googlesource.gerrit.plugins.imagare.ImageResource.IMAGE_KIND;
 
@@ -36,39 +36,39 @@ public class Module extends AbstractModule {
   private final String pluginName;
 
   @Inject
-  Module(PluginConfigFactory cfgFactory,
-      @PluginName String pluginName) {
+  Module(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
     this.cfgFactory = cfgFactory;
     this.pluginName = pluginName;
   }
 
   @Override
   protected void configure() {
-    if (cfgFactory.getFromGerritConfig(pluginName, true)
-        .getBoolean("enableImageServer", true)) {
+    if (cfgFactory.getFromGerritConfig(pluginName, true).getBoolean("enableImageServer", true)) {
       bind(com.google.gerrit.extensions.config.CapabilityDefinition.class)
-        .annotatedWith(Exports.named(DELETE_OWN_IMAGES))
-        .to(DeleteOwnImagesCapability.class);
-      install(new RestApiModule() {
-        @Override
-        protected void configure() {
-          DynamicMap.mapOf(binder(), IMAGE_KIND);
-          bind(ImagesCollection.class);
-          child(PROJECT_KIND, "images").to(ImagesCollection.class);
-          delete(IMAGE_KIND).to(DeleteImage.class);
-        }
-      });
+          .annotatedWith(Exports.named(DELETE_OWN_IMAGES))
+          .to(DeleteOwnImagesCapability.class);
+      install(
+          new RestApiModule() {
+            @Override
+            protected void configure() {
+              DynamicMap.mapOf(binder(), IMAGE_KIND);
+              bind(ImagesCollection.class);
+              child(PROJECT_KIND, "images").to(ImagesCollection.class);
+              delete(IMAGE_KIND).to(DeleteImage.class);
+            }
+          });
     }
 
     DynamicSet.bind(binder(), TopMenu.class).to(ImagareMenu.class);
-    install(new RestApiModule() {
-      @Override
-      protected void configure() {
-        get(CONFIG_KIND, "config").to(GetConfig.class);
-        put(CONFIG_KIND, "config").to(PutConfig.class);
-        get(ACCOUNT_KIND, "preference").to(GetPreference.class);
-        put(ACCOUNT_KIND, "preference").to(PutPreference.class);
-      }
-    });
+    install(
+        new RestApiModule() {
+          @Override
+          protected void configure() {
+            get(CONFIG_KIND, "config").to(GetConfig.class);
+            put(CONFIG_KIND, "config").to(PutConfig.class);
+            get(ACCOUNT_KIND, "preference").to(GetPreference.class);
+            put(ACCOUNT_KIND, "preference").to(PutPreference.class);
+          }
+        });
   }
 }

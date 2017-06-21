@@ -92,118 +92,155 @@ public class UploadedImagesPanel extends FlowPanel {
       deleteIcon.setVisible(false);
       add(deleteIcon);
 
-      img.addMouseOverHandler(new MouseOverHandler() {
-        @Override
-        public void onMouseOver(MouseOverEvent event) {
-          if (!popup.isVisible()) {
-            Image previewImg = new Image(url);
-            previewImg.setStyleName("imagare-image-popup");
-            previewImg.getElement().setAttribute("style",
-                previewImg.getElement().getAttribute("style")
-                    + "position: absolute; top: " + (img.getAbsoluteTop() + img.getHeight() + 20) + "px; "
-                    + "left: " + img.getAbsoluteLeft() + "px;");
-            popup.add(previewImg);
+      img.addMouseOverHandler(
+          new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+              if (!popup.isVisible()) {
+                Image previewImg = new Image(url);
+                previewImg.setStyleName("imagare-image-popup");
+                previewImg
+                    .getElement()
+                    .setAttribute(
+                        "style",
+                        previewImg.getElement().getAttribute("style")
+                            + "position: absolute; top: "
+                            + (img.getAbsoluteTop() + img.getHeight() + 20)
+                            + "px; "
+                            + "left: "
+                            + img.getAbsoluteLeft()
+                            + "px;");
+                popup.add(previewImg);
 
-            popup.show();
-            popup.setVisible(true);
-          }
+                popup.show();
+                popup.setVisible(true);
+              }
 
-          cancelHideFullScreenIcon();
-          fullScreenIcon.getElement().setAttribute("style",
-              fullScreenIcon.getElement().getAttribute("style")
-                  + "position: absolute; top: " + img.getAbsoluteTop() + "px; "
-                  + "left: " + img.getAbsoluteLeft() + "px;");
-          fullScreenIcon.setVisible(true);
+              cancelHideFullScreenIcon();
+              fullScreenIcon
+                  .getElement()
+                  .setAttribute(
+                      "style",
+                      fullScreenIcon.getElement().getAttribute("style")
+                          + "position: absolute; top: "
+                          + img.getAbsoluteTop()
+                          + "px; "
+                          + "left: "
+                          + img.getAbsoluteLeft()
+                          + "px;");
+              fullScreenIcon.setVisible(true);
 
-          cancelHideDeleteIcon();
-          deleteIcon.getElement().setAttribute("style",
-              deleteIcon.getElement().getAttribute("style")
-                  + "position: absolute; top: " + img.getAbsoluteTop() + "px; "
-                  + "left: " + (img.getAbsoluteLeft() + fullScreenIcon.getWidth()) + "px;");
-          deleteIcon.setVisible(true);
-        }
-      });
-      img.addMouseOutHandler(new MouseOutHandler() {
-        @Override
-        public void onMouseOut(MouseOutEvent event) {
-          popup.setVisible(false);
-          popup.clear();
-          hideFullScreenIcon();
-          hideDeleteIcon();
-        }
-      });
+              cancelHideDeleteIcon();
+              deleteIcon
+                  .getElement()
+                  .setAttribute(
+                      "style",
+                      deleteIcon.getElement().getAttribute("style")
+                          + "position: absolute; top: "
+                          + img.getAbsoluteTop()
+                          + "px; "
+                          + "left: "
+                          + (img.getAbsoluteLeft() + fullScreenIcon.getWidth())
+                          + "px;");
+              deleteIcon.setVisible(true);
+            }
+          });
+      img.addMouseOutHandler(
+          new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+              popup.setVisible(false);
+              popup.clear();
+              hideFullScreenIcon();
+              hideDeleteIcon();
+            }
+          });
 
-      fullScreenIcon.addMouseOverHandler(new MouseOverHandler() {
-        @Override
-        public void onMouseOver(MouseOverEvent event) {
-          cancelHideFullScreenIcon();
-          cancelHideDeleteIcon();
-        }
-      });
+      fullScreenIcon.addMouseOverHandler(
+          new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+              cancelHideFullScreenIcon();
+              cancelHideDeleteIcon();
+            }
+          });
 
-      fullScreenIcon.addMouseOutHandler(new MouseOutHandler() {
-        @Override
-        public void onMouseOut(MouseOutEvent event) {
-          hideFullScreenIcon();
-          hideDeleteIcon();
-        }
-      });
+      fullScreenIcon.addMouseOutHandler(
+          new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+              hideFullScreenIcon();
+              hideDeleteIcon();
+            }
+          });
 
-      fullScreenIcon.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          Window.open(url, "_blank", "");
-          popup.setVisible(false);
-          popup.clear();
-        }
-      });
+      fullScreenIcon.addClickHandler(
+          new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              Window.open(url, "_blank", "");
+              popup.setVisible(false);
+              popup.clear();
+            }
+          });
 
-      deleteIcon.addMouseOverHandler(new MouseOverHandler() {
-        @Override
-        public void onMouseOver(MouseOverEvent event) {
-          cancelHideFullScreenIcon();
-          cancelHideDeleteIcon();
-        }
-      });
+      deleteIcon.addMouseOverHandler(
+          new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+              cancelHideFullScreenIcon();
+              cancelHideDeleteIcon();
+            }
+          });
 
-      deleteIcon.addMouseOutHandler(new MouseOutHandler() {
-        @Override
-        public void onMouseOut(MouseOutEvent event) {
-          hideDeleteIcon();
-          hideFullScreenIcon();
-        }
-      });
+      deleteIcon.addMouseOutHandler(
+          new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+              hideDeleteIcon();
+              hideFullScreenIcon();
+            }
+          });
 
-      deleteIcon.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          new ConfirmationDialog("Delete Image",
-              new SafeHtmlBuilder().append("Are you sure you want to delete '" + fileName + "'?").br().br(),
-              new ConfirmationCallback() {
-                @Override
-                public void onOk() {
-                  new RestApi("projects").view(project)
-                      .view(Plugin.get().getPluginName(), "images").view(ref)
-                      .delete(new AsyncCallback<NoContent>() {
+      deleteIcon.addClickHandler(
+          new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              new ConfirmationDialog(
+                      "Delete Image",
+                      new SafeHtmlBuilder()
+                          .append("Are you sure you want to delete '" + fileName + "'?")
+                          .br()
+                          .br(),
+                      new ConfirmationCallback() {
                         @Override
-                        public void onSuccess(NoContent info) {
-                          UploadedImagesPanel.this.remove(ImagePreview.this);
-                          uploadedImagesLabel.setVisible(
-                              UploadedImagesPanel.this.getWidgetCount() > 1);
+                        public void onOk() {
+                          new RestApi("projects")
+                              .view(project)
+                              .view(Plugin.get().getPluginName(), "images")
+                              .view(ref)
+                              .delete(
+                                  new AsyncCallback<NoContent>() {
+                                    @Override
+                                    public void onSuccess(NoContent info) {
+                                      UploadedImagesPanel.this.remove(ImagePreview.this);
+                                      uploadedImagesLabel.setVisible(
+                                          UploadedImagesPanel.this.getWidgetCount() > 1);
 
-                          popup.setVisible(false);
-                          popup.clear();
-                        }
+                                      popup.setVisible(false);
+                                      popup.clear();
+                                    }
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                          // never invoked
+                                    @Override
+                                    public void onFailure(Throwable caught) {
+                                      // never invoked
+                                    }
+                                  });
                         }
-                      });
-                }
-              }).center();
-        }
-      });
+                      })
+                  .center();
+            }
+          });
 
       CopyableLabel copyLabel = new CopyableLabel(url);
       copyLabel.setStyleName("imagare-uploaded-copy-label");
@@ -211,12 +248,13 @@ public class UploadedImagesPanel extends FlowPanel {
     }
 
     private void hideFullScreenIcon() {
-      fullScreenIconHideTimer = new Timer() {
-        @Override
-        public void run() {
-          fullScreenIcon.setVisible(false);
-        }
-      };
+      fullScreenIconHideTimer =
+          new Timer() {
+            @Override
+            public void run() {
+              fullScreenIcon.setVisible(false);
+            }
+          };
       fullScreenIconHideTimer.schedule(20);
     }
 
@@ -228,12 +266,13 @@ public class UploadedImagesPanel extends FlowPanel {
     }
 
     private void hideDeleteIcon() {
-      deleteIconHideTimer = new Timer() {
-        @Override
-        public void run() {
-          deleteIcon.setVisible(false);
-        }
-      };
+      deleteIconHideTimer =
+          new Timer() {
+            @Override
+            public void run() {
+              deleteIcon.setVisible(false);
+            }
+          };
       deleteIconHideTimer.schedule(20);
     }
 

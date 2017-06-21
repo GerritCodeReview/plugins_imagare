@@ -25,26 +25,30 @@ public class ImagarePlugin extends PluginEntryPoint {
 
   @Override
   public void onPluginLoad() {
-    new RestApi("config").id("server").view(Plugin.get().getPluginName(),
-        "config").get(new AsyncCallback<ConfigInfo>() {
-          @Override
-          public void onSuccess(ConfigInfo info) {
-            if (info.enableImageServer()) {
-              Plugin.get().screen("upload", new ImageUploadScreen.Factory());
-            }
+    new RestApi("config")
+        .id("server")
+        .view(Plugin.get().getPluginName(), "config")
+        .get(
+            new AsyncCallback<ConfigInfo>() {
+              @Override
+              public void onSuccess(ConfigInfo info) {
+                if (info.enableImageServer()) {
+                  Plugin.get().screen("upload", new ImageUploadScreen.Factory());
+                }
 
-            Plugin.get().screen("settings",
-                new ImagareAdminScreen.Factory(info.enableImageServer()));
-            Plugin.get().settingsScreen("preferences",
-                Plugin.get().getName() + " Preferences",
-                new ImagarePreferenceScreen.Factory(info.enableImageServer()));
-          }
+                Plugin.get()
+                    .screen("settings", new ImagareAdminScreen.Factory(info.enableImageServer()));
+                Plugin.get()
+                    .settingsScreen(
+                        "preferences",
+                        Plugin.get().getName() + " Preferences",
+                        new ImagarePreferenceScreen.Factory(info.enableImageServer()));
+              }
 
-          @Override
-          public void onFailure(Throwable caught) {
-            // never invoked
-          }
-        });
-
+              @Override
+              public void onFailure(Throwable caught) {
+                // never invoked
+              }
+            });
   }
 }

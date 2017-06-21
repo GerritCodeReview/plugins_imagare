@@ -15,10 +15,10 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 import static com.google.gerrit.server.permissions.GlobalPermission.ADMINISTRATE_SERVER;
-import static com.googlesource.gerrit.plugins.imagare.GetPreference.PREFERENCE;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_DEFAULT_PROJECT;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_LINK_DECORATION;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_STAGE;
+import static com.googlesource.gerrit.plugins.imagare.GetPreference.PREFERENCE;
 
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -36,13 +36,10 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import com.googlesource.gerrit.plugins.imagare.PutConfig.Input;
-
+import java.io.IOException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Config;
-
-import java.io.IOException;
 
 public class PutPreference implements RestModifyView<AccountResource, Input> {
   private final Provider<IdentifiedUser> self;
@@ -52,8 +49,11 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
   private final PermissionBackend permissionBackend;
 
   @Inject
-  PutPreference(Provider<IdentifiedUser> self, ProjectCache projectCache,
-      MetaDataUpdate.User metaDataUpdateFactory, @PluginName String pluginName,
+  PutPreference(
+      Provider<IdentifiedUser> self,
+      ProjectCache projectCache,
+      MetaDataUpdate.User metaDataUpdateFactory,
+      @PluginName String pluginName,
       PermissionBackend permissionBackend) {
     this.self = self;
     this.projectCache = projectCache;
@@ -64,8 +64,8 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
 
   @Override
   public Response<String> apply(AccountResource rsrc, Input input)
-      throws AuthException, RepositoryNotFoundException, IOException,
-      UnprocessableEntityException, PermissionBackendException {
+      throws AuthException, RepositoryNotFoundException, IOException, UnprocessableEntityException,
+          PermissionBackendException {
     if (self.get() != rsrc.getUser()) {
       permissionBackend.user(self).check(ADMINISTRATE_SERVER);
     }
@@ -75,20 +75,18 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
 
     String username = self.get().getUserName();
 
-    ProjectLevelConfig storage =
-        projectCache.getAllProjects().getConfig(pluginName + ".config");
+    ProjectLevelConfig storage = projectCache.getAllProjects().getConfig(pluginName + ".config");
     Config db = storage.get();
     boolean modified = false;
 
     String defaultProject = db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT);
     if (Strings.emptyToNull(input.defaultProject) != null) {
       if (projectCache.get(new Project.NameKey(input.defaultProject)) == null) {
-        throw new UnprocessableEntityException("project '"
-            + input.defaultProject + "' does not exist");
+        throw new UnprocessableEntityException(
+            "project '" + input.defaultProject + "' does not exist");
       }
       if (!input.defaultProject.equals(defaultProject)) {
-        db.setString(PREFERENCE, username, KEY_DEFAULT_PROJECT,
-            input.defaultProject);
+        db.setString(PREFERENCE, username, KEY_DEFAULT_PROJECT, input.defaultProject);
         modified = true;
       }
     } else {
@@ -100,11 +98,9 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
 
     if (input.linkDecoration != null) {
       LinkDecoration linkDecoration =
-          db.getEnum(PREFERENCE, username, KEY_LINK_DECORATION,
-              LinkDecoration.NONE);
+          db.getEnum(PREFERENCE, username, KEY_LINK_DECORATION, LinkDecoration.NONE);
       if (!input.linkDecoration.equals(linkDecoration)) {
-        db.setEnum(PREFERENCE, username, KEY_LINK_DECORATION,
-            input.linkDecoration);
+        db.setEnum(PREFERENCE, username, KEY_LINK_DECORATION, input.linkDecoration);
         modified = true;
       }
     } else {
@@ -128,13 +124,12 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
     }
 
     if (modified) {
-      MetaDataUpdate md = metaDataUpdateFactory.create(
-          projectCache.getAllProjects().getProject().getNameKey());
-      md.setMessage("Update " + pluginName + " Preferences for '"
-          + username + "'\n");
+      MetaDataUpdate md =
+          metaDataUpdateFactory.create(projectCache.getAllProjects().getProject().getNameKey());
+      md.setMessage("Update " + pluginName + " Preferences for '" + username + "'\n");
       storage.commit(md);
     }
 
-    return Response.<String> ok("OK");
+    return Response.<String>ok("OK");
   }
 }

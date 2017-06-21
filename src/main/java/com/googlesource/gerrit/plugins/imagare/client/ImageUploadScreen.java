@@ -27,7 +27,6 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +53,10 @@ public class ImageUploadScreen extends VerticalPanel {
 
     HorizontalPanel p = new HorizontalPanel();
     p.setStyleName("imagare-menu-panel");
-    Anchor prefsAnchor = new Anchor(new ImageResourceRenderer().render(
-        ImagarePlugin.RESOURCES.gear()),
-        "#/settings/x/" + Plugin.get().getPluginName() + "/preferences");
+    Anchor prefsAnchor =
+        new Anchor(
+            new ImageResourceRenderer().render(ImagarePlugin.RESOURCES.gear()),
+            "#/settings/x/" + Plugin.get().getPluginName() + "/preferences");
     prefsAnchor.setTitle("Edit Preferences");
     p.add(prefsAnchor);
     add(p);
@@ -80,25 +80,28 @@ public class ImageUploadScreen extends VerticalPanel {
     uploadedPanel = new UploadedImagesPanel();
     add(uploadedPanel);
 
-    new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference")
-        .get(new AsyncCallback<ConfigInfo>() {
-          @Override
-          public void onSuccess(ConfigInfo info) {
-            ImageUploader.setStage(info.stage());
-            String project = getParameter("project");
-            if (project != null) {
-              projectBox.setValue(project);
-            } else {
-              projectBox.setValue(info.getDefaultProject());
-            }
-            uploadPanel.focus();
-          }
+    new RestApi("accounts")
+        .id("self")
+        .view(Plugin.get().getPluginName(), "preference")
+        .get(
+            new AsyncCallback<ConfigInfo>() {
+              @Override
+              public void onSuccess(ConfigInfo info) {
+                ImageUploader.setStage(info.stage());
+                String project = getParameter("project");
+                if (project != null) {
+                  projectBox.setValue(project);
+                } else {
+                  projectBox.setValue(info.getDefaultProject());
+                }
+                uploadPanel.focus();
+              }
 
-          @Override
-          public void onFailure(Throwable caught) {
-            // never invoked
-          }
-        });
+              @Override
+              public void onFailure(Throwable caught) {
+                // never invoked
+              }
+            });
   }
 
   private static String getParameter(String name) {
@@ -106,7 +109,7 @@ public class ImageUploadScreen extends VerticalPanel {
     if (values == null) {
       return null;
     }
-	return values.get(values.size() - 1);
+    return values.get(values.size() - 1);
   }
 
   private static Map<String, List<String>> getParameters() {
@@ -117,8 +120,7 @@ public class ImageUploadScreen extends VerticalPanel {
     }
 
     String queryString =
-        Window.Location.getHash().substring(
-            Window.Location.getHash().indexOf('?') + 1);
+        Window.Location.getHash().substring(Window.Location.getHash().indexOf('?') + 1);
     for (String kvPair : queryString.split("&")) {
       String[] kv = kvPair.split("=", 2);
       if (kv[0].length() == 0) {

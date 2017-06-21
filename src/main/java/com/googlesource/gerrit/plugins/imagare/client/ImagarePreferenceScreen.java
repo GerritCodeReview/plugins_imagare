@@ -39,9 +39,9 @@ public class ImagarePreferenceScreen extends ImagareConfigScreen {
   }
 
   ImagarePreferenceScreen(boolean enableImageServer) {
-    super(enableImageServer,
-        new RestApi("accounts").id("self").view(
-            Plugin.get().getPluginName(), "preference"));
+    super(
+        enableImageServer,
+        new RestApi("accounts").id("self").view(Plugin.get().getPluginName(), "preference"));
   }
 
   @Override
@@ -49,9 +49,10 @@ public class ImagarePreferenceScreen extends ImagareConfigScreen {
     if (enableImageServer) {
       HorizontalPanel p = new HorizontalPanel();
       p.setStyleName("imagare-menu-panel");
-      Anchor uploadAnchor = new Anchor(new ImageResourceRenderer().render(
-          ImagarePlugin.RESOURCES.image()),
-          "#/x/" + Plugin.get().getPluginName() + "/upload");
+      Anchor uploadAnchor =
+          new Anchor(
+              new ImageResourceRenderer().render(ImagarePlugin.RESOURCES.image()),
+              "#/x/" + Plugin.get().getPluginName() + "/upload");
       uploadAnchor.setTitle("Upload Image");
       p.add(uploadAnchor);
       add(p);

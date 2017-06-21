@@ -28,15 +28,15 @@ import com.google.gerrit.server.project.ProjectResource;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class ImagesCollection implements
-    ChildCollection<ProjectResource, ImageResource>,
-    AcceptsPost<ProjectResource> {
+public class ImagesCollection
+    implements ChildCollection<ProjectResource, ImageResource>, AcceptsPost<ProjectResource> {
   private final DynamicMap<RestView<ImageResource>> views;
   private final Provider<PostImage> createImage;
   private final PermissionBackend permissionBackend;
 
   @Inject
-  public ImagesCollection(DynamicMap<RestView<ImageResource>> views,
+  public ImagesCollection(
+      DynamicMap<RestView<ImageResource>> views,
       Provider<PostImage> createImage,
       PermissionBackend permissionBackend) {
     this.views = views;
@@ -50,8 +50,7 @@ public class ImagesCollection implements
   }
 
   @Override
-  public ImageResource parse(ProjectResource parent, IdString id)
-      throws ResourceNotFoundException {
+  public ImageResource parse(ProjectResource parent, IdString id) throws ResourceNotFoundException {
     Branch.NameKey branchName = new Branch.NameKey(parent.getNameKey(), id.get());
     if (permissionBackend
         .user(parent.getControl().getUser())
@@ -69,8 +68,7 @@ public class ImagesCollection implements
 
   @Override
   @SuppressWarnings("unchecked")
-  public PostImage post(ProjectResource parent)
-      throws RestApiException {
+  public PostImage post(ProjectResource parent) throws RestApiException {
     return createImage.get();
   }
 }

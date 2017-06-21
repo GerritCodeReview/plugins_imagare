@@ -30,7 +30,8 @@ public class GetConfig implements RestReadView<ConfigResource> {
   private final String canonicalWebUrl;
 
   @Inject
-  public GetConfig(PluginConfigFactory cfgFactory,
+  public GetConfig(
+      PluginConfigFactory cfgFactory,
       @PluginName String pluginName,
       @PluginCanonicalWebUrl String canonicalWebUrl) {
     this.cfg = cfgFactory.getFromGerritConfig(pluginName);
@@ -41,8 +42,7 @@ public class GetConfig implements RestReadView<ConfigResource> {
   @Override
   public ConfigInfo apply(ConfigResource resource) {
     ConfigInfo info = new ConfigInfo();
-    info.defaultProject =
-        MoreObjects.firstNonNull(cfg.getString("defaultProject"), "All-Projects");
+    info.defaultProject = MoreObjects.firstNonNull(cfg.getString("defaultProject"), "All-Projects");
     info.linkDecoration = cfg.getEnum("linkDecoration", LinkDecoration.INLINE);
     if (LinkDecoration.NONE.equals(info.linkDecoration)) {
       info.linkDecoration = null;
@@ -58,8 +58,9 @@ public class GetConfig implements RestReadView<ConfigResource> {
     }
 
     if (enableImageServer) {
-      info.pattern = escapeRegexpForJavaScript(canonicalWebUrl)
-          + "project/.*/rev/.*/.*\\.(jpg|jpeg|png|gif|bmp|ico|svg|tif|tiff)";
+      info.pattern =
+          escapeRegexpForJavaScript(canonicalWebUrl)
+              + "project/.*/rev/.*/.*\\.(jpg|jpeg|png|gif|bmp|ico|svg|tif|tiff)";
       info.uploadUrl = "#/x/" + pluginName + "/upload";
     } else {
       info.pattern = cfg.getString("pattern");
@@ -70,8 +71,9 @@ public class GetConfig implements RestReadView<ConfigResource> {
   }
 
   /**
-   * Escapes a string for being used in a JavaScript regexp.
-   * The following characters must be escaped: . * + ? ^ $ { } ( ) | [ ] / \
+   * Escapes a string for being used in a JavaScript regexp. The following characters must be
+   * escaped: . * + ? ^ $ { } ( ) | [ ] / \
+   *
    * @param s string to be escaped
    * @return the escaped string
    */

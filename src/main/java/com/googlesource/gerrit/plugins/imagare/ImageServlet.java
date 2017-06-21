@@ -38,8 +38,12 @@ import com.google.gwtexpui.server.CacheHeaders;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-
 import eu.medsea.mimeutil.MimeType;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Constants;
@@ -52,17 +56,11 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Singleton
 public class ImageServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  public  static final String PATH_PREFIX = "/project/";
+  public static final String PATH_PREFIX = "/project/";
 
   private final String pluginName;
   private final Provider<ReviewDb> db;
@@ -91,8 +89,7 @@ public class ImageServlet extends HttpServlet {
   }
 
   @Override
-  public void service(HttpServletRequest req, HttpServletResponse res)
-      throws IOException {
+  public void service(HttpServletRequest req, HttpServletResponse res) throws IOException {
     if (!"GET".equals(req.getMethod()) && !"HEAD".equals(req.getMethod())) {
       CacheHeaders.setNotCacheable(res);
       res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -106,9 +103,8 @@ public class ImageServlet extends HttpServlet {
       return;
     }
 
-    MimeType mimeType = fileTypeRegistry.getMimeType(key.file, (byte[])null);
-    if (!("image".equals(mimeType.getMediaType())
-          && fileTypeRegistry.isSafeInline(mimeType))) {
+    MimeType mimeType = fileTypeRegistry.getMimeType(key.file, (byte[]) null);
+    if (!("image".equals(mimeType.getMediaType()) && fileTypeRegistry.isSafeInline(mimeType))) {
       notFound(res);
       return;
     }
@@ -118,7 +114,7 @@ public class ImageServlet extends HttpServlet {
       String rev = key.revision;
       if (rev == null || Constants.HEAD.equals(rev)) {
         rev = getHead.get().apply(new ProjectResource(projectControl));
-      } else  {
+      } else {
         if (!ObjectId.isId(rev)) {
           if (!rev.startsWith(Constants.R_REFS)) {
             rev = Constants.R_HEADS + rev;
@@ -130,8 +126,7 @@ public class ImageServlet extends HttpServlet {
         }
       }
       try (Repository repo = repoManager.openRepository(key.project)) {
-        ObjectId revId =
-            repo.resolve(rev != null ? rev : Constants.HEAD);
+        ObjectId revId = repo.resolve(rev != null ? rev : Constants.HEAD);
         if (revId == null) {
           notFound(res);
           return;
@@ -183,10 +178,8 @@ public class ImageServlet extends HttpServlet {
               notFound(res);
               return;
             }
-            res.setHeader(HttpHeaders.ETAG,
-                eTag != null
-                    ? eTag
-                    : computeETag(key.project, revId, key.file));
+            res.setHeader(
+                HttpHeaders.ETAG, eTag != null ? eTag : computeETag(key.project, revId, key.file));
             CacheHeaders.setCacheablePrivate(res, 7, TimeUnit.DAYS, false);
             send(req, res, content, mimeType.toString(), commit.getCommitTime());
             return;
@@ -196,8 +189,11 @@ public class ImageServlet extends HttpServlet {
           return;
         }
       }
-    } catch (RepositoryNotFoundException | NoSuchProjectException
-        | ResourceNotFoundException | AuthException | RevisionSyntaxException e) {
+    } catch (RepositoryNotFoundException
+        | NoSuchProjectException
+        | ResourceNotFoundException
+        | AuthException
+        | RevisionSyntaxException e) {
       notFound(res);
       return;
     }
@@ -212,17 +208,23 @@ public class ImageServlet extends HttpServlet {
     return path;
   }
 
-  private static String computeETag(Project.NameKey project, ObjectId revId,
-      String file) {
-    return Hashing.md5().newHasher()
+  private static String computeETag(Project.NameKey project, ObjectId revId, String file) {
+    return Hashing.md5()
+        .newHasher()
         .putUnencodedChars(project.get())
         .putUnencodedChars(revId.getName())
         .putUnencodedChars(file)
-        .hash().toString();
+        .hash()
+        .toString();
   }
 
-  private void send(HttpServletRequest req, HttpServletResponse res,
-      byte[] content, String contentType, long lastModified) throws IOException {
+  private void send(
+      HttpServletRequest req,
+      HttpServletResponse res,
+      byte[] content,
+      String contentType,
+      long lastModified)
+      throws IOException {
     if (0 < lastModified) {
       long ifModifiedSince = req.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE);
       if (ifModifiedSince > 0 && ifModifiedSince == lastModified) {

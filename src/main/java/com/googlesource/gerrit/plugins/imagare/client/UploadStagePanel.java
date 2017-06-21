@@ -62,23 +62,25 @@ public class UploadStagePanel extends VerticalPanel {
 
     Button uploadButton = new Button("Upload");
     uploadButton.setStyleName("imagare-upload-button");
-    uploadButton.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(final ClickEvent event) {
-        doUpload();
-      }
-    });
+    uploadButton.addClickHandler(
+        new ClickHandler() {
+          @Override
+          public void onClick(final ClickEvent event) {
+            doUpload();
+          }
+        });
     buttons.add(uploadButton);
 
     Button cleanButton = new Button("Clean");
     cleanButton.setStyleName("imagare-clean-button");
-    cleanButton.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(final ClickEvent event) {
-        stagedImagesPanel.clear();
-        setVisible(false);
-      }
-    });
+    cleanButton.addClickHandler(
+        new ClickHandler() {
+          @Override
+          public void onClick(final ClickEvent event) {
+            stagedImagesPanel.clear();
+            setVisible(false);
+          }
+        });
     buttons.add(cleanButton);
 
     popup = new PopupPanel();
@@ -94,7 +96,7 @@ public class UploadStagePanel extends VerticalPanel {
 
   boolean isStaged(String project, String dataUrl, String fileName) {
     for (int i = 0; i < stagedImagesPanel.getWidgetCount(); i++) {
-      ImagePreview ip = (ImagePreview)stagedImagesPanel.getWidget(i);
+      ImagePreview ip = (ImagePreview) stagedImagesPanel.getWidget(i);
       if (project.equals(ip.project)
           && dataUrl.endsWith(ip.dataUrl)
           && (fileName != null ? fileName.equals(ip.fileName) : ip.fileName == null)) {
@@ -106,7 +108,7 @@ public class UploadStagePanel extends VerticalPanel {
 
   private void doUpload() {
     for (int i = 0; i < stagedImagesPanel.getWidgetCount(); i++) {
-      ImagePreview ip = (ImagePreview)stagedImagesPanel.getWidget(i);
+      ImagePreview ip = (ImagePreview) stagedImagesPanel.getWidget(i);
       ImageUploader.uploadImage(ip.project, ip.dataUrl, ip.fileName);
     }
     stagedImagesPanel.clear();
@@ -141,62 +143,81 @@ public class UploadStagePanel extends VerticalPanel {
       deleteIcon.setVisible(false);
       add(deleteIcon);
 
-      img.addMouseOverHandler(new MouseOverHandler() {
-        @Override
-        public void onMouseOver(MouseOverEvent event) {
-          if (!popup.isVisible()) {
-            Image previewImg = new Image(dataUrl);
-            previewImg.setStyleName("imagare-image-popup");
-            previewImg.getElement().setAttribute("style",
-                previewImg.getElement().getAttribute("style")
-                    + "position: absolute; top: " + (img.getAbsoluteTop() + img.getHeight() + 20) + "px; "
-                    + "left: " + img.getAbsoluteLeft() + "px;");
-            popup.add(previewImg);
+      img.addMouseOverHandler(
+          new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+              if (!popup.isVisible()) {
+                Image previewImg = new Image(dataUrl);
+                previewImg.setStyleName("imagare-image-popup");
+                previewImg
+                    .getElement()
+                    .setAttribute(
+                        "style",
+                        previewImg.getElement().getAttribute("style")
+                            + "position: absolute; top: "
+                            + (img.getAbsoluteTop() + img.getHeight() + 20)
+                            + "px; "
+                            + "left: "
+                            + img.getAbsoluteLeft()
+                            + "px;");
+                popup.add(previewImg);
 
-            popup.show();
-            popup.setVisible(true);
-          }
+                popup.show();
+                popup.setVisible(true);
+              }
 
-          cancelHideDeleteIcon();
-          deleteIcon.getElement().setAttribute("style",
-              deleteIcon.getElement().getAttribute("style")
-                  + "position: absolute; top: " + img.getAbsoluteTop() + "px; "
-                  + "left: " + img.getAbsoluteLeft() + "px;");
-          deleteIcon.setVisible(true);
-        }
-      });
-      img.addMouseOutHandler(new MouseOutHandler() {
-        @Override
-        public void onMouseOut(MouseOutEvent event) {
-          popup.setVisible(false);
-          popup.clear();
-          hideDeleteIcon();
-        }
-      });
+              cancelHideDeleteIcon();
+              deleteIcon
+                  .getElement()
+                  .setAttribute(
+                      "style",
+                      deleteIcon.getElement().getAttribute("style")
+                          + "position: absolute; top: "
+                          + img.getAbsoluteTop()
+                          + "px; "
+                          + "left: "
+                          + img.getAbsoluteLeft()
+                          + "px;");
+              deleteIcon.setVisible(true);
+            }
+          });
+      img.addMouseOutHandler(
+          new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+              popup.setVisible(false);
+              popup.clear();
+              hideDeleteIcon();
+            }
+          });
 
-      deleteIcon.addMouseOverHandler(new MouseOverHandler() {
-        @Override
-        public void onMouseOver(MouseOverEvent event) {
-          cancelHideDeleteIcon();
-        }
-      });
+      deleteIcon.addMouseOverHandler(
+          new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+              cancelHideDeleteIcon();
+            }
+          });
 
-      deleteIcon.addMouseOutHandler(new MouseOutHandler() {
-        @Override
-        public void onMouseOut(MouseOutEvent event) {
-          hideDeleteIcon();
-        }
-      });
+      deleteIcon.addMouseOutHandler(
+          new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+              hideDeleteIcon();
+            }
+          });
 
-      deleteIcon.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          stagedImagesPanel.remove(ImagePreview.this);
-          UploadStagePanel.this.setVisible(stagedImagesPanel.getWidgetCount() != 0);
-          popup.setVisible(false);
-          popup.clear();
-        }
-      });
+      deleteIcon.addClickHandler(
+          new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              stagedImagesPanel.remove(ImagePreview.this);
+              UploadStagePanel.this.setVisible(stagedImagesPanel.getWidgetCount() != 0);
+              popup.setVisible(false);
+              popup.clear();
+            }
+          });
 
       Label projectLabel = new Label("Project: " + project);
       projectLabel.setStyleName("imagare-stage-label");
@@ -204,12 +225,13 @@ public class UploadStagePanel extends VerticalPanel {
     }
 
     private void hideDeleteIcon() {
-      deleteIconHideTimer = new Timer() {
-        @Override
-        public void run() {
-          deleteIcon.setVisible(false);
-        }
-      };
+      deleteIconHideTimer =
+          new Timer() {
+            @Override
+            public void run() {
+              deleteIcon.setVisible(false);
+            }
+          };
       deleteIconHideTimer.schedule(20);
     }
 
@@ -225,15 +247,17 @@ public class UploadStagePanel extends VerticalPanel {
       fileNameLabel.setStyleName("imagare-stage-image-title");
       add(fileNameLabel);
 
-      fileNameLabel.addDoubleClickHandler(new DoubleClickHandler() {
-        @Override
-        public void onDoubleClick(DoubleClickEvent event) {
-          fileNameLabel.setVisible(false);
-          FileNameEditPanel fileNameEditPanel = new FileNameEditPanel(ImagePreview.this, fileNameLabel);
-          insert(fileNameEditPanel, getWidgetIndex(fileNameLabel));
-          fileNameEditPanel.focusAndSelectAll();
-        }
-      });
+      fileNameLabel.addDoubleClickHandler(
+          new DoubleClickHandler() {
+            @Override
+            public void onDoubleClick(DoubleClickEvent event) {
+              fileNameLabel.setVisible(false);
+              FileNameEditPanel fileNameEditPanel =
+                  new FileNameEditPanel(ImagePreview.this, fileNameLabel);
+              insert(fileNameEditPanel, getWidgetIndex(fileNameLabel));
+              fileNameEditPanel.focusAndSelectAll();
+            }
+          });
     }
 
     private class FileNameEditPanel extends HorizontalPanel {
@@ -262,23 +286,25 @@ public class UploadStagePanel extends VerticalPanel {
         add(fileNameBox);
         add(new Label(extension));
 
-        fileNameBox.addBlurHandler(new BlurHandler() {
-          @Override
-          public void onBlur(BlurEvent event) {
-            saveChanges();
-          }
-        });
+        fileNameBox.addBlurHandler(
+            new BlurHandler() {
+              @Override
+              public void onBlur(BlurEvent event) {
+                saveChanges();
+              }
+            });
 
-        fileNameBox.addKeyDownHandler(new KeyDownHandler() {
-          @Override
-          public void onKeyDown(KeyDownEvent event) {
-            if (event.getNativeKeyCode() == KEY_ESCAPE) {
-              discardChanges();
-            } else if (event.getNativeKeyCode() == KEY_ENTER) {
-              saveChanges();
-            }
-          }
-        });
+        fileNameBox.addKeyDownHandler(
+            new KeyDownHandler() {
+              @Override
+              public void onKeyDown(KeyDownEvent event) {
+                if (event.getNativeKeyCode() == KEY_ESCAPE) {
+                  discardChanges();
+                } else if (event.getNativeKeyCode() == KEY_ENTER) {
+                  saveChanges();
+                }
+              }
+            });
       }
 
       private void saveChanges() {

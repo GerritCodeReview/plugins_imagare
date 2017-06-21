@@ -44,8 +44,7 @@ import org.slf4j.LoggerFactory;
 public class DeleteImage implements RestModifyView<ImageResource, Input> {
   private static final Logger log = LoggerFactory.getLogger(DeleteImage.class);
 
-  public static class Input {
-  }
+  public static class Input {}
 
   private final String pluginName;
   private final Provider<IdentifiedUser> self;
@@ -54,7 +53,8 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   private final PermissionBackend permissionBackend;
 
   @Inject
-  public DeleteImage(@PluginName String pluginName,
+  public DeleteImage(
+      @PluginName String pluginName,
       Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager,
       GitReferenceUpdated referenceUpdated,
@@ -68,19 +68,20 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
 
   @Override
   public Response<?> apply(ImageResource rsrc, Input input)
-      throws AuthException, ResourceConflictException,
-      RepositoryNotFoundException, IOException, ResourceNotFoundException,
-      PermissionBackendException {
+      throws AuthException, ResourceConflictException, RepositoryNotFoundException, IOException,
+          ResourceNotFoundException, PermissionBackendException {
 
-    if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(
-        RefPermission.DELETE)) {
-      permissionBackend.user(self).test(new PluginPermission(pluginName,
-          DeleteOwnImagesCapability.DELETE_OWN_IMAGES));
+    if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(RefPermission.DELETE)) {
+      permissionBackend
+          .user(self)
+          .test(new PluginPermission(pluginName, DeleteOwnImagesCapability.DELETE_OWN_IMAGES));
     }
 
     try (Repository r = repoManager.openRepository(rsrc.getProject())) {
-      if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(
-          RefPermission.DELETE)) {
+      if (!permissionBackend
+          .user(self)
+          .ref(rsrc.getBranchKey())
+          .testOrFalse(RefPermission.DELETE)) {
         validateOwnImage(r, rsrc.getRef());
       }
 
@@ -128,8 +129,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
     }
     try (RevWalk rw = new RevWalk(repo)) {
       RevCommit commit = rw.parseCommit(r.getObjectId());
-      if (!self.get().getNameEmail()
-          .equals(getNameEmail(commit.getCommitterIdent()))) {
+      if (!self.get().getNameEmail().equals(getNameEmail(commit.getCommitterIdent()))) {
         throw new AuthException("not allowed to delete image");
       }
     }

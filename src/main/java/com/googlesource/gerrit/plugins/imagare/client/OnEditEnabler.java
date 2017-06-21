@@ -34,21 +34,22 @@ import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.ValueBoxBase;
-
 import java.util.HashMap;
 import java.util.Map;
 
-
-/** Enables a FocusWidget (e.g. a Button) if an edit is detected from any
- *  registered input widget.
+/**
+ * Enables a FocusWidget (e.g. a Button) if an edit is detected from any registered input widget.
  */
-public class OnEditEnabler implements KeyPressHandler, KeyDownHandler,
-   MouseUpHandler, ChangeHandler, ValueChangeHandler<Object> {
+public class OnEditEnabler
+    implements KeyPressHandler,
+        KeyDownHandler,
+        MouseUpHandler,
+        ChangeHandler,
+        ValueChangeHandler<Object> {
 
   private final FocusWidget widget;
   private Map<TextBoxBase, String> strings = new HashMap<>();
   private String originalValue;
-
 
   // The first parameter to the constructors must be the FocusWidget to enable,
   // subsequent parameters are widgets to listenTo.
@@ -73,7 +74,6 @@ public class OnEditEnabler implements KeyPressHandler, KeyDownHandler,
     widget = w;
   }
 
-
   // Register input widgets to be listened to
 
   public void listenTo(final TextBoxBase tb) {
@@ -88,12 +88,13 @@ public class OnEditEnabler implements KeyPressHandler, KeyDownHandler,
     // up to date with non-user updates of the text (calls to
     // setText()...) and also up to date with user changes which
     // occured after enabling "widget".
-    tb.addFocusHandler(new FocusHandler() {
-        @Override
-        public void onFocus(FocusEvent event) {
-          strings.put(tb, tb.getText().trim());
-        }
-      });
+    tb.addFocusHandler(
+        new FocusHandler() {
+          @Override
+          public void onFocus(FocusEvent event) {
+            strings.put(tb, tb.getText().trim());
+          }
+        });
 
     // CTRL-V Pastes in Chrome seem only detectable via BrowserEvents or
     // KeyDownEvents, the latter is better.
@@ -108,7 +109,6 @@ public class OnEditEnabler implements KeyPressHandler, KeyDownHandler,
   public void listenTo(final CheckBox cb) {
     cb.addValueChangeHandler((ValueChangeHandler) this);
   }
-
 
   // Handlers
 
@@ -139,19 +139,21 @@ public class OnEditEnabler implements KeyPressHandler, KeyDownHandler,
   }
 
   private void on(final GwtEvent<?> e) {
-    if (widget.isEnabled() ||
-        ! (e.getSource() instanceof FocusWidget) ||
-        ! ((FocusWidget) e.getSource()).isEnabled() ) {
+    if (widget.isEnabled()
+        || !(e.getSource() instanceof FocusWidget)
+        || !((FocusWidget) e.getSource()).isEnabled()) {
       if (e.getSource() instanceof ValueBoxBase) {
         final TextBoxBase box = ((TextBoxBase) e.getSource());
-        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-          @Override
-          public void execute() {
-            if (box.getValue().trim().equals(originalValue)) {
-              widget.setEnabled(false);
-            }
-          }
-        });
+        Scheduler.get()
+            .scheduleDeferred(
+                new ScheduledCommand() {
+                  @Override
+                  public void execute() {
+                    if (box.getValue().trim().equals(originalValue)) {
+                      widget.setEnabled(false);
+                    }
+                  }
+                });
       }
       return;
     }
@@ -168,17 +170,19 @@ public class OnEditEnabler implements KeyPressHandler, KeyDownHandler,
 
   private void onTextBoxBase(final TextBoxBase tb) {
     // The text appears to not get updated until the handlers complete.
-    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-      @Override
-      public void execute() {
-        String orig = strings.get(tb);
-        if (orig == null) {
-          orig = "";
-        }
-        if (! orig.equals(tb.getText().trim())) {
-          widget.setEnabled(true);
-        }
-      }
-    });
+    Scheduler.get()
+        .scheduleDeferred(
+            new ScheduledCommand() {
+              @Override
+              public void execute() {
+                String orig = strings.get(tb);
+                if (orig == null) {
+                  orig = "";
+                }
+                if (!orig.equals(tb.getText().trim())) {
+                  widget.setEnabled(true);
+                }
+              }
+            });
   }
 }

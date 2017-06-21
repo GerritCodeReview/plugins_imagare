@@ -138,12 +138,10 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           throw new BadRequestException("incorrect mime type");
         }
         return new ImageInfo(storeImage(pc, content, fileName));
-      } else {
-        throw new MethodNotAllowedException("unsupported encoding");
       }
-    } else {
-      throw new BadRequestException("invalid image data");
+      throw new MethodNotAllowedException("unsupported encoding");
     }
+    throw new BadRequestException("invalid image data");
   }
 
   private String storeImage(ProjectControl pc, byte[] content, String fileName)
@@ -244,10 +242,9 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     long local = p.getMaxObjectSizeLimit();
     if (global > 0 && local > 0) {
       return Math.min(global, local);
-    } else {
-      // zero means "no limit", in this case the max is more limiting
-      return Math.max(global, local);
     }
+    // zero means "no limit", in this case the max is more limiting
+    return Math.max(global, local);
   }
 
   public static class ImageInfo {

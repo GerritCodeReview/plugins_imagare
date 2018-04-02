@@ -22,6 +22,7 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
+import com.google.gerrit.server.account.AccountState;
 import com.google.gerrit.server.config.ConfigResource;
 import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -42,6 +43,7 @@ public class GetPreference implements RestReadView<AccountResource> {
   private final String pluginName;
   private final Provider<GetConfig> getConfig;
   private final PermissionBackend permissionBackend;
+  private final AccountState accountState;
 
   @Inject
   GetPreference(
@@ -49,21 +51,23 @@ public class GetPreference implements RestReadView<AccountResource> {
       ProjectCache projectCache,
       @PluginName String pluginName,
       Provider<GetConfig> getConfig,
-      PermissionBackend permissionBackend) {
+      PermissionBackend permissionBackend,
+      AccountState accountState) {
     this.self = self;
     this.projectCache = projectCache;
     this.pluginName = pluginName;
     this.getConfig = getConfig;
     this.permissionBackend = permissionBackend;
+    this.accountState = accountState;
   }
 
   @Override
   public ConfigInfo apply(AccountResource rsrc) throws AuthException, PermissionBackendException {
     if (self.get() != rsrc.getUser()) {
-      permissionBackend.user(self).check(ADMINISTRATE_SERVER);
+      permissionBackend.currentUser().check(ADMINISTRATE_SERVER);
     }
 
-    String username = self.get().getUserName();
+    String username = self.get().getUserName().get();
 
     ConfigInfo globalCfg = getConfig.get().apply(new ConfigResource());
 

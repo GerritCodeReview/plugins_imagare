@@ -31,14 +31,13 @@ import com.google.gerrit.server.mime.FileTypeRegistry;
 import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.permissions.RefPermission;
-import com.google.gerrit.server.project.CommitsCollection;
-import com.google.gerrit.server.project.GetHead;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectCache;
-import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.server.project.ProjectResource;
 import com.google.gerrit.server.project.ProjectState;
-import com.google.gwtexpui.server.CacheHeaders;
+import com.google.gerrit.server.restapi.project.CommitsCollection;
+import com.google.gerrit.server.restapi.project.GetHead;
+import com.google.gerrit.util.http.CacheHeaders;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -67,7 +66,6 @@ public class ImageServlet extends HttpServlet {
   public static final String PATH_PREFIX = "/project/";
 
   private final String pluginName;
-  private final ProjectControl.Factory projectControlFactory;
   private final ProjectCache projectCache;
   private final Provider<GetHead> getHead;
   private final GitRepositoryManager repoManager;
@@ -79,7 +77,6 @@ public class ImageServlet extends HttpServlet {
   @Inject
   ImageServlet(
       @PluginName String pluginName,
-      ProjectControl.Factory projectControlFactory,
       ProjectCache projectCache,
       Provider<GetHead> getHead,
       GitRepositoryManager repoManager,
@@ -88,7 +85,6 @@ public class ImageServlet extends HttpServlet {
       Provider<CurrentUser> self,
       PermissionBackend permissionBackend) {
     this.pluginName = pluginName;
-    this.projectControlFactory = projectControlFactory;
     this.projectCache = projectCache;
     this.getHead = getHead;
     this.repoManager = repoManager;
@@ -120,16 +116,16 @@ public class ImageServlet extends HttpServlet {
     }
 
     try {
-      ProjectControl projectControl = projectControlFactory.controlFor(key.project);
+      ProjectState projectState = projectCache.checkedGet(key.project);
       String rev = key.revision;
       if (rev == null || Constants.HEAD.equals(rev)) {
-        rev = getHead.get().apply(new ProjectResource(projectControl));
+        rev = getHead.get().apply(new ProjectResource(projectState));
       } else {
         if (!ObjectId.isId(rev)) {
           if (!rev.startsWith(Constants.R_REFS)) {
             rev = Constants.R_HEADS + rev;
           }
-          PermissionBackend.ForProject perm = permissionBackend.user(self).project(key.project);
+          PermissionBackend.ForProject perm = permissionBackend.currentUser().project(key.project);
           try {
             perm.ref(rev).check(RefPermission.READ);
           } catch (AuthException e) {

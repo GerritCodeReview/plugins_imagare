@@ -22,6 +22,7 @@ import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.server.IdentifiedUser;
+import com.google.gerrit.server.account.AccountState;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.permissions.PermissionBackend;
@@ -51,6 +52,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
   private final GitRepositoryManager repoManager;
   private final GitReferenceUpdated referenceUpdated;
   private final PermissionBackend permissionBackend;
+  private final AccountState accountState;
 
   @Inject
   public DeleteImage(
@@ -58,12 +60,14 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
       Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager,
       GitReferenceUpdated referenceUpdated,
-      PermissionBackend permissionBackend) {
+      PermissionBackend permissionBackend,
+      AccountState accountState) {
     this.pluginName = pluginName;
     this.self = self;
     this.repoManager = repoManager;
     this.referenceUpdated = referenceUpdated;
     this.permissionBackend = permissionBackend;
+    this.accountState = accountState;
   }
 
   @Override
@@ -71,15 +75,15 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
       throws AuthException, ResourceConflictException, RepositoryNotFoundException, IOException,
           ResourceNotFoundException, PermissionBackendException {
 
-    if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(RefPermission.DELETE)) {
+    if (!permissionBackend.currentUser().ref(rsrc.getBranchKey()).testOrFalse(RefPermission.DELETE)) {
       permissionBackend
-          .user(self)
+          .currentUser()
           .test(new PluginPermission(pluginName, DeleteOwnImagesCapability.DELETE_OWN_IMAGES));
     }
 
     try (Repository r = repoManager.openRepository(rsrc.getProject())) {
       if (!permissionBackend
-          .user(self)
+          .currentUser()
           .ref(rsrc.getBranchKey())
           .testOrFalse(RefPermission.DELETE)) {
         validateOwnImage(r, rsrc.getRef());
@@ -101,7 +105,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
         case NO_CHANGE:
         case FAST_FORWARD:
         case FORCED:
-          referenceUpdated.fire(rsrc.getProject(), u, self.get().getAccount());
+          referenceUpdated.fire(rsrc.getProject(), u, accountState);
           break;
 
         case REJECTED_CURRENT_BRANCH:

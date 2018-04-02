@@ -35,7 +35,6 @@ import com.google.gerrit.server.mime.FileTypeRegistry;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.project.CreateRefControl;
 import com.google.gerrit.server.project.NoSuchProjectException;
-import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.server.project.ProjectResource;
 import com.google.gerrit.server.project.ProjectState;
 import com.google.inject.Inject;
@@ -76,6 +75,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final Config cfg;
   private final String pluginName;
   private final CreateRefControl createRefControl;
+  private final AccountState accountState;
 
   @Inject
   public PostImage(
@@ -87,7 +87,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
       @CanonicalWebUrl String canonicalWebUrl,
       @GerritServerConfig Config cfg,
       @PluginName String pluginName,
-      CreateRefControl createRefControl) {
+      CreateRefControl createRefControl,
+      AccountState accountState) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
@@ -98,6 +99,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     this.cfg = cfg;
     this.pluginName = pluginName;
     this.createRefControl = createRefControl;
+    this.accountState = accountState;
   }
 
   @Override
@@ -115,7 +117,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     return Response.created(info);
   }
 
-  private ImageInfo storeImage(ProjectControl pc, String imageData, String fileName)
+  private ImageInfo storeImage(ProjectState projectState, String imageData, String fileName)
       throws RestApiException, IOException, PermissionBackendException, NoSuchProjectException {
     Matcher m = imageDataPattern.matcher(imageData);
     if (m.matches()) {
@@ -141,17 +143,17 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         if (!receivedMimeType.equals(mimeType.toString())) {
           throw new BadRequestException("incorrect mime type");
         }
-        return new ImageInfo(storeImage(pc, content, fileName));
+        return new ImageInfo(storeImage(projectState, content, fileName));
       }
       throw new MethodNotAllowedException("unsupported encoding");
     }
     throw new BadRequestException("invalid image data");
   }
 
-  private String storeImage(ProjectControl pc, byte[] content, String fileName)
+  private String storeImage(ProjectState projectState, byte[] content, String fileName)
       throws AuthException, IOException, ResourceConflictException, PermissionBackendException,
           NoSuchProjectException {
-    long maxSize = getEffectiveMaxObjectSizeLimit(pc.getProjectState());
+    long maxSize = getEffectiveMaxObjectSizeLimit(projectState);
     // maxSize == 0 means that there is no limit
     if (maxSize > 0 && content.length > maxSize) {
       throw new ResourceConflictException("image too large");
@@ -159,11 +161,11 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
     String ref = getRef(content, fileName);
 
-    try (Repository repo = repoManager.openRepository(pc.getProject().getNameKey())) {
+    try (Repository repo = repoManager.openRepository(projectState.getNameKey())) {
       ObjectId commitId = repo.resolve(ref);
       if (commitId != null) {
         // this image exists already
-        return getUrl(pc.getProject().getNameKey(), ref, fileName);
+        return getUrl(projectState.getNameKey(), ref, fileName);
       }
 
       try (RevWalk rw = new RevWalk(repo);
@@ -191,11 +193,11 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           createRefControl.checkCreateRef(
               self,
               repo,
-              new Branch.NameKey(pc.getProject().getNameKey(), ref),
+              new Branch.NameKey(projectState.getNameKey(), ref),
               rw.parseCommit(commitId));
         } catch (AuthException e) {
           throw new AuthException(
-              String.format("Project %s doesn't allow image upload.", pc.getProject().getName()));
+              String.format("Project %s doesn't allow image upload.", projectState.getName()));
         }
 
         RefUpdate ru = repo.updateRef(ref);
@@ -203,15 +205,15 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         ru.setNewObjectId(commitId);
         ru.disableRefLog();
         if (ru.update(rw) == RefUpdate.Result.NEW) {
-          referenceUpdated.fire(pc.getProject().getNameKey(), ru, self.get().getAccount());
+          referenceUpdated.fire(projectState.getNameKey(), ru, accountState);
         } else {
           throw new IOException(
               String.format(
                   "Failed to create ref %s in %s: %s",
-                  ref, pc.getProject().getName(), ru.getResult()));
+                  ref, projectState.getName(), ru.getResult()));
         }
 
-        return getUrl(pc.getProject().getNameKey(), ref, fileName);
+        return getUrl(projectState.getNameKey(), ref, fileName);
       }
     }
   }

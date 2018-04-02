@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.extensions.registration.DynamicMap;
-import com.google.gerrit.extensions.restapi.AcceptsPost;
 import com.google.gerrit.extensions.restapi.ChildCollection;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
@@ -29,7 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 public class ImagesCollection
-    implements ChildCollection<ProjectResource, ImageResource>, AcceptsPost<ProjectResource> {
+    implements ChildCollection<ProjectResource, ImageResource> {
   private final DynamicMap<RestView<ImageResource>> views;
   private final Provider<PostImage> createImage;
   private final PermissionBackend permissionBackend;

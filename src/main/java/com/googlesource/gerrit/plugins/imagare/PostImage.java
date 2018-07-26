@@ -22,6 +22,7 @@ import com.google.gerrit.extensions.restapi.MethodNotAllowedException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
+import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.GerritPersonIdent;
 import com.google.gerrit.server.IdentifiedUser;
@@ -30,10 +31,12 @@ import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.mime.FileTypeRegistry;
+import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.project.CreateRefControl;
+import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.server.project.ProjectResource;
 import com.google.gerrit.server.project.ProjectState;
-import com.google.gerrit.server.project.RefControl;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.imagare.PostImage.Input;
@@ -71,6 +74,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final String canonicalWebUrl;
   private final Config cfg;
   private final String pluginName;
+  private final CreateRefControl createRefControl;
 
   @Inject
   public PostImage(
@@ -81,7 +85,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
       @GerritPersonIdent PersonIdent myIdent,
       @CanonicalWebUrl String canonicalWebUrl,
       @GerritServerConfig Config cfg,
-      @PluginName String pluginName) {
+      @PluginName String pluginName,
+      CreateRefControl createRefControl) {
     this.registry = registry;
     this.imageDataPattern = Pattern.compile("data:([\\w/.-]+);([\\w]+),(.*)");
     this.self = self;
@@ -91,6 +96,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     this.canonicalWebUrl = canonicalWebUrl;
     this.cfg = cfg;
     this.pluginName = pluginName;
+    this.createRefControl = createRefControl;
   }
 
   @Override
@@ -152,7 +158,6 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     }
 
     String ref = getRef(content, fileName);
-    RefControl rc = pc.controlForRef(ref);
 
     try (Repository repo = repoManager.openRepository(pc.getProject().getNameKey())) {
       ObjectId commitId = repo.resolve(ref);
@@ -182,7 +187,13 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         commitId = oi.insert(cb);
         oi.flush();
 
-        if (!rc.canCreate(repo, rw.parseCommit(commitId))) {
+        try {
+          createRefControl.checkCreateRef(
+              self,
+              repo,
+              new Branch.NameKey(pc.getProject().getNameKey(), ref),
+              rw.parseCommit(commitId));
+        } catch (PermissionBackendException | AuthException | NoSuchProjectException e) {
           throw new AuthException(
               String.format("Project %s doesn't allow image upload.", pc.getProject().getName()));
         }

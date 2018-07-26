@@ -25,9 +25,13 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.mime.FileTypeRegistry;
+import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.permissions.RefPermission;
+import com.google.gerrit.server.project.CommitsCollection;
 import com.google.gerrit.server.project.GetHead;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.gerrit.server.project.ProjectCache;
@@ -63,29 +67,35 @@ public class ImageServlet extends HttpServlet {
   public static final String PATH_PREFIX = "/project/";
 
   private final String pluginName;
-  private final Provider<ReviewDb> db;
   private final ProjectControl.Factory projectControlFactory;
   private final ProjectCache projectCache;
   private final Provider<GetHead> getHead;
   private final GitRepositoryManager repoManager;
   private final FileTypeRegistry fileTypeRegistry;
+  private final CommitsCollection commits;
+  private final Provider<CurrentUser> self;
+  private final PermissionBackend permissionBackend;
 
   @Inject
   ImageServlet(
       @PluginName String pluginName,
-      Provider<ReviewDb> db,
       ProjectControl.Factory projectControlFactory,
       ProjectCache projectCache,
       Provider<GetHead> getHead,
       GitRepositoryManager repoManager,
-      FileTypeRegistry fileTypeRegistry) {
+      FileTypeRegistry fileTypeRegistry,
+      CommitsCollection commits,
+      Provider<CurrentUser> self,
+      PermissionBackend permissionBackend) {
     this.pluginName = pluginName;
-    this.db = db;
     this.projectControlFactory = projectControlFactory;
     this.projectCache = projectCache;
     this.getHead = getHead;
     this.repoManager = repoManager;
     this.fileTypeRegistry = fileTypeRegistry;
+    this.commits = commits;
+    this.self = self;
+    this.permissionBackend = permissionBackend;
   }
 
   @Override
@@ -119,7 +129,8 @@ public class ImageServlet extends HttpServlet {
           if (!rev.startsWith(Constants.R_REFS)) {
             rev = Constants.R_HEADS + rev;
           }
-          if (!projectControl.controlForRef(rev).isVisible()) {
+          PermissionBackend.ForProject perm = permissionBackend.user(self).project(key.project);
+          if (!perm.ref(rev).test(RefPermission.READ)) {
             notFound(res);
             return;
           }
@@ -135,7 +146,7 @@ public class ImageServlet extends HttpServlet {
         if (ObjectId.isId(rev)) {
           try (RevWalk rw = new RevWalk(repo)) {
             RevCommit commit = rw.parseCommit(repo.resolve(rev));
-            if (!projectControl.canReadCommit(db.get(), repo, commit)) {
+            if (!commits.canRead(state, repo, commit)) {
               notFound(res);
               return;
             }
@@ -193,7 +204,8 @@ public class ImageServlet extends HttpServlet {
         | NoSuchProjectException
         | ResourceNotFoundException
         | AuthException
-        | RevisionSyntaxException e) {
+        | RevisionSyntaxException
+        | PermissionBackendException e) {
       notFound(res);
       return;
     }

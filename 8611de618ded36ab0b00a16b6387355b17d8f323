@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b673cc6d_5be09a53",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/ImageServlet.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2018-07-27T06:43:31Z",
+      "side": 1,
+      "message": "I think this should be check.\n\nIf I understood this correctly now, we must always use check if we make a decision about showing additional info to the user.",
+      "range": {
+        "startLine": 133,
+        "startChar": 29,
+        "endLine": 133,
+        "endChar": 33
+      },
+      "revId": "8611de618ded36ab0b00a16b6387355b17d8f323",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fd60211_3f41ce07",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2018-07-27T06:43:31Z",
+      "side": 1,
+      "message": "Probably the same for NoSuchProjectException. Since this REST view is on a project, we expect that the project is there, if not it\u0027s a server error.",
+      "range": {
+        "startLine": 196,
+        "startChar": 62,
+        "endLine": 196,
+        "endChar": 84
+      },
+      "revId": "8611de618ded36ab0b00a16b6387355b17d8f323",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1846a15d_65f9a837",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2018-07-27T06:43:31Z",
+      "side": 1,
+      "message": "I think PermissionBackendException should not be converted into AuthException, but rather we thrown directly so that it\u0027s a 500 ISE for the caller",
+      "range": {
+        "startLine": 196,
+        "startChar": 17,
+        "endLine": 196,
+        "endChar": 44
+      },
+      "revId": "8611de618ded36ab0b00a16b6387355b17d8f323",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

@@ -68,6 +68,30 @@
       "revId": "8611de618ded36ab0b00a16b6387355b17d8f323",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3430a38e_5b79c477",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-07-27T07:15:59Z",
+      "side": 1,
+      "message": "Agree. I was hesitating to say the same. That\u0027s how CreateRefControl is used in Gerrit core, e,g, in CreateBranch.",
+      "parentUuid": "1846a15d_65f9a837",
+      "range": {
+        "startLine": 196,
+        "startChar": 17,
+        "endLine": 196,
+        "endChar": 44
+      },
+      "revId": "8611de618ded36ab0b00a16b6387355b17d8f323",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }

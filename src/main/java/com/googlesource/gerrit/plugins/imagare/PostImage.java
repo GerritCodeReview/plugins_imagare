@@ -155,7 +155,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
   private String storeImage(ProjectControl pc, byte[] content, String fileName)
       throws AuthException, IOException, ResourceConflictException {
-    long maxSize = getEffectiveMaxObjectSizeLimit(pc.getProjectState());
+    long maxSize = pc.getProjectState().getEffectiveMaxObjectSizeLimit().value;
     // maxSize == 0 means that there is no limit
     if (maxSize > 0 && content.length > maxSize) {
       throw new ResourceConflictException("image too large");
@@ -244,17 +244,6 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     url.append("/");
     url.append(IdString.fromDecoded(fileName).encoded());
     return url.toString();
-  }
-
-  private long getEffectiveMaxObjectSizeLimit(ProjectState p) {
-    long global = cfg.getLong("receive", "maxObjectSizeLimit", 0);
-    long local = p.getMaxObjectSizeLimit();
-    if (global > 0 && local > 0) {
-      return Math.min(global, local);
-    } else {
-      // zero means "no limit", in this case the max is more limiting
-      return Math.max(global, local);
-    }
   }
 
   public static class ImageInfo {

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc4fbfbe_d8264882",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-10T23:31:49Z",
+      "side": 1,
+      "message": "This is now unused.  Removed in https://gerrit-review.googlesource.com/c/plugins/imagare/+/199476",
+      "range": {
+        "startLine": 77,
+        "startChar": 2,
+        "endLine": 77,
+        "endChar": 27
+      },
+      "revId": "bcb81379236a61d1102eec6a1076ff0ff20a880a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

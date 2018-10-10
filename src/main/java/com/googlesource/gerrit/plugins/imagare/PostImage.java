@@ -140,12 +140,10 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           throw new BadRequestException("incorrect mime type");
         }
         return new ImageInfo(storeImage(pc, content, fileName));
-      } else {
-        throw new MethodNotAllowedException("unsupported encoding");
       }
-    } else {
-      throw new BadRequestException("invalid image data");
+      throw new MethodNotAllowedException("unsupported encoding");
     }
+    throw new BadRequestException("invalid image data");
   }
 
   private String storeImage(ProjectControl pc, byte[] content, String fileName)

@@ -50,9 +50,8 @@ public class ImagesCollection
         parent.getControl().controlForRef(new Branch.NameKey(parent.getNameKey(), id.get()));
     if (refControl.canRead()) {
       return new ImageResource(refControl);
-    } else {
-      throw new ResourceNotFoundException(id);
     }
+    throw new ResourceNotFoundException(id);
   }
 
   @Override

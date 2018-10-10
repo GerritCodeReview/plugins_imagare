@@ -108,9 +108,8 @@ public class ImageUploadScreen extends VerticalPanel {
     List<String> values = getParameters().get(name);
     if (values == null) {
       return null;
-    } else {
-      return values.get(values.size() - 1);
     }
+    return values.get(values.size() - 1);
   }
 
   private static Map<String, List<String>> getParameters() {

@@ -230,9 +230,8 @@ public class ImageServlet extends HttpServlet {
       if (ifModifiedSince > 0 && ifModifiedSince == lastModified) {
         res.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
         return;
-      } else {
-        res.setDateHeader("Last-Modified", lastModified);
       }
+      res.setDateHeader("Last-Modified", lastModified);
     }
     res.setContentType(contentType);
     res.setCharacterEncoding(UTF_8.name());

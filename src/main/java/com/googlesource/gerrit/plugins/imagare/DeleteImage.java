@@ -113,6 +113,8 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
         case NOT_ATTEMPTED:
         case REJECTED:
         case RENAMED:
+        case REJECTED_MISSING_OBJECT:
+        case REJECTED_OTHER_REASON:
         default:
           log.error("Cannot delete " + rsrc.getRef() + ": " + result.name());
           throw new ResourceConflictException("cannot delete branch: " + result.name());

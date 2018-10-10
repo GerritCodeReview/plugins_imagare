@@ -222,6 +222,7 @@ public class ImageServlet extends HttpServlet {
     return path;
   }
 
+  @SuppressWarnings("deprecation")
   private static String computeETag(Project.NameKey project, ObjectId revId, String file) {
     return Hashing.md5()
         .newHasher()

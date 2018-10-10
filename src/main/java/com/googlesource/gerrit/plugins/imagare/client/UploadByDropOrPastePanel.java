@@ -158,5 +158,4 @@ public class UploadByDropOrPastePanel extends VerticalPanel {
     sel.addRange(range);
     elem.focus();
   }-*/;
-
 }

@@ -24,24 +24,23 @@ import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.mime.FileTypeRegistry;
 import com.google.gerrit.server.GerritPersonIdent;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.mime.FileTypeRegistry;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.server.project.ProjectResource;
-import com.google.gerrit.server.project.ProjectState;
 import com.google.gerrit.server.project.RefControl;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import com.googlesource.gerrit.plugins.imagare.PostImage.Input;
-
 import eu.medsea.mimeutil.MimeType;
-
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.jgit.lib.CommitBuilder;
 import org.eclipse.jgit.lib.Config;
@@ -55,10 +54,6 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.TreeFormatter;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.util.Base64;
-
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PostImage implements RestModifyView<ProjectResource, Input> {
 
@@ -79,7 +74,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   private final String pluginName;
 
   @Inject
-  public PostImage(FileTypeRegistry registry,
+  public PostImage(
+      FileTypeRegistry registry,
       Provider<IdentifiedUser> self,
       GitRepositoryManager repoManager,
       GitReferenceUpdated referenceUpdated,
@@ -102,8 +98,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
   @Override
   public Response<ImageInfo> apply(ProjectResource rsrc, Input input)
-      throws MethodNotAllowedException, BadRequestException, AuthException,
-      IOException, ResourceConflictException {
+      throws MethodNotAllowedException, BadRequestException, AuthException, IOException,
+          ResourceConflictException {
     if (input == null) {
       input = new Input();
     }
@@ -116,9 +112,9 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
     return Response.created(info);
   }
 
-  private ImageInfo storeImage(ProjectControl pc, String imageData,
-      String fileName) throws MethodNotAllowedException, BadRequestException,
-      AuthException, IOException, ResourceConflictException {
+  private ImageInfo storeImage(ProjectControl pc, String imageData, String fileName)
+      throws MethodNotAllowedException, BadRequestException, AuthException, IOException,
+          ResourceConflictException {
     Matcher m = imageDataPattern.matcher(imageData);
     if (m.matches()) {
       String receivedMimeType = m.group(1);
@@ -136,8 +132,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
       if ("base64".equals(encoding)) {
         byte[] content = Base64.decode(encodedContent);
-        MimeType mimeType =
-            registry.getMimeType("img." + receivedMimeType, content);
+        MimeType mimeType = registry.getMimeType("img." + receivedMimeType, content);
         if (!"image".equals(mimeType.getMediaType())) {
           throw new MethodNotAllowedException("no image");
         }
@@ -193,8 +188,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         oi.flush();
 
         if (!rc.canCreate(db.get(), repo, rw.parseCommit(commitId))) {
-          throw new AuthException(String.format(
-              "Project %s doesn't allow image upload.", pc.getProject().getName()));
+          throw new AuthException(
+              String.format("Project %s doesn't allow image upload.", pc.getProject().getName()));
         }
 
         RefUpdate ru = repo.updateRef(ref);
@@ -202,12 +197,12 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
         ru.setNewObjectId(commitId);
         ru.disableRefLog();
         if (ru.update(rw) == RefUpdate.Result.NEW) {
-          referenceUpdated.fire(pc.getProject().getNameKey(), ru,
-              self.get().getAccount());
+          referenceUpdated.fire(pc.getProject().getNameKey(), ru, self.get().getAccount());
         } else {
-          throw new IOException(String.format(
-              "Failed to create ref %s in %s: %s", ref,
-              pc.getProject().getName(), ru.getResult()));
+          throw new IOException(
+              String.format(
+                  "Failed to create ref %s in %s: %s",
+                  ref, pc.getProject().getName(), ru.getResult()));
         }
 
         return getUrl(pc.getProject().getNameKey(), ref, fileName);
@@ -217,8 +212,8 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
 
   private String getRef(byte[] content, String fileName) {
     try (ObjectInserter oi = new ObjectInserter.Formatter()) {
-      String id = oi.idFor(Constants.OBJ_BLOB,
-          ArrayUtils.addAll(content, fileName.getBytes())).getName();
+      String id =
+          oi.idFor(Constants.OBJ_BLOB, ArrayUtils.addAll(content, fileName.getBytes())).getName();
       StringBuilder ref = new StringBuilder();
       ref.append(Constants.R_REFS);
       ref.append("images/");

@@ -15,5 +15,7 @@
 package com.googlesource.gerrit.plugins.imagare;
 
 public enum LinkDecoration {
-  NONE, TOOLTIP, INLINE
+  NONE,
+  TOOLTIP,
+  INLINE
 }

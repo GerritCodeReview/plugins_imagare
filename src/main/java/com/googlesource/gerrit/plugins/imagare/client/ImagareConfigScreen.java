@@ -41,17 +41,18 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     this.enableImageServer = enableImageServer;
     this.restApi = restApi;
     setStyleName("imagare-config-screen");
-    restApi.get(new AsyncCallback<ConfigInfo>() {
-        @Override
-        public void onSuccess(ConfigInfo info) {
-          display(info);
-        }
+    restApi.get(
+        new AsyncCallback<ConfigInfo>() {
+          @Override
+          public void onSuccess(ConfigInfo info) {
+            display(info);
+          }
 
-        @Override
-        public void onFailure(Throwable caught) {
-          // never invoked
-        }
-      });
+          @Override
+          public void onFailure(Throwable caught) {
+            // never invoked
+          }
+        });
   }
 
   protected void display(ConfigInfo info) {
@@ -59,10 +60,11 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
     p.setStyleName("imagare-label-panel");
     p.add(new Label("Link Decoration"));
     Image linkDecorationInfo = new Image(ImagarePlugin.RESOURCES.info());
-    linkDecorationInfo.setTitle("Decoration for image links in the Gerrit WebUI."
-        + " 'NONE': no decoration, 'TOOLTIP': the image is shown as tooltip on"
-        + " mouse over an image link, 'INLINE': the image is inlined instead of"
-        + " the URL.");
+    linkDecorationInfo.setTitle(
+        "Decoration for image links in the Gerrit WebUI."
+            + " 'NONE': no decoration, 'TOOLTIP': the image is shown as tooltip on"
+            + " mouse over an image link, 'INLINE': the image is inlined instead of"
+            + " the URL.");
     p.add(linkDecorationInfo);
     p.add(new Label(":"));
     linkDecorationBox = new ListBox();
@@ -96,8 +98,9 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
       stageBox.setValue(info.stage());
       p.add(stageBox);
       Image stageInfo = new Image(ImagarePlugin.RESOURCES.info());
-      stageInfo.setTitle("Images are not uploaded immediately but put into a "
-          + "staging area. The upload must be triggered explicitely.");
+      stageInfo.setTitle(
+          "Images are not uploaded immediately but put into a "
+              + "staging area. The upload must be triggered explicitely.");
       p.add(stageInfo);
       add(p);
     }
@@ -107,12 +110,13 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
 
     saveButton = new Button("Save");
     saveButton.setStyleName("imagare-save-button");
-    saveButton.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(final ClickEvent event) {
-        doSave();
-      }
-    });
+    saveButton.addClickHandler(
+        new ClickHandler() {
+          @Override
+          public void onClick(final ClickEvent event) {
+            doSave();
+          }
+        });
     buttons.add(saveButton);
     saveButton.setEnabled(false);
     OnEditEnabler onEditEnabler = new OnEditEnabler(saveButton, linkDecorationBox);
@@ -132,20 +136,21 @@ public abstract class ImagareConfigScreen extends VerticalPanel {
       in.setDefaultProject(projectBox.getValue());
       in.setStage(stageBox.getValue());
     }
-    restApi.put(in, new AsyncCallback<JavaScriptObject>() {
-        @Override
-        public void onSuccess(JavaScriptObject result) {
-          saveButton.setEnabled(false);
-          onSave();
-        }
+    restApi.put(
+        in,
+        new AsyncCallback<JavaScriptObject>() {
+          @Override
+          public void onSuccess(JavaScriptObject result) {
+            saveButton.setEnabled(false);
+            onSave();
+          }
 
-        @Override
-        public void onFailure(Throwable caught) {
-          // never invoked
-        }
-      });
+          @Override
+          public void onFailure(Throwable caught) {
+            // never invoked
+          }
+        });
   }
 
-  protected void onSave() {
-  }
+  protected void onSave() {}
 }

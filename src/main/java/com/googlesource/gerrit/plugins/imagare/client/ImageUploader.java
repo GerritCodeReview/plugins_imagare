@@ -55,36 +55,38 @@ public class ImageUploader {
     in.image_data(imageData);
     in.file_name(fileName);
 
-    new RestApi("projects").id(project).view(Plugin.get().getPluginName(), "images")
-        .post(in, new AsyncCallback<ImageInfo>() {
+    new RestApi("projects")
+        .id(project)
+        .view(Plugin.get().getPluginName(), "images")
+        .post(
+            in,
+            new AsyncCallback<ImageInfo>() {
 
-          @Override
-          public void onSuccess(ImageInfo result) {
-            ImageUploadScreen.uploadedPanel.add(result.url());
-          }
+              @Override
+              public void onSuccess(ImageInfo result) {
+                ImageUploadScreen.uploadedPanel.add(result.url());
+              }
 
-          @Override
-          public void onFailure(Throwable caught) {
-          }
-        });
+              @Override
+              public void onFailure(Throwable caught) {}
+            });
   }
 
   private static class ImageInput extends JavaScriptObject {
     final native void image_data(String d) /*-{ this.image_data = d; }-*/;
+
     final native void file_name(String n) /*-{ this.file_name = n; }-*/;
 
     static ImageInput create() {
       return (ImageInput) createObject();
     }
 
-    protected ImageInput() {
-    }
+    protected ImageInput() {}
   }
 
   private static class ImageInfo extends JavaScriptObject {
     final native String url() /*-{ return this.url }-*/;
 
-    protected ImageInfo() {
-    }
+    protected ImageInfo() {}
   }
 }

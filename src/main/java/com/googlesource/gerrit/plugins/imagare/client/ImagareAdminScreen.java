@@ -35,8 +35,8 @@ public class ImagareAdminScreen extends ImagareConfigScreen {
   }
 
   ImagareAdminScreen(boolean enableImageServer) {
-    super(enableImageServer,
-        new RestApi("config").id("server").view(
-            Plugin.get().getPluginName(), "config"));
+    super(
+        enableImageServer,
+        new RestApi("config").id("server").view(Plugin.get().getPluginName(), "config"));
   }
 }

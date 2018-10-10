@@ -29,23 +29,18 @@ public class HttpModule extends HttpPluginModule {
   private final String pluginName;
 
   @Inject
-  HttpModule(PluginConfigFactory cfgFactory,
-      @PluginName String pluginName) {
+  HttpModule(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
     this.cfgFactory = cfgFactory;
     this.pluginName = pluginName;
   }
 
   @Override
   protected void configureServlets() {
-    if (cfgFactory.getFromGerritConfig(pluginName, true)
-        .getBoolean("enableImageServer", true)) {
-      serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$")
-          .with(ImageServlet.class);
+    if (cfgFactory.getFromGerritConfig(pluginName, true).getBoolean("enableImageServer", true)) {
+      serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$").with(ImageServlet.class);
     }
 
-    DynamicSet.bind(binder(), WebUiPlugin.class)
-        .toInstance(new GwtPlugin("imagare"));
-    DynamicSet.bind(binder(), WebUiPlugin.class)
-        .toInstance(new JavaScriptPlugin("imagare.js"));
+    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new GwtPlugin("imagare"));
+    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("imagare.js"));
   }
 }

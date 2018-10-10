@@ -67,7 +67,6 @@ public class ImagesCollection
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public PostImage post(ProjectResource parent) throws RestApiException {
     return createImage.get();
   }

@@ -22,6 +22,30 @@
       "revId": "3ae43e8864fdb4b19078db2a4a07907a7b0bbcb5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb91d862_b41f4bf4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2018-10-10T23:09:52Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "52eb7cb5_363477fb",
+      "range": {
+        "startLine": 251,
+        "startChar": 4,
+        "endLine": 257,
+        "endChar": 35
+      },
+      "revId": "3ae43e8864fdb4b19078db2a4a07907a7b0bbcb5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

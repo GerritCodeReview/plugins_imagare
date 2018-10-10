@@ -248,13 +248,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
   }
 
   private long getEffectiveMaxObjectSizeLimit(ProjectState p) {
-    long global = cfg.getLong("receive", "maxObjectSizeLimit", 0);
-    long local = p.getMaxObjectSizeLimit();
-    if (global > 0 && local > 0) {
-      return Math.min(global, local);
-    }
-    // zero means "no limit", in this case the max is more limiting
-    return Math.max(global, local);
+    return p.getEffectiveMaxObjectSizeLimit().value
   }
 
   public static class ImageInfo {

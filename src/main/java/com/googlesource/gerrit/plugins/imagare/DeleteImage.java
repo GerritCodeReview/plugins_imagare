@@ -71,15 +71,15 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
       throws AuthException, ResourceConflictException, RepositoryNotFoundException, IOException,
           ResourceNotFoundException, PermissionBackendException {
 
-    if (!permissionBackend.user(self).ref(rsrc.getBranchKey()).testOrFalse(RefPermission.DELETE)) {
+    if (!permissionBackend.currentUser().ref(rsrc.getBranchKey()).testOrFalse(RefPermission.DELETE)) {
       permissionBackend
-          .user(self)
+          .currentUser()
           .test(new PluginPermission(pluginName, DeleteOwnImagesCapability.DELETE_OWN_IMAGES));
     }
 
     try (Repository r = repoManager.openRepository(rsrc.getProject())) {
       if (!permissionBackend
-          .user(self)
+          .currentUser()
           .ref(rsrc.getBranchKey())
           .testOrFalse(RefPermission.DELETE)) {
         validateOwnImage(r, rsrc.getRef());
@@ -101,7 +101,7 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
         case NO_CHANGE:
         case FAST_FORWARD:
         case FORCED:
-          referenceUpdated.fire(rsrc.getProject(), u, self.get().getAccount());
+          referenceUpdated.fire(rsrc.getProject(), u, self.get().state());
           break;
 
         case REJECTED_CURRENT_BRANCH:

@@ -29,11 +29,11 @@ import com.google.gerrit.extensions.restapi.UnprocessableEntityException;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
-import com.google.gerrit.server.git.MetaDataUpdate;
-import com.google.gerrit.server.git.ProjectLevelConfig;
+import com.google.gerrit.server.git.meta.MetaDataUpdate;
 import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.project.ProjectLevelConfig;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.imagare.PutConfig.Input;
@@ -67,13 +67,13 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
       throws AuthException, RepositoryNotFoundException, IOException, UnprocessableEntityException,
           PermissionBackendException {
     if (self.get() != rsrc.getUser()) {
-      permissionBackend.user(self).check(ADMINISTRATE_SERVER);
+      permissionBackend.currentUser().check(ADMINISTRATE_SERVER);
     }
     if (input == null) {
       input = new Input();
     }
 
-    String username = self.get().getUserName();
+    String username = self.get().getUserName().get();
 
     ProjectLevelConfig storage = projectCache.getAllProjects().getConfig(pluginName + ".config");
     Config db = storage.get();

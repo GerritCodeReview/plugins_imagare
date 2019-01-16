@@ -55,6 +55,7 @@ public class Module extends AbstractModule {
               bind(ImagesCollection.class);
               child(PROJECT_KIND, "images").to(ImagesCollection.class);
               delete(IMAGE_KIND).to(DeleteImage.class);
+              postOnCollection(IMAGE_KIND).to(PostImage.class);
             }
           });
     }

@@ -60,10 +60,10 @@ public class GetPreference implements RestReadView<AccountResource> {
   @Override
   public ConfigInfo apply(AccountResource rsrc) throws AuthException, PermissionBackendException {
     if (self.get() != rsrc.getUser()) {
-      permissionBackend.user(self).check(ADMINISTRATE_SERVER);
+      permissionBackend.currentUser().check(ADMINISTRATE_SERVER);
     }
 
-    String username = self.get().getUserName();
+    String username = self.get().getUserName().get();
 
     ConfigInfo globalCfg = getConfig.get().apply(new ConfigResource());
 

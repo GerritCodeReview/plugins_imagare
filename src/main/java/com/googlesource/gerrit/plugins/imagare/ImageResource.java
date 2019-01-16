@@ -18,32 +18,28 @@ import com.google.gerrit.extensions.restapi.RestResource;
 import com.google.gerrit.extensions.restapi.RestView;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.server.project.RefControl;
+
 import com.google.inject.TypeLiteral;
 
 public class ImageResource implements RestResource {
   public static final TypeLiteral<RestView<ImageResource>> IMAGE_KIND =
       new TypeLiteral<RestView<ImageResource>>() {};
 
-  private final RefControl refControl;
+  private Branch.NameKey branchName;
 
-  ImageResource(RefControl refControl) {
-    this.refControl = refControl;
-  }
-
-  public RefControl getControl() {
-    return refControl;
+  ImageResource(Branch.NameKey branchName) {
+    this.branchName = branchName;
   }
 
   public Project.NameKey getProject() {
-    return refControl.getProjectControl().getProject().getNameKey();
+    return branchName.getParentKey();
   }
 
   public String getRef() {
-    return refControl.getRefName();
+    return branchName.get();
   }
 
   public Branch.NameKey getBranchKey() {
-    return new Branch.NameKey(getProject(), getRef());
+    return branchName;
   }
 }

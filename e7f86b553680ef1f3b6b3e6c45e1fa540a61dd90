@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "15aeaaf2_93897056",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/Module.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-01-17T23:33:22Z",
+      "side": 1,
+      "message": "create?",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 30
+      },
+      "revId": "e7f86b553680ef1f3b6b3e6c45e1fa540a61dd90",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6cc8708e_c106adfa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PostImage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-01-17T23:33:22Z",
+      "side": 1,
+      "message": "Should this be RestCollectionCreateView?",
+      "range": {
+        "startLine": 61,
+        "startChar": 34,
+        "endLine": 61,
+        "endChar": 58
+      },
+      "revId": "e7f86b553680ef1f3b6b3e6c45e1fa540a61dd90",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

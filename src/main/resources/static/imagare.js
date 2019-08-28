@@ -103,4 +103,6 @@ Gerrit.install(function(self) {
     }
 
     Gerrit.on('comment', onComment);
+
+    if (window.Polymer) { return; }
   });

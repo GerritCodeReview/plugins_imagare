@@ -25,7 +25,9 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
+import com.google.gerrit.extensions.webui.JavaScriptPlugin;
 import com.google.gerrit.extensions.webui.TopMenu;
+import com.google.gerrit.extensions.webui.WebUiPlugin;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -47,6 +49,10 @@ public class Module extends AbstractModule {
       bind(com.google.gerrit.extensions.config.CapabilityDefinition.class)
           .annotatedWith(Exports.named(DELETE_OWN_IMAGES))
           .to(DeleteOwnImagesCapability.class);
+      DynamicSet.bind(binder(), WebUiPlugin.class)
+          .toInstance(new JavaScriptPlugin("imagare.js"));
+      DynamicSet.bind(binder(), WebUiPlugin.class)
+          .toInstance(new JavaScriptPlugin("imagare.html"));
       install(
           new RestApiModule() {
             @Override

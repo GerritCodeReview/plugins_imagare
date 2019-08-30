@@ -40,5 +40,7 @@ public class HttpModule extends HttpPluginModule {
     }
 
     DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("imagare.js"));
+    DynamicSet.bind(binder(), WebUiPlugin.class)
+      .toInstance(new JavaScriptPlugin("imagare.html"));
   }
 }

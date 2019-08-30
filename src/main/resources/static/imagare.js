@@ -13,6 +13,9 @@
 // limitations under the License.
 
 Gerrit.install(function(self) {
+
+    if (window.Polymer) { return; }
+
     function onComment(e) {
       var prefs = getPrefsFromCookie();
       if (prefs !== null) {

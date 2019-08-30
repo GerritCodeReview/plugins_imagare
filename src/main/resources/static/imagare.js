@@ -13,6 +13,11 @@
 // limitations under the License.
 
 Gerrit.install(function(self) {
+
+    if (window.Polymer) { return; }
+
+    // The code below is only used by the GWT-UI
+
     function onComment(e) {
       var prefs = getPrefsFromCookie();
       if (prefs !== null) {

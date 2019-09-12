@@ -1,0 +1,115 @@
+<!--
+@license
+Copyright (C) 2019 The Android Open Source Project
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<dom-module id="gr-imagare-list-item">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="gr-subpage-styles"></style>
+    <style>
+      div.image-panel {
+        margin: 2em auto;
+        max-width: 50em;
+        height: 150px;
+      }
+
+      div.title {
+        float: left;
+        width: 30%;
+        height: 100%;
+      }
+
+      div.value {
+        text-align: center;
+        float: right;
+        width: 70%;
+        height: 100%;
+      }
+
+      div.imageName {
+        font-weight: bold;
+        padding: 1em;
+      }
+
+      a {
+        display: block;
+      }
+
+      .ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left;
+        width: 80%;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        max-width: 80%;
+        object-fit: contain;
+      }
+
+      #editButton {
+        box-shadow: none;
+      }
+    </style>
+    <div class="image-panel">
+      <div class="title">
+        <img class="thumbnail">
+      </div>
+      <div class="value staging">
+        <div class="imageName">
+          <input id="imageNameInput" bind-value="{{imageName}}" is="iron-input"
+                 type="text" disabled="[[!_editing]]" placeholder$="[[imageName]]">
+          <gr-button id="editButton" on-tap="_handleEditImage" hidden="[[_editing]]">
+            Edit
+          </gr-button>
+          <gr-button id="saveButton" on-tap="_handleSaveName" hidden="[[!_editing]]">
+            Save
+          </gr-button>
+          <gr-button id="cancelRenameButton" on-tap="_handleCancelRenameName"
+                     hidden="[[!_editing]]">
+            Cancel
+          </gr-button>
+        </div>
+        <div>
+          <section>
+            <gr-button id="uploadButton"
+                       on-tap="_handleUploadImage"
+                       disabled="[[_editing]]">
+              Upload
+            </gr-button>
+            <gr-button id="cleanButton"
+                       on-tap="_handleClearImage">
+              Clear
+            </gr-button>
+          </section>
+        </div>
+      </div>
+      <div class="value uploading">
+        <div class="imageName">
+          [[imageName]]
+        </div>
+        <div>
+          <a class="ellipsis" href="[[imageUrl]]">[[imageUrl]]</a>
+          <gr-copy-clipboard has-tooltip button-title="Copy URL to Clipboard"
+                             hide-input text="[[imageUrl]]">
+          </gr-copy-clipboard>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script src="gr-imagare-list-item.js"></script>
+</dom-module>

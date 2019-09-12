@@ -1,0 +1,131 @@
+<!--
+@license
+Copyright (C) 2019 The Android Open Source Project
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<link rel="import"
+      href="./gr-imagare-list-item.html">
+
+<dom-module id="gr-imagare-upload">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="gr-subpage-styles"></style>
+    <style include="gr-form-styles"></style>
+    <style>
+      div.image-upload {
+        margin: 2em auto;
+        max-width: 50em;
+      }
+
+      h1#Title {
+        margin-bottom: 1em;
+      }
+
+      div#dragDropArea {
+        padding: 2em 10em;
+        border: 2px dashed #ccc;
+        border-radius: 1em;
+        text-align: center;
+      }
+
+      div#dragDropArea>p {
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 0.25em;
+      }
+
+      div#dragDropArea>p.or {
+        color: #ccc;
+      }
+
+      input#imagareImagePathInput {
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        height: 1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute !important;
+        white-space: nowrap;
+        width: 1px;
+      }
+    </style>
+    <div class="image-upload">
+      <main class="gr-form-styles read-only">
+        <h1 id="Title">Image Upload</h1>
+        <div id="loading"
+             class$="[[_computeLoadingClass(_loading)]]">
+          Loading...
+        </div>
+        <div id="form"
+             class$="[[_computeLoadingClass(_loading)]]">
+          <fieldset>
+            <h2>Settings</h2>
+            <section>
+              The user preferences for the image upload can be changed
+              <a href="[[_computeSettingsUrl()]]">here</a>.
+            </section>
+            <section>
+              <span class="title">Project</span>
+              <span class="value">
+                <gr-autocomplete id="imagareProjectInput" text="{{_imageProject}}"
+                                 value="{{_imageProject}}" query="[[_query]]">
+                  [[_defaultImageProject]]
+                </gr-autocomplete>
+              </span>
+            </section>
+          </fieldset>
+          <fieldset>
+            <h2>Image Selection</h2>
+            <section>
+              <div id="dragDropArea" contenteditable="true" on-paste="_handlePaste"
+                   on-drop="_handleDrop" on-keypress="_handleKeyPress">
+                <p>Drag and drop image here</p>
+                <p class="or">or</p>
+                <p>paste it here</p>
+                <p class="or">or</p>
+                <p>
+                  <input id="imagareImagePathInput"
+                         is="iron-input"
+                         type="file"
+                         on-change="_handleImagePathChanged"
+                         slot="input"
+                         multiple>
+                  <label for="imagareImagePathInput">
+                    <gr-button>
+                      Browse
+                    </gr-button>
+                  </label>
+                </p>
+              </div>
+            </section>
+          </fieldset>
+          <fieldset id="imageListContainer" hidden>
+            <h2>Images</h2>
+            <fieldset id="imageList"></fieldset>
+            <section>
+              <gr-button id="uploadButton"
+                         on-tap="_handleUploadAllImages"
+                         disable="_computeUploadAllDisabled">
+                Upload All
+              </gr-button>
+              <gr-button id="cleanButton"
+                         on-tap="_handleClearAllImages">
+                Clear List
+              </gr-button>
+            </section>
+          </fieldset>
+        </div>
+      </main>
+    </div>
+  </template>
+  <script src="gr-imagare-upload.js"></script>
+</dom-module>

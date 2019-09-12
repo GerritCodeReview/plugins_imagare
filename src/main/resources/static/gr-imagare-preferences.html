@@ -1,0 +1,60 @@
+<!--
+@license
+Copyright (C) 2019 The Android Open Source Project
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<dom-module id="gr-imagare-preferences">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="gr-form-styles"></style>
+    <h2 id="ImagarePreferences">Imagare Preferences</h2>
+    <fieldset class="gr-form-styles">
+      <section>
+        <span class="title">Link Decoration</span>
+        <span class="value">
+          <gr-select bind-value="{{_linkDecoration}}">
+            <select on-change="_handlePrefsChanged">
+              <option value="NONE">none</option>
+              <option value="INLINE">inline</option>
+              <option value="TOOLTIP">tooltip</option>
+            </select>
+          </gr-select>
+        </span>
+      </section>
+      <section>
+        <span class="title">Default Project</span>
+        <span class="value">
+          <gr-autocomplete id="imagareDefaultProjectInput" text="{{_defaultImageProject}}"
+                           value="{{_defaultImageProject}}" query="[[_query]]"
+                           on-commit="_handlePrefsChanged" on-keyup="_handlePrefsChanged">
+            [[_defaultImageProject]]
+          </gr-autocomplete>
+        </span>
+      </section>
+      <section>
+        <span class="title">Stage images before upload</span>
+        <span class="value">
+          <input id="stageImages"
+                 type="checkbox"
+                 checked$="[[_stageImages]]"
+                 on-change="_handleStageImagesChanged">
+        </span>
+      </section>
+      <gr-button id="saveButton"
+                 on-tap="_handleImagarePrefsSave"
+                 disabled="[[!_prefsChanged]]">
+        Save Changes
+      </gr-button>
+    </fieldset>
+  </template>
+  <script src="gr-imagare-preferences.js"></script>
+</dom-module>

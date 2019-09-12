@@ -16,6 +16,8 @@ limitations under the License.
 -->
 
 <link rel="import" href="./gr-imagare-inline.html">
+<link rel="import" href="./gr-imagare-preferences.html">
+<link rel="import" href="./gr-imagare-pref-menu-item.html">
 <link rel="import" href="./gr-imagare-upload.html">
 
 <dom-module id="imagare">
@@ -29,6 +31,8 @@ limitations under the License.
         }
       });
       plugin.registerCustomComponent('change-view-integration', 'gr-imagare-inline');
+      plugin.registerCustomComponent('settings-screen', 'gr-imagare-preferences');
+      plugin.registerCustomComponent('settings-menu-item', 'gr-imagare-pref-menu-item');
     });
   </script>
 </dom-module>

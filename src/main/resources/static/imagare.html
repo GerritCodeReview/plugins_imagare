@@ -17,11 +17,14 @@ limitations under the License.
 
 <link rel="import"
       href="./gr-imagare-inline.html">
+<link rel="import"
+      href="./gr-imagare-upload.html">
 
 <dom-module id="imagare">
   <script>
     Gerrit.install(plugin => {
-      plugin.registerCustomComponent('change-view-integration', 'gr-imagare-inline')
+      plugin.screen('upload', 'gr-imagare-upload');
+      plugin.registerCustomComponent('change-view-integration', 'gr-imagare-inline');
     });
   </script>
 </dom-module>

@@ -16,6 +16,24 @@
       "revId": "9cb7c6d1f4f470e371924e91b7f630c96e3225d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f32c4234_f74cd34b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/HttpModule.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-17T13:22:21Z",
+      "side": 1,
+      "message": "Done.\nI also added a change in which I formatted the existing code.",
+      "parentUuid": "2ad60b86_572dd12e",
+      "revId": "9cb7c6d1f4f470e371924e91b7f630c96e3225d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }

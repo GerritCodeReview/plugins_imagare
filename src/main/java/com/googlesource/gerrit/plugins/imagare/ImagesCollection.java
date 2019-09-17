@@ -18,7 +18,6 @@ import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.restapi.ChildCollection;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
-import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestView;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.server.permissions.PermissionBackend;
@@ -27,8 +26,7 @@ import com.google.gerrit.server.project.ProjectResource;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class ImagesCollection
-    implements ChildCollection<ProjectResource, ImageResource> {
+public class ImagesCollection implements ChildCollection<ProjectResource, ImageResource> {
   private final DynamicMap<RestView<ImageResource>> views;
   private final Provider<PostImage> createImage;
   private final PermissionBackend permissionBackend;
@@ -51,10 +49,7 @@ public class ImagesCollection
   @Override
   public ImageResource parse(ProjectResource parent, IdString id) throws ResourceNotFoundException {
     Branch.NameKey branchName = new Branch.NameKey(parent.getNameKey(), id.get());
-    if (permissionBackend
-        .user(parent.getUser())
-        .ref(branchName)
-        .testOrFalse(RefPermission.READ)) {
+    if (permissionBackend.user(parent.getUser()).ref(branchName).testOrFalse(RefPermission.READ)) {
       return new ImageResource(branchName);
     }
     throw new ResourceNotFoundException(id);

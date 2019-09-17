@@ -1,0 +1,215 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa534608_59c074ff",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/HttpModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "the html should be enough for the plugin, and the `imagare.js` should not be needed any more.",
+      "range": {
+        "startLine": 43,
+        "startChar": 64,
+        "endLine": 43,
+        "endChar": 80
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a980a019_adcad7ca",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "you can return the promise from `_getAccountPrefs` and then just chain the promise here with:\n\n```\nthis._getAccountPrefs().then(() \u003d\u003e );\n```\n\nAnd this also guarantee you that `then` happens after the getAccountPrefs",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f57bb00e_22ccb37f",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "better use `\u003d\u003d\u003d` for strict equal :)",
+      "range": {
+        "startLine": 39,
+        "startChar": 34,
+        "endLine": 39,
+        "endChar": 35
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb4ec3ef_6d140d09",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "do you need to call `_addObserversToMessages` multiple times here ? seems the `_addObserversToMessages` doesn\u0027t depend on the mutations here :)\n\nMaybe just do:\n```\nnew MutationObserver(mutations \u003d\u003e this._addObserversToMessages());\n```",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62a36cd4_833099c6",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "this won\u0027t work in polymer 2 as you won\u0027t be able to query elements inside of a shadow DOM. Consider using a more specific selector with the help of `shadowRoot`. I am adding a util to help with this action: https://gerrit-review.googlesource.com/c/gerrit/+/237716",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ad36fd9_2eeaa409",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "nit: maybe keep consistent of having the semi-colon at the end of each line :)",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8783c5d_ee328591",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "do you need to `disconnect` before `observe` if its the same message / node ? Or maybe disconnect before setting up observers on all messages ?\n\n```\nthis._expandedObserver.disconnect();\n  for (const message of this._messages) {\n        this._addExpandedObservers(message);\n      }\n```",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9da1e180_4d06435f",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "it won\u0027t matter in this case, but it might be better to keep the `this` binding with `this._insertImage.bind(this)` so you won\u0027t loose the context (as you need `this` in `_insertImage` and `_addTooltip`)",
+      "range": {
+        "startLine": 110,
+        "startChar": 40,
+        "endLine": 110,
+        "endChar": 52
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b40fb796_7bab28c5",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "same reason, this won\u0027t work with polymer 2 changes :)",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1de98c03_7c49b290",
+        "filename": "src/main/resources/static/imagare.html",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "nit: you can combine them into one line :)",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12d44858_e166ad29",
+        "filename": "src/main/resources/static/imagare.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-17T15:40:44Z",
+      "side": 1,
+      "message": "i think you can remove this once you moved to the polymer component. And you should have the `imagare.html` as your plugin entry point.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 0
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

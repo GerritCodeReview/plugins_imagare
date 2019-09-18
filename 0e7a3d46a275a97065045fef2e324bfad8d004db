@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eeef407b_d33eaece",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/HttpModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Since in stable-2.16 the old Ui still exists, I wanted to at least keep the functionality to render the images for users still using the old UI.",
+      "parentUuid": "aa534608_59c074ff",
+      "range": {
+        "startLine": 43,
+        "startChar": 64,
+        "endLine": 43,
+        "endChar": 80
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a980a019_adcad7ca",
         "filename": "src/main/resources/static/gr-imagare-inline.js",
         "patchSetId": 6
@@ -39,6 +63,24 @@
       "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61f830f3_7bacf6d9",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a980a019_adcad7ca",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "6fa308d8_e286fbd6",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f57bb00e_22ccb37f",
+      "range": {
+        "startLine": 39,
+        "startChar": 34,
+        "endLine": 39,
+        "endChar": 35
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fb4ec3ef_6d140d09",
         "filename": "src/main/resources/static/gr-imagare-inline.js",
         "patchSetId": 6
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "aa733680_21bc1e74",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "This was a started attempt to not add an observer to every message every time. I forgot to continue on that. It\u0027s done now.",
+      "parentUuid": "fb4ec3ef_6d140d09",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "62a36cd4_833099c6",
         "filename": "src/main/resources/static/gr-imagare-inline.js",
         "patchSetId": 6
@@ -93,6 +177,24 @@
       "writtenOn": "2019-09-17T15:40:44Z",
       "side": 1,
       "message": "this won\u0027t work in polymer 2 as you won\u0027t be able to query elements inside of a shadow DOM. Consider using a more specific selector with the help of `shadowRoot`. I am adding a util to help with this action: https://gerrit-review.googlesource.com/c/gerrit/+/237716",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4500bd42_14ae0002",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Is the ShadowDOM already used with Polymer 1 and can thus shadowRoot be used?\n\nIf it is not yet necessary to do so, I would not deal with it yet, since for now I am only looking to get it working for stable-2.16, which won\u0027t use Polymer 2 anyway.",
+      "parentUuid": "62a36cd4_833099c6",
       "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -116,6 +218,24 @@
     },
     {
       "key": {
+        "uuid": "4cb7c14b_e2bfc8c8",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ad36fd9_2eeaa409",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f8783c5d_ee328591",
         "filename": "src/main/resources/static/gr-imagare-inline.js",
         "patchSetId": 6
@@ -130,6 +250,24 @@
       "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "320616c9_ec5396d3",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "This should now be obsolete, since each message should just get one Observer either when it is added or when the plugin is loaded. Or are observers even kept, if we move to a different page. To be save, I disconnect the observers, when the element is detached.",
+      "parentUuid": "f8783c5d_ee328591",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -156,6 +294,30 @@
     },
     {
       "key": {
+        "uuid": "a063ee4d_60ea32ca",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9da1e180_4d06435f",
+      "range": {
+        "startLine": 110,
+        "startChar": 40,
+        "endLine": 110,
+        "endChar": 52
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b40fb796_7bab28c5",
         "filename": "src/main/resources/static/gr-imagare-inline.js",
         "patchSetId": 6
@@ -167,6 +329,24 @@
       "writtenOn": "2019-09-17T15:40:44Z",
       "side": 1,
       "message": "same reason, this won\u0027t work with polymer 2 changes :)",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21a65030_35acc53f",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "See my previous reply.",
+      "parentUuid": "b40fb796_7bab28c5",
       "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -190,6 +370,24 @@
     },
     {
       "key": {
+        "uuid": "1765917d_e7dd32a1",
+        "filename": "src/main/resources/static/imagare.html",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1de98c03_7c49b290",
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12d44858_e166ad29",
         "filename": "src/main/resources/static/imagare.js",
         "patchSetId": 6
@@ -201,6 +399,30 @@
       "writtenOn": "2019-09-17T15:40:44Z",
       "side": 1,
       "message": "i think you can remove this once you moved to the polymer component. And you should have the `imagare.html` as your plugin entry point.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 0
+      },
+      "revId": "0e7a3d46a275a97065045fef2e324bfad8d004db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45ab58e0_96b3d4ae",
+        "filename": "src/main/resources/static/imagare.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-18T12:24:07Z",
+      "side": 1,
+      "message": "As mentioned in my reply on your comment in HttpModule, I would prefer to keep this in stable-2.16 to enable users of the GWT-based UI to be able to see the uploaded images.",
+      "parentUuid": "12d44858_e166ad29",
       "range": {
         "startLine": 14,
         "startChar": 0,

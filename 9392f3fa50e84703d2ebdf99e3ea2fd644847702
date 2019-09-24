@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9eef7f57_4f1b97e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/HttpModule.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-24T15:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1da2f1b_04bd58e9",
+      "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ef8734ff_b968e704",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/HttpModule.java",
         "patchSetId": 7
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "50061b55_a157a8ce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/HttpModule.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-24T15:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef8734ff_b968e704",
+      "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "72280916_873c008b",
         "filename": "src/main/resources/static/imagare.html",
         "patchSetId": 7
@@ -50,6 +86,24 @@
       "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7546e161_860aff0f",
+        "filename": "src/main/resources/static/imagare.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-24T15:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72280916_873c008b",
+      "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +141,48 @@
         "endLine": 17,
         "endChar": 35
       },
+      "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cb47de1_8052809d",
+        "filename": "src/main/resources/static/imagare.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-24T15:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "415d2644_8e8ac211",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 35
+      },
+      "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba2bb81c_306caf17",
+        "filename": "src/main/resources/static/imagare.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-24T15:21:49Z",
+      "side": 1,
+      "message": "The latest stable-branch for this plugin is stable-2.14. I am not a maintainer of the plugin and am thus not allowed to create new branches. The master branch was only 3 commits ahead of stable 2.14 and was using the API of 2.16, so I went ahead and used the master branch. It would certainly be a good idea to create a stable-branch for 2.16. @Sasa @Edwin can you create it?",
+      "parentUuid": "62667718_0bcd75b4",
       "revId": "9392f3fa50e84703d2ebdf99e3ea2fd644847702",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true

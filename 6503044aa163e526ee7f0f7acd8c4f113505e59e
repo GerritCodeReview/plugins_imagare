@@ -51,6 +51,24 @@
       "revId": "6503044aa163e526ee7f0f7acd8c4f113505e59e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fe717e7_03fd8713",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-26T07:34:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62f2401e_a6f544f8",
+      "revId": "6503044aa163e526ee7f0f7acd8c4f113505e59e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "20b93066_1fba415e",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 13
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-30T14:52:41Z",
+      "side": 1,
+      "message": "to have a better isolation, you can move this inside of the main function, below the:\n\n```\n\u0027use struct\u0027;\n```",
+      "revId": "f9087c62c916ce54c4f503f81cceba36cf4ad4a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

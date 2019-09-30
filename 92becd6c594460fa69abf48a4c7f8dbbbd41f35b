@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "76a19a91_3cf70216",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-30T14:48:41Z",
+      "side": 1,
+      "message": "Awesome! Thanks! Have them in commit message maybe helpful for keeping a good history of changes :)",
+      "parentUuid": "1ef14288_639134c1",
+      "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d46bb3c_3fa7ffdb",
         "filename": "src/main/resources/static/gr-imagare-preferences.js",
         "patchSetId": 12

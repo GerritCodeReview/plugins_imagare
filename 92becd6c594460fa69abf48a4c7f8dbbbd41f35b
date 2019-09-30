@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "2ee7de09_d289b3c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T15:00:33Z",
+      "side": 1,
+      "message": "Actually, since images will not be on imgur forever (I think 6 months, if nobody looks at them), I would like to avoid adding the link to the commit message.",
+      "parentUuid": "76a19a91_3cf70216",
+      "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d46bb3c_3fa7ffdb",
         "filename": "src/main/resources/static/gr-imagare-preferences.js",
         "patchSetId": 12

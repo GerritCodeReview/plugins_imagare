@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "19369566_c0ceb9ec",
+        "filename": "src/main/resources/static/gr-imagare-list-item.html",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "525cb18e_bef3c940",
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a745f43a_9096cf59",
         "filename": "src/main/resources/static/gr-imagare-list-item.html",
         "patchSetId": 11
@@ -39,6 +57,30 @@
       "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50002503_e094831f",
+        "filename": "src/main/resources/static/gr-imagare-list-item.html",
+        "patchSetId": 11
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a745f43a_9096cf59",
+      "range": {
+        "startLine": 76,
+        "startChar": 40,
+        "endLine": 76,
+        "endChar": 43
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "71ae49c5_f425f20c",
+        "filename": "src/main/resources/static/gr-imagare-list-item.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be5b5a1c_49f085f0",
+      "range": {
+        "startLine": 95,
+        "startChar": 13,
+        "endLine": 95,
+        "endChar": 35
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52416ce4_7bd20882",
         "filename": "src/main/resources/static/gr-imagare-upload.html",
         "patchSetId": 11
@@ -85,6 +151,30 @@
       "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1257547_4ecb1338",
+        "filename": "src/main/resources/static/gr-imagare-upload.html",
+        "patchSetId": 11
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52416ce4_7bd20882",
+      "range": {
+        "startLine": 29,
+        "startChar": 9,
+        "endLine": 29,
+        "endChar": 14
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -111,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "7a7b8c7a_ca0a4a6e",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f5da97f_f7478f65",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 25
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f19dc7a_783055ad",
         "filename": "src/main/resources/static/gr-imagare-upload.js",
         "patchSetId": 11
@@ -125,6 +239,24 @@
       "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26555f39_96d4f25f",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f19dc7a_783055ad",
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -151,6 +283,30 @@
     },
     {
       "key": {
+        "uuid": "35575f6f_afbb4cbf",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Copy/Paste without thinking. Not a good idea...\nDone",
+      "parentUuid": "e1932621_90ac9d21",
+      "range": {
+        "startLine": 63,
+        "startChar": 17,
+        "endLine": 63,
+        "endChar": 22
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "108734e9_447eb832",
         "filename": "src/main/resources/static/gr-imagare-upload.js",
         "patchSetId": 11
@@ -168,6 +324,24 @@
     },
     {
       "key": {
+        "uuid": "3b35c28c_9af31d55",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "108734e9_447eb832",
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6f31955_3521a719",
         "filename": "src/main/resources/static/gr-imagare-upload.js",
         "patchSetId": 11
@@ -179,6 +353,24 @@
       "writtenOn": "2019-09-30T08:54:54Z",
       "side": 1,
       "message": "Do you need to stop the event bubbling for other listeners as well ? like delete and clear ?",
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bf4455f_a174ba40",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "I didn\u0027t observe any issues due to bubbling, but it would certainly be save to prevent it.",
+      "parentUuid": "c6f31955_3521a719",
       "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -208,6 +400,30 @@
     },
     {
       "key": {
+        "uuid": "bf06f099_cd255fe3",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "That would be the event received by the whole window. Debugging showed that it was exactly the same as event. The line was part of the GWT-UI implementation. Maybe there pasting was allowed anywhere on the page. I don\u0027t think that this would be a good idea and it isn\u0027t working in this implementation anyway, since the event listener is only listening to the `on-keypress`-event of the `dragDropArea`. Thus, I removed this line.",
+      "parentUuid": "a99dd19c_ce12efff",
+      "range": {
+        "startLine": 223,
+        "startChar": 23,
+        "endLine": 223,
+        "endChar": 35
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1632dd46_923bd325",
         "filename": "src/main/resources/static/gr-imagare-upload.js",
         "patchSetId": 11
@@ -228,6 +444,30 @@
       "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4db1905a_0c743d8f",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T12:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1632dd46_923bd325",
+      "range": {
+        "startLine": 234,
+        "startChar": 8,
+        "endLine": 243,
+        "endChar": 31
+      },
+      "revId": "f8ff663c320485e719e64929b790465d2ee3d6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

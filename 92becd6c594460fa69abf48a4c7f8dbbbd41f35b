@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1ef14288_639134c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T14:46:22Z",
+      "side": 1,
+      "message": "Here are some screenshots: https://imgur.com/a/zFWDhhj",
+      "parentUuid": "ea1c8999_193e0776",
+      "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2d46bb3c_3fa7ffdb",
         "filename": "src/main/resources/static/gr-imagare-preferences.js",
         "patchSetId": 12
@@ -33,6 +51,24 @@
       "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c72e7096_34c8ef04",
+        "filename": "src/main/resources/static/gr-imagare-preferences.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-09-30T14:46:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d46bb3c_3fa7ffdb",
+      "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

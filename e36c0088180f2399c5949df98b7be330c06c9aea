@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1363c6cb_a3851de3",
+        "filename": "src/main/resources/static/gr-imagare-upload.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-30T13:24:46Z",
+      "side": 1,
+      "message": "`removeEventListener` depends on the reference, not the actual function :) here is an example: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener#Example\n\nsince they are doing the same thing, maybe just have a function declaration at the top:\n\n```\nfunction preventDefaultFn(e) {\n  e.preventDefault();\n}\n```\n\nand then use it everywhere:\n\n```\nwindow.addEventListener(\u0027drop\u0027, precentDefaultFn, false);\n\n// when remove\nwindow.removeEventListener(\u0027drop\u0027, precentDefaultFn);\n```",
+      "range": {
+        "startLine": 72,
+        "startChar": 45,
+        "endLine": 72,
+        "endChar": 68
+      },
+      "revId": "e36c0088180f2399c5949df98b7be330c06c9aea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

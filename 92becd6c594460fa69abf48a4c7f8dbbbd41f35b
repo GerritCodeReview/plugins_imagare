@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea1c8999_193e0776",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-30T14:09:35Z",
+      "side": 1,
+      "message": "Can you add a screenshot of this settings section here ? thanks",
+      "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d46bb3c_3fa7ffdb",
+        "filename": "src/main/resources/static/gr-imagare-preferences.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2019-09-30T14:09:35Z",
+      "side": 1,
+      "message": "do you need to handle the error for this API ? similar to what you did for `_handleImagarePrefsSave`",
+      "revId": "92becd6c594460fa69abf48a4c7f8dbbbd41f35b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

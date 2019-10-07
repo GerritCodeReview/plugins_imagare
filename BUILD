@@ -3,7 +3,6 @@ load("//tools/bzl:plugin.bzl", "gerrit_plugin")
 gerrit_plugin(
     name = "imagare",
     srcs = glob(["src/main/java/**/*.java"]),
-    gwt_module = "com.googlesource.gerrit.plugins.imagare.Imagare",
     manifest_entries = [
         "Gerrit-PluginName: imagare",
         "Gerrit-Module: com.googlesource.gerrit.plugins.imagare.Module",

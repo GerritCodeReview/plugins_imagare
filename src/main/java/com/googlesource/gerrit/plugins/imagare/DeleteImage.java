@@ -71,7 +71,10 @@ public class DeleteImage implements RestModifyView<ImageResource, Input> {
       throws AuthException, ResourceConflictException, RepositoryNotFoundException, IOException,
           ResourceNotFoundException, PermissionBackendException {
 
-    if (!permissionBackend.currentUser().ref(rsrc.getBranchKey()).testOrFalse(RefPermission.DELETE)) {
+    if (!permissionBackend
+        .currentUser()
+        .ref(rsrc.getBranchKey())
+        .testOrFalse(RefPermission.DELETE)) {
       permissionBackend
           .currentUser()
           .test(new PluginPermission(pluginName, DeleteOwnImagesCapability.DELETE_OWN_IMAGES));

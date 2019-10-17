@@ -14,10 +14,10 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.entities.Branch;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.restapi.RestResource;
 import com.google.gerrit.extensions.restapi.RestView;
-import com.google.gerrit.reviewdb.client.Branch;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.TypeLiteral;
 
 public class ImageResource implements RestResource {

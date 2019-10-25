@@ -39,20 +39,20 @@
           return;
         }
 
+        this._messages = this._getMessages();
+
+        for (const message of this._messages) {
+          if (message.classList.contains('expanded')) {
+            this._renderLinks(message);
+          }
+        }
+
         this._expandedObserver = new MutationObserver(mutations => {
           mutations.forEach(mut => {
             if (!mut.target.classList.contains('expanded')){
               return;
             }
-            let links = this._getLinksFromMessage(mut.target);
-
-            if (!links) {
-              return;
-            }
-
-            for (const link of links) {
-              this._decorator_fn(link);
-            }
+            this._renderLinks(mut.target);
           });
         });
 
@@ -82,8 +82,6 @@
     },
 
     _addObserversToMessages() {
-      this._messages = this._getMessages();
-
       if (!this._messages) {
         return;
       }
@@ -153,6 +151,18 @@
         }
       }
       return links.length > 0 ? links : null;
+    },
+
+    _renderLinks(message) {
+      let links = this._getLinksFromMessage(message);
+
+      if (!links) {
+        return;
+      }
+
+      for (const link of links) {
+        this._decorator_fn(link);
+      }
     },
 
     _createImage(url) {

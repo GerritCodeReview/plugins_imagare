@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df8f8a1d_e6a647c6",
+        "filename": "src/main/resources/static/gr-imagare-format-text.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2019-11-08T15:58:41Z",
+      "side": 1,
+      "message": "This will not finish in time, when loading a page. Thus, existing texts are not formatted. The callback function has to wait for the configuration somehow.",
+      "revId": "61fe419ae38f47eac9c995372fae3cdc61b18cfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

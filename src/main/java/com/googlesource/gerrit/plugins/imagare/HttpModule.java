@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.extensions.webui.GwtPlugin;
 import com.google.gerrit.extensions.webui.JavaScriptPlugin;
 import com.google.gerrit.extensions.webui.WebUiPlugin;
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
@@ -40,7 +39,10 @@ public class HttpModule extends HttpPluginModule {
       serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$").with(ImageServlet.class);
     }
 
-    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new GwtPlugin("imagare"));
+    // GWT only
     DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("imagare.js"));
+
+    // Polymer only
+    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("imagare.html"));
   }
 }

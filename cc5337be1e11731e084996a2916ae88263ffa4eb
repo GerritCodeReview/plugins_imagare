@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "575626dd_2835cc49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-05-16T05:10:19Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e This works with Gerrit 3.0, but not yet on master. Thus, we should create a stable-3.0 branch.\n\nWhere should stable-3.0 be created?\n\nAlso note that master has advanced since this merge was done, so it might need to be re-done on the latest head.",
+      "revId": "cc5337be1e11731e084996a2916ae88263ffa4eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

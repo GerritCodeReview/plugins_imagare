@@ -1,11 +1,13 @@
 {
   "checks": {
     "zuul-check:plugins_imagare": {
-      "state": "SCHEDULED",
-      "message": "Change has been enqueued in check",
+      "state": "NOT_RELEVANT",
+      "message": "Project has no jobs configured",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/91941f6224184ce4a4bff7d63b95a667",
       "started": "2020-06-30T07:21:58Z",
+      "finished": "2020-06-30T07:22:01Z",
       "created": "2020-06-30T07:21:58Z",
-      "updated": "2020-06-30T07:21:58Z"
+      "updated": "2020-06-30T07:22:01Z"
     }
   }
 }

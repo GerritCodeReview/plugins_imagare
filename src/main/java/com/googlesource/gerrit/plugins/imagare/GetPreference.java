@@ -20,7 +20,6 @@ import com.google.common.base.MoreObjects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.Response;
-import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
@@ -60,19 +59,15 @@ public class GetPreference implements RestReadView<AccountResource> {
   }
 
   @Override
-  public Response<ConfigInfo> apply(AccountResource rsrc) throws PermissionBackendException, RestApiException {
+  public Response<Object> apply(AccountResource rsrc)
+      throws AuthException, PermissionBackendException {
     if (self.get() != rsrc.getUser()) {
       permissionBackend.currentUser().check(ADMINISTRATE_SERVER);
     }
 
     String username = self.get().getUserName().get();
 
-    ConfigInfo globalCfg;
-    try {
-      globalCfg = getConfig.get().apply(new ConfigResource()).value();
-    } catch (Exception e) {
-      throw new RestApiException("Failed to get global config.");
-    }
+    ConfigInfo globalCfg = getConfig.get().apply(new ConfigResource()).value();
 
     Config db = projectCache.getAllProjects().getConfig(pluginName + ".config").get();
     ConfigInfo info = new ConfigInfo();

@@ -21,12 +21,12 @@ import static com.googlesource.gerrit.plugins.imagare.GetPreference.KEY_STAGE;
 import static com.googlesource.gerrit.plugins.imagare.GetPreference.PREFERENCE;
 
 import com.google.common.base.Strings;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.extensions.restapi.UnprocessableEntityException;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.account.AccountResource;
 import com.google.gerrit.server.git.meta.MetaDataUpdate;
@@ -81,7 +81,7 @@ public class PutPreference implements RestModifyView<AccountResource, Input> {
 
     String defaultProject = db.getString(PREFERENCE, username, KEY_DEFAULT_PROJECT);
     if (Strings.emptyToNull(input.defaultProject) != null) {
-      if (projectCache.get(new Project.NameKey(input.defaultProject)) == null) {
+      if (projectCache.get(Project.nameKey(input.defaultProject)) == null) {
         throw new UnprocessableEntityException(
             "project '" + input.defaultProject + "' does not exist");
       }

@@ -14,31 +14,31 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.entities.BranchNameKey;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.restapi.RestResource;
 import com.google.gerrit.extensions.restapi.RestView;
-import com.google.gerrit.reviewdb.client.Branch;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.TypeLiteral;
 
 public class ImageResource implements RestResource {
   public static final TypeLiteral<RestView<ImageResource>> IMAGE_KIND =
       new TypeLiteral<RestView<ImageResource>>() {};
 
-  private Branch.NameKey branchName;
+  private BranchNameKey branchName;
 
-  ImageResource(Branch.NameKey branchName) {
+  ImageResource(BranchNameKey branchName) {
     this.branchName = branchName;
   }
 
   public Project.NameKey getProject() {
-    return branchName.getParentKey();
+    return branchName.project();
   }
 
   public String getRef() {
-    return branchName.get();
+    return branchName.branch();
   }
 
-  public Branch.NameKey getBranchKey() {
+  public BranchNameKey getBranchKey() {
     return branchName;
   }
 }

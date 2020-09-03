@@ -42,6 +42,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import eu.medsea.mimeutil.MimeType;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -102,8 +103,8 @@ public class ImageServlet extends HttpServlet {
     }
 
     ResourceKey key = ResourceKey.fromPath(getEncodedPath(req));
-    ProjectState state = projectCache.get(key.project);
-    if (state == null || key.file == null) {
+    Optional<ProjectState> state = projectCache.get(key.project);
+    if (!state.isPresent() || key.file == null) {
       notFound(res);
       return;
     }
@@ -115,14 +116,10 @@ public class ImageServlet extends HttpServlet {
     }
 
     try {
-      ProjectState projectState = projectCache.get(key.project);
+      ProjectState projectState = projectCache.get(key.project).orElse(null);
       String rev = key.revision;
       if (rev == null || Constants.HEAD.equals(rev)) {
-        try {
-          rev = getHead.get().apply(new ProjectResource(projectState, self.get())).value();
-        } catch (Exception e) {
-          throw new ResourceNotFoundException(String.format("Could not get head of project %s.", key.project));
-        }
+        rev = getHead.get().apply(new ProjectResource(projectState, self.get())).value();
       } else {
         if (!ObjectId.isId(rev)) {
           if (!rev.startsWith(Constants.R_REFS)) {
@@ -147,7 +144,7 @@ public class ImageServlet extends HttpServlet {
         if (ObjectId.isId(rev)) {
           try (RevWalk rw = new RevWalk(repo)) {
             RevCommit commit = rw.parseCommit(repo.resolve(rev));
-            if (!commits.canRead(state, repo, commit)) {
+            if (!commits.canRead(state.get(), repo, commit)) {
               notFound(res);
               return;
             }
@@ -202,6 +199,7 @@ public class ImageServlet extends HttpServlet {
         }
       }
     } catch (RepositoryNotFoundException
+        | AuthException
         | ResourceNotFoundException
         | RevisionSyntaxException
         | PermissionBackendException e) {

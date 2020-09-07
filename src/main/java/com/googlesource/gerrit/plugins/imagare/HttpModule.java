@@ -39,6 +39,6 @@ public class HttpModule extends HttpPluginModule {
       serveRegex("^" + ImageServlet.PATH_PREFIX + "(.+)?$").with(ImageServlet.class);
     }
 
-    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("imagare.html"));
+    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("imagare.js"));
   }
 }

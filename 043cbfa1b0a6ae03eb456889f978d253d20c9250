@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5090c5f6_1cb6ff11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2020-09-08T14:39:07Z",
+      "side": 1,
+      "message": "This change requires https://gerrit-review.googlesource.com/c/gerrit/+/280919 to work.",
+      "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

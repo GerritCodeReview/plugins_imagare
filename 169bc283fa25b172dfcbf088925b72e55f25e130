@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "zuul-check:plugins_imagare": {
+      "state": "SCHEDULED",
+      "message": "Change has been enqueued in check",
+      "started": "2020-09-08T11:00:18Z",
+      "created": "2020-09-08T11:00:19Z",
+      "updated": "2020-09-08T11:00:19Z"
+    }
+  }
+}

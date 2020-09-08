@@ -14,12 +14,12 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.entities.BranchNameKey;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.restapi.ChildCollection;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestView;
-import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.permissions.RefPermission;
 import com.google.gerrit.server.project.ProjectResource;
@@ -48,7 +48,7 @@ public class ImagesCollection implements ChildCollection<ProjectResource, ImageR
 
   @Override
   public ImageResource parse(ProjectResource parent, IdString id) throws ResourceNotFoundException {
-    Branch.NameKey branchName = new Branch.NameKey(parent.getNameKey(), id.get());
+    BranchNameKey branchName = BranchNameKey.create(parent.getNameKey(), id.get());
     if (permissionBackend.user(parent.getUser()).ref(branchName).testOrFalse(RefPermission.READ)) {
       return new ImageResource(branchName);
     }

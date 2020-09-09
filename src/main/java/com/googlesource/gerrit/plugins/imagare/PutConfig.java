@@ -16,13 +16,13 @@ package com.googlesource.gerrit.plugins.imagare;
 
 import com.google.common.base.Strings;
 import com.google.gerrit.common.data.GlobalCapability;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.CapabilityScope;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.annotations.RequiresCapability;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.extensions.restapi.UnprocessableEntityException;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.config.ConfigResource;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
@@ -71,7 +71,7 @@ public class PutConfig implements RestModifyView<ConfigResource, Input> {
     cfg.load();
 
     if (input.defaultProject != null) {
-      if (projectCache.get(new Project.NameKey(input.defaultProject)) == null) {
+      if (projectCache.get(Project.nameKey(input.defaultProject)) == null) {
         throw new UnprocessableEntityException(
             "project '" + input.defaultProject + "' does not exist");
       }

@@ -63,6 +63,30 @@
       "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0c5c0c3_92e062b3",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2020-09-11T07:41:01Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/gerrit/+/270988 is the one removed certain functionalities to a different file. And since Gerrit core is moving to modules, we are actually removing a lot variables we used to expose to window for sharing across files.\n\nIf you are fine with making the change later when needed, then its ok. Probably make a note above the usage of the `util.xxx` to remind yourself or whoever need to do the migration work :)",
+      "parentUuid": "c6c85ecc_c15bed8b",
+      "range": {
+        "startLine": 70,
+        "startChar": 10,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }

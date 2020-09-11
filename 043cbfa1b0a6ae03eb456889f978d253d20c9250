@@ -39,6 +39,30 @@
       "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6c85ecc_c15bed8b",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2020-09-11T07:36:51Z",
+      "side": 1,
+      "message": "Actually, I originally only adapted this plugin to 3.2 (we will skip 3.1 for our own Gerrit installations) and it worked fine. The change you mentioned [1] was submitted to master. Will it be downported to stable-3.2 or only be available for 3.3 in a few weeks? Since it is still available (and will probably stay at least in 3.2), I would prefer not to duplicate the code earlier than we have to.\nNevertheless, thanks for the hint! I will keep an eye on this util method.\n\n[1] https://gerrit-review.googlesource.com/c/gerrit/+/258921",
+      "parentUuid": "2c6799ea_9bee66ab",
+      "range": {
+        "startLine": 70,
+        "startChar": 10,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }

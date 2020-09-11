@@ -16,6 +16,29 @@
       "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2c6799ea_9bee66ab",
+        "filename": "src/main/resources/static/gr-imagare-inline.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2020-09-11T06:53:58Z",
+      "side": 1,
+      "message": "I think you are relying on the window.util, but its no longer provided from 3.2 (or at least not provide with the querySelector :)), to avoid another change after moving to 3.2, i think you might just want to inline the implementation in this plugin :)",
+      "range": {
+        "startLine": 70,
+        "startChar": 10,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "043cbfa1b0a6ae03eb456889f978d253d20c9250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }

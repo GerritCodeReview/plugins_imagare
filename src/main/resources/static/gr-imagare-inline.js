@@ -67,7 +67,10 @@
         });
 
         this._messageAddedObserver.observe(
-          document.getElementsByTagName('gr-messages-list')[0],
+          // TODO(Thomas): The util methods were removed in change 270988, which
+          // will break this code in newer Gerrit versions (3.3+). At this point
+          // the plugin should implement the querySelector(All)-methods itself.
+          util.querySelector(document.body, 'gr-messages-list'),
           {
             childList: true,
           });
@@ -128,20 +131,20 @@
     },
 
     _getMessages() {
-      let messageList = document.getElementsByTagName('gr-messages-list')[0];
+      let messageList = util.querySelector(document.body, 'gr-messages-list');
       if (messageList) {
-        return messageList.getElementsByTagName('gr-message');
+        return util.querySelectorAll(messageList, 'gr-message');
       }
     },
 
     _getLinksFromMessage(message) {
       let links = [];
-      let linkedTexts = message.getElementsByTagName('gr-linked-text');
+      let linkedTexts = util.querySelectorAll(message, 'gr-linked-text');
       for (const e of linkedTexts) {
-        let aTags = e.getElementsByTagName('a');
+        let aTags = util.querySelectorAll(e, 'a');
         if (aTags && aTags.length > 0){
           for (const a of aTags){
-            if (a.getElementsByTagName('img').length > 0) {
+            if (util.querySelectorAll(a, 'img').length > 0) {
               continue;
             }
             if (!a.href.match(this._pattern)) {

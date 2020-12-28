@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.imagare;
 import com.google.common.base.MoreObjects;
 import com.google.gerrit.extensions.annotations.PluginCanonicalWebUrl;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.config.ConfigResource;
 import com.google.gerrit.server.config.PluginConfig;
@@ -40,7 +41,7 @@ public class GetConfig implements RestReadView<ConfigResource> {
   }
 
   @Override
-  public ConfigInfo apply(ConfigResource resource) {
+  public Response<ConfigInfo> apply(ConfigResource resource) {
     ConfigInfo info = new ConfigInfo();
     info.defaultProject = MoreObjects.firstNonNull(cfg.getString("defaultProject"), "All-Projects");
     info.linkDecoration = cfg.getEnum("linkDecoration", LinkDecoration.INLINE);
@@ -67,7 +68,7 @@ public class GetConfig implements RestReadView<ConfigResource> {
       info.uploadUrl = cfg.getString("uploadUrl");
     }
 
-    return info;
+    return Response.ok(info);
   }
 
   /**

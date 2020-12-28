@@ -23,8 +23,6 @@ limitations under the License.
 <dom-module id="imagare">
   <script>
     Gerrit.install(plugin => {
-      if (!window.Polymer) { return; }
-
       plugin.restApi('/config/server/').get('imagare~config').then(config => {
         if (config && config.enable_image_server) {
           plugin.screen('upload', 'gr-imagare-upload');

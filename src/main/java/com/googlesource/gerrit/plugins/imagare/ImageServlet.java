@@ -20,11 +20,11 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import com.google.common.base.CharMatcher;
 import com.google.common.hash.Hashing;
 import com.google.common.net.HttpHeaders;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.mime.FileTypeRegistry;
@@ -118,7 +118,11 @@ public class ImageServlet extends HttpServlet {
       ProjectState projectState = projectCache.get(key.project);
       String rev = key.revision;
       if (rev == null || Constants.HEAD.equals(rev)) {
-        rev = getHead.get().apply(new ProjectResource(projectState, self.get()));
+        try {
+          rev = getHead.get().apply(new ProjectResource(projectState, self.get())).value();
+        } catch (Exception e) {
+          throw new ResourceNotFoundException(String.format("Could not get head of project %s.", key.project));
+        }
       } else {
         if (!ObjectId.isId(rev)) {
           if (!rev.startsWith(Constants.R_REFS)) {
@@ -199,7 +203,6 @@ public class ImageServlet extends HttpServlet {
       }
     } catch (RepositoryNotFoundException
         | ResourceNotFoundException
-        | AuthException
         | RevisionSyntaxException
         | PermissionBackendException e) {
       notFound(res);
@@ -298,7 +301,7 @@ public class ImageServlet extends HttpServlet {
     }
 
     private ResourceKey(String p, String f, String r) {
-      project = new Project.NameKey(p);
+      project = Project.nameKey(p);
       file = f;
       revision = r;
     }

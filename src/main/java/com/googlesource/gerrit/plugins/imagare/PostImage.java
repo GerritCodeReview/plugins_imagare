@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.imagare;
 
+import com.google.gerrit.entities.BranchNameKey;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BadRequestException;
@@ -23,8 +25,6 @@ import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestModifyView;
-import com.google.gerrit.reviewdb.client.Branch;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.GerritPersonIdent;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.config.CanonicalWebUrl;
@@ -186,7 +186,7 @@ public class PostImage implements RestModifyView<ProjectResource, Input> {
           createRefControl.checkCreateRef(
               self,
               repo,
-              new Branch.NameKey(ps.getProject().getNameKey(), ref),
+              BranchNameKey.create(ps.getProject().getNameKey(), ref),
               rw.parseCommit(commitId));
         } catch (AuthException e) {
           throw new AuthException(

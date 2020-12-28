@@ -1,9 +1,12 @@
 {
   "checks": {
     "zuul-check:plugins_imagare": {
-      "state": "NOT_STARTED",
+      "state": "SCHEDULED",
+      "message": "Change has been enqueued in check",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/281019,1",
+      "started": "2020-12-28T18:03:12Z",
       "created": "2020-09-09T08:08:52Z",
-      "updated": "2020-12-28T18:02:35Z"
+      "updated": "2020-12-28T18:03:12Z"
     }
   }
 }

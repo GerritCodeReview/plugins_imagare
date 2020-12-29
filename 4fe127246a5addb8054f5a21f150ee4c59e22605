@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9143e5b_071795e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-29T08:18:37Z",
+      "side": 1,
+      "message": "This currently doesn\u0027t build:\n\n  plugins/imagare/src/main/java/com/googlesource/gerrit/plugins/imagare/PutPreference.java:130: error: cannot find symbol\n      storage.commit(md);\n             ^\n  symbol:   method commit(MetaDataUpdate)\n  location: variable storage of type ProjectLevelConfig\n\nSee also discussion in change 275992.",
+      "revId": "4fe127246a5addb8054f5a21f150ee4c59e22605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

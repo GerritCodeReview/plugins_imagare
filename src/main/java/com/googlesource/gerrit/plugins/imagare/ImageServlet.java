@@ -20,11 +20,11 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import com.google.common.base.CharMatcher;
 import com.google.common.hash.Hashing;
 import com.google.common.net.HttpHeaders;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.mime.FileTypeRegistry;
@@ -42,6 +42,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import eu.medsea.mimeutil.MimeType;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -102,8 +103,8 @@ public class ImageServlet extends HttpServlet {
     }
 
     ResourceKey key = ResourceKey.fromPath(getEncodedPath(req));
-    ProjectState state = projectCache.get(key.project);
-    if (state == null || key.file == null) {
+    Optional<ProjectState> state = projectCache.get(key.project);
+    if (!state.isPresent() || key.file == null) {
       notFound(res);
       return;
     }
@@ -115,10 +116,10 @@ public class ImageServlet extends HttpServlet {
     }
 
     try {
-      ProjectState projectState = projectCache.get(key.project);
+      ProjectState projectState = projectCache.get(key.project).orElse(null);
       String rev = key.revision;
       if (rev == null || Constants.HEAD.equals(rev)) {
-        rev = getHead.get().apply(new ProjectResource(projectState, self.get()));
+        rev = getHead.get().apply(new ProjectResource(projectState, self.get())).value();
       } else {
         if (!ObjectId.isId(rev)) {
           if (!rev.startsWith(Constants.R_REFS)) {
@@ -143,7 +144,7 @@ public class ImageServlet extends HttpServlet {
         if (ObjectId.isId(rev)) {
           try (RevWalk rw = new RevWalk(repo)) {
             RevCommit commit = rw.parseCommit(repo.resolve(rev));
-            if (!commits.canRead(state, repo, commit)) {
+            if (!commits.canRead(state.get(), repo, commit)) {
               notFound(res);
               return;
             }
@@ -198,8 +199,8 @@ public class ImageServlet extends HttpServlet {
         }
       }
     } catch (RepositoryNotFoundException
-        | ResourceNotFoundException
         | AuthException
+        | ResourceNotFoundException
         | RevisionSyntaxException
         | PermissionBackendException e) {
       notFound(res);
@@ -298,7 +299,7 @@ public class ImageServlet extends HttpServlet {
     }
 
     private ResourceKey(String p, String f, String r) {
-      project = new Project.NameKey(p);
+      project = Project.nameKey(p);
       file = f;
       revision = r;
     }

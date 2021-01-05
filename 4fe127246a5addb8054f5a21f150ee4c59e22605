@@ -16,6 +16,29 @@
       "message": "This currently doesn\u0027t build:\n\n  plugins/imagare/src/main/java/com/googlesource/gerrit/plugins/imagare/PutPreference.java:130: error: cannot find symbol\n      storage.commit(md);\n             ^\n  symbol:   method commit(MetaDataUpdate)\n  location: variable storage of type ProjectLevelConfig\n\nSee also discussion in change 275992.",
       "revId": "4fe127246a5addb8054f5a21f150ee4c59e22605",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60aa6a97_6ea598b7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/imagare/PutPreference.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2021-01-05T08:18:32Z",
+      "side": 1,
+      "message": "I\u0027d suggest reading the config from the storage directly here to avoid reading a stale version from cache and writing that back to primary storage. That\u0027s also how the classes around ProjectLevelConfig are designed right now.\n\nSomething along the lines of this should work:\n\n\n try (MetaDataUpdate md \u003d metaDataUpdateFactory.create(rsrc.getNameKey())) {\n      ProjectLevelConfig.Bare foo \u003d new ProjectLevelConfig.Bare(\"yourconfigfile.config\");\n      foo.load(md);\n      foo.getConfig().setString...\n      foo.commit(md);\n}",
+      "range": {
+        "startLine": 78,
+        "startChar": 33,
+        "endLine": 79,
+        "endChar": 30
+      },
+      "revId": "4fe127246a5addb8054f5a21f150ee4c59e22605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

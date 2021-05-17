@@ -22,6 +22,30 @@
       },
       "revId": "63a581f1b4ad77ba9e74abe8d75bac86fdd39ee5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df5d0aa1_4b488440",
+        "filename": "gr-imagare/gr-imagare-upload.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2021-05-17T06:46:56Z",
+      "side": 1,
+      "message": "The code is not really new. The rename detection was not working well enough here. Thus, I don\u0027t think the license year should be changed.",
+      "parentUuid": "0c502272_a2b6e137",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "63a581f1b4ad77ba9e74abe8d75bac86fdd39ee5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

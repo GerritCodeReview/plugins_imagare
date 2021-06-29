@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70b00e74_451cc318",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2021-06-29T07:17:32Z",
+      "side": 1,
+      "message": "I don\u0027t think so. At SAP we decided to drop the plugin, since it wasn\u0027t used for several months now. I think it is the same in the open source community. The plugin has issues with the PolyGerrit UI, since the UI doesn\u0027t support some features it would need and together with Tao I was never able to get it to work fully. Thus, until somebody asks for it, I would stop supporting newer versions of the plugin.",
+      "parentUuid": "3b788332_672f13e3",
+      "revId": "4fe127246a5addb8054f5a21f150ee4c59e22605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60aa6a97_6ea598b7",

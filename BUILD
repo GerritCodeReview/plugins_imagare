@@ -1,4 +1,4 @@
-load("//tools/bzl:plugin.bzl", "gerrit_plugin")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS", "gerrit_plugin")
 
 gerrit_plugin(
     name = "imagare",
@@ -9,4 +9,7 @@ gerrit_plugin(
         "Gerrit-HttpModule: com.googlesource.gerrit.plugins.imagare.HttpModule",
     ],
     resources = glob(["src/main/**/*"]),
+    deps = PLUGIN_DEPS + [
+        "@commons-lang3//jar",
+    ],
 )

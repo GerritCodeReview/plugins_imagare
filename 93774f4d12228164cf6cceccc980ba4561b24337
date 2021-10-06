@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f0b065_d70fd06c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2021-10-06T06:53:06Z",
+      "side": 1,
+      "message": "Gerrit core (master-branch) is still using v1 and not v3. IMO we should stay consistent there in this plugin as well. Why would you want to update the dependency?\nAlso without adding the updated dependencies in the bazel build, I would guess that the build would fail. (Zuul is currently failing the builds due to an infrastructure issue).\nFurther, please note that the imagare plugin is deprecated. There won\u0027t be any support anymore. It still kind of works for Gerrit 2.16 and 3.2 with reduced functionality, but not in newer versions.",
+      "revId": "93774f4d12228164cf6cceccc980ba4561b24337",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

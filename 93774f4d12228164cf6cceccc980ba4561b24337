@@ -34,6 +34,24 @@
       "parentUuid": "55f0b065_d70fd06c",
       "revId": "93774f4d12228164cf6cceccc980ba4561b24337",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "689d902a_c9f4076c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2021-10-08T07:03:07Z",
+      "side": 1,
+      "message": "apache commons v3 was only added as a dependency of another dependency [1]. If you use `git grep org.apache.commons.lang3`you won\u0027t find any occurrence. However, I have seen you change introducing that now.\n\nI verified that this change works with Gerrit 3.2 branch (only if I cherry pick it to stable-3.2 of this plugin. The master branch is out of date). So please rebase it.\n\nI can\u0027t give you CR+2 since this plugin is not supported anymore and I am thus not a maintainer anymore. You will have to ask a core maintainer.\n\n[1] https://gerrit.googlesource.com/gerrit/+/5e4491886b1c549a3eac25d926a5b3256d9e6054%5E%21/#F1",
+      "parentUuid": "b61f3e57_b47f33a6",
+      "revId": "93774f4d12228164cf6cceccc980ba4561b24337",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

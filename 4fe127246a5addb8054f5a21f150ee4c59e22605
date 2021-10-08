@@ -1,13 +1,9 @@
 {
   "checks": {
     "zuul-check:plugins_imagare": {
-      "state": "FAILED",
-      "message": "Change failed",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/4c4c94931b8a4c5abb104f874f8850d9",
-      "started": "2020-12-29T08:17:39Z",
-      "finished": "2020-12-29T08:24:47Z",
+      "state": "NOT_STARTED",
       "created": "2020-12-29T08:17:39Z",
-      "updated": "2020-12-29T08:24:47Z"
+      "updated": "2021-10-08T06:45:01Z"
     }
   }
 }

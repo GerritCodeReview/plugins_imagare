@@ -52,6 +52,24 @@
       "parentUuid": "b61f3e57_b47f33a6",
       "revId": "93774f4d12228164cf6cceccc980ba4561b24337",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dca08a91_2cf89157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-02-13T13:37:43Z",
+      "side": 1,
+      "message": "As Thomas pointed out, it doesn\u0027t build against gerrit@HEAD, see CI breakage: \n plugins/imagare/src/main/java/com/googlesource/gerrit/plugins/imagare/ImageResource.java:29: error: package Branch does not exist\n  ImageResource(Branch.NameKey branchName) {",
+      "parentUuid": "689d902a_c9f4076c",
+      "revId": "93774f4d12228164cf6cceccc980ba4561b24337",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

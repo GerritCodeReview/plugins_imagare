@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "zuul-check:plugins_imagare": {
+      "state": "SCHEDULED",
+      "message": "Change has been enqueued in check",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/319899,3",
+      "started": "2022-06-28T12:15:00Z",
+      "created": "2022-06-28T12:15:00Z",
+      "updated": "2022-06-28T12:15:00Z"
+    }
+  }
+}

@@ -1,12 +1,13 @@
 {
   "checks": {
     "zuul-check:plugins_imagare": {
-      "state": "RUNNING",
-      "message": "Jobs have started running",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/319899,3",
+      "state": "FAILED",
+      "message": "Change failed",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/dd4c10b424ad45e48ecbfb6ea0bded8a",
       "started": "2022-06-28T12:15:00Z",
+      "finished": "2022-06-28T12:22:30Z",
       "created": "2022-06-28T12:15:00Z",
-      "updated": "2022-06-28T12:15:05Z"
+      "updated": "2022-06-28T12:22:30Z"
     }
   }
 }

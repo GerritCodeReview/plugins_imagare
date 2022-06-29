@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e37263e4_3350bb91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2022-06-29T08:02:35Z",
+      "side": 1,
+      "message": "I think we can abandon this change. The plugin is deprecated and thus not supported anymore. It was not supported for any Gerrit version that is currently supported.",
+      "revId": "d6a4236a302b7be0a257494796d227915982d89a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
